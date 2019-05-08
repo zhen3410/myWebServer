@@ -16,9 +16,9 @@ const int kPollTimeMs=10000;
 }
 
 EventLoop::EventLoop()
-    :looping_(false),
-    threadId_(pthread_self())，
-    poller_(new Poller(this))
+	:looping_(false),
+	threadId_(pthread_self()),
+	poller_(new Poller(this))
 {
     if(t_loopInThisThread){
         std::cerr<<"another thread exist"<<std::endl;
