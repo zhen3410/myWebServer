@@ -1,15 +1,18 @@
 #ifndef SERVER_CHANNEL_H
 #define SERVER_CHANNEL_H
 
-#include<boost/noncopyable.hpp>
 #include<functional>
 
 namespace server{
 
 class EventLoop;
 
-class Channel : boost::noncopyable{
+class Channel{
 public:
+
+	Channel(const Channel&)=delete;
+	void operator=(const Channel&)=delete;
+
 	typedef std::function<void()> EventCallBack;
 
 	Channel(EventLoop* loop,int fd);

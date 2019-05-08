@@ -3,8 +3,6 @@
 
 #include"EventLoop.h"
 
-#include<boost/noncopyable.hpp>
-
 #include<vector>
 #include<map>
 #include<ctime>
@@ -15,9 +13,12 @@ namespace server{
 
 class Channel;
 
-class Poller : boost::noncopyable{
+class Poller {
 
 public:
+
+	Poller(const Poller&)=delete;
+	void operator=(const Poller&)=delete;
 
 	typedef std::vector<Channel*> ChannelList;
 

@@ -2,7 +2,6 @@
 #define SERVER_EVENTLOOP_H
 
 #include<pthread.h>
-#include<boost/noncopyable.hpp>
 #include<vector>
 #include<memory>
 
@@ -11,9 +10,12 @@ namespace server{
 class Poller;
 class Channel;
 
-class EventLoop : boost::noncopyable{
+class EventLoop {
 
 public:
+
+    EventLoop(const EventLoop&)=delete;
+    void opertor(const EventLoop&)=delete;
 
     EventLoop();
     ~EventLoop();
