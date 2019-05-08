@@ -1,9 +1,15 @@
+#ifndef SERVER_EVENTLOOP_H
+#define SERVER_EVENTLOOP_H
+
 #include<pthread.h>
 #include<boost/noncopyable.hpp>
+#include<vector>
+#include<memory>
 
 namespace server{
 
 class Poller;
+class Channel;
 
 class EventLoop : boost::noncopyable{
 
@@ -45,3 +51,5 @@ private:
 };
 
 }
+
+#endif

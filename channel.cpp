@@ -1,6 +1,9 @@
-#include"Channel.h"
+#include"channel.h"
+#include"EventLoop.h"
 #include<poll.h>
 #include<iostream>
+
+using namespace server;
 
 const int Channel::kNoneEvent=0;
 const int Channel::kReadEvent=POLLIN|POLLPRI;
@@ -17,7 +20,7 @@ Channel::Channel(EventLoop* loop,int fd)
 }
 
 void Channel::update(){
-	loop_->updateChannel();
+	loop_->updateChannel(this);
 }
 
 void Channel::handleEvent(){

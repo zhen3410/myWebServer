@@ -1,8 +1,12 @@
+#ifndef SERVER_POLLER_H
+#define SERVER_POLLER_H
+
 #include"EventLoop.h"
 
-#include<boost/noncopyable>
+#include<boost/noncopyable.hpp>
 
 #include<vector>
+#include<map>
 #include<ctime>
 
 struct pollfd;
@@ -22,7 +26,7 @@ public:
 
 	time_t poll(int timeoutMs,ChannelList* activeChannels);
 
-	void updateChannel(channel* channel);
+	void updateChannel(Channel* channel);
 
 	void assertInLoopThread(){return ownerloop_->assertInLoopThread();}
 
@@ -37,8 +41,9 @@ private:
 	PollFdList pollfds_;
 	ChannelMap channels_;
 
-}
+};
 
 
 }
 
+#endif

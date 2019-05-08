@@ -1,10 +1,11 @@
-#include"Channel.h"
+#include"channel.h"
 #include"EventLoop.h"
 
 #include<iostream>
 #include<sys/timerfd.h>
+#include<string.h>
 
-server::EventLoop g_loop;
+server::EventLoop* g_loop;
 
 void timeout(){
 	std::cout<<"timeout"<<std::endl;

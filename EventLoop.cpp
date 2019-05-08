@@ -1,5 +1,6 @@
 #include"EventLoop.h"
-#include"Poller"
+#include"Poller.h"
+#include"channel.h"
 
 #include<iostream>
 #include<assert.h>
@@ -59,7 +60,7 @@ void EventLoop::quit(){
 }
 
 void EventLoop::updateChannel(Channel* channel){
-    assert(channel->ownerLoop==this);
+    assert(channel->ownerLoop()==this);
     assertInLoopThread();
     poller_->updateChannel(channel);
 }

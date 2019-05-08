@@ -1,4 +1,8 @@
-#include<boost/noncopyable>
+#ifndef SERVER_CHANNEL_H
+#define SERVER_CHANNEL_H
+
+#include<boost/noncopyable.hpp>
+#include<functional>
 
 namespace server{
 
@@ -6,7 +10,7 @@ class EventLoop;
 
 class Channel : boost::noncopyable{
 public:
-	typedef boost::function<void()> EventCallBack;
+	typedef std::function<void()> EventCallBack;
 
 	Channel(EventLoop* loop,int fd);
 
@@ -30,7 +34,7 @@ public:
 	void setRevents(int revt){revents_=revt;}
 	void setIndex(int ind){index_=ind;}
 
-	bool isNoneEvent(){retunr kNoneEvent;}
+	bool isNoneEvent(){return kNoneEvent;}
 
 	void enableReading(){events_|=kReadEvent;update();}
 	void disableReading(){events_&=~kReadEvent;update();}
@@ -57,3 +61,5 @@ private:
 };
 
 }
+
+#endif
