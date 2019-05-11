@@ -1,9 +1,13 @@
 #ifndef SERVER_EVENTLOOP_H
 #define SERVER_EVENTLOOP_H
 
+#include"Timer.h"
+#include"base/Mutex.h"
+
 #include<pthread.h>
 #include<vector>
 #include<memory>
+#include<ctime>
 
 namespace server{
 
@@ -14,18 +18,27 @@ class EventLoop {
 
 public:
 
+    typedef std::function<void()> TimerCallBack;
+    typedef std::function<void()> functor;
+    
     EventLoop(const EventLoop&)=delete;
-    void opertor(const EventLoop&)=delete;
+    void operator=(const EventLoop&)=delete;
 
     EventLoop();
     ~EventLoop();
 
-    void loop();
+    void runInLoop(const functor& cb);
+    void queueInLoop(const functor& cb);
 
+    void loop();
     void quit();
 
     void updateChannel(Channel* channel);
     void removeChannel(Channel* channel);
+
+    int runAt(const time_t& time,const TimerCallBack& cb){
+        return timerQueue_->addTiemr(cd,time);
+    }
 
     void assertInLoopThread(){
         if(!isInLoopThread()){
@@ -41,15 +54,24 @@ public:
 private:
     
     void abortNotInLoopThread();
+    void handleRead();
+    void doPendingFunctors();
+    void wakeup();
 
     typedef std::vector<Channel*> ChannelList;
 
-    std::unique_ptr<Poller> poller_;
-    ChannelList activeChannels_;
-
     bool looping_;
     bool quit_;
+    bool callingPendingFunctors_;
     const long threadId_;
+
+    std::unique_ptr<Poller> poller_;
+    std::unique_ptr<TimerQueue> timerQueue_;
+    int wakeupFd_;
+    std::unique_ptr<Channel> wakeupChannel_;
+    ChannelList activeChannels_;
+    Mutex mutex_;
+    std::vector<functor> pendingFunctors_;
 };
 
 }
