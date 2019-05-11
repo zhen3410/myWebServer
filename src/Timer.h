@@ -1,7 +1,6 @@
 #ifndef SERVER_TIMER_H
 #define SERVER_TIMER_H
 
-#include<ctime>
 #include<vector>
 #include<set>
 #include<map>
@@ -11,6 +10,7 @@ namespace server{
 
 	class EventLoop;
 	class Channel;
+	class Timestamp;
 
 	class TimerQueue{
 	public:
@@ -18,18 +18,18 @@ namespace server{
 		TimerQueue(const TimerQueue&)=delete;
 		void operator=(const TimerQueue&)=delete;
 
-		int addTimer(const TimerCallBack& cb,time_t when);
+		int addTimer(const TimerCallBack& cb,Timestamp when);
 
 		void cancel(int timerId);
 
 	private:
-		typedef std::pair<time_t,Timer*> Entry;
+		typedef std::pair<Timestamp,Timer*> Entry;
 		typedef std::set<Entry> TimerList;
 
 		void handleRead();
 
-		std::vector<Entry> getExpired(time_t now);
-		void reset(const std::vector<Entry>& expired,time_t now);
+		std::vector<Entry> getExpired(Timestamp now);
+		void reset(const std::vector<Entry>& expired,Timestamp now);
 
 		bool insert(Timer* timer);
 
@@ -43,7 +43,7 @@ namespace server{
 	class Timer{
 	public:
 		typedef std::function<void()> TimerCallBack;
-		Timer(TimerCallBack cd,time_t when)
+		Timer(TimerCallBack cd,Timestamp when)
 			:callBack_(std::move(cb)),
 			expired_(when){}
 
@@ -53,7 +53,7 @@ namespace server{
 
 	private:
 		const TimerCallBack callBack_;
-		time_t expired_;
+		Timestamp expired_;
 	}
 
 } // namespace server

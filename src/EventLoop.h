@@ -2,12 +2,12 @@
 #define SERVER_EVENTLOOP_H
 
 #include"Timer.h"
+#include"Timestamp.h"
 #include"base/Mutex.h"
 
 #include<pthread.h>
 #include<vector>
 #include<memory>
-#include<ctime>
 
 namespace server{
 
@@ -36,8 +36,13 @@ public:
     void updateChannel(Channel* channel);
     void removeChannel(Channel* channel);
 
-    int runAt(const time_t& time,const TimerCallBack& cb){
-        return timerQueue_->addTiemr(cd,time);
+    int runAt(const Timestamp& time,const TimerCallBack& cb){
+        return timerQueue_->addTimer(cd,time);
+    }
+
+    int runAfter(double delay,const TimerCallBack& cb){
+        Timestamp when(addTimer(Timestamp::now(),delay));
+        return runAt(when,cb);
     }
 
     void assertInLoopThread(){

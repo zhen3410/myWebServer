@@ -1,6 +1,6 @@
 #include"Timer.h"
 
-std::vector<server::TimerQueue::Entry> server::TimerQueue::getExpired(time_t now){
+std::vector<server::TimerQueue::Entry> server::TimerQueue::getExpired(Timestamp now){
 	std::vector<Entry> expired;
 	Entry sentry={now,reinterpret_cast<Timer*>(UINTPTR_MAX)};
 	TimerList::iterator it=timers_.lower_bound(sentry);
@@ -11,6 +11,6 @@ std::vector<server::TimerQueue::Entry> server::TimerQueue::getExpired(time_t now
 }
 
 int server::TimerQueue::addTimer(const server::TimerQueue::TimerCallBack& cb
-	time_t when){
+	Timestamp when){
 	TimerList.insert({when,new Timer(cb,when)});
 }
