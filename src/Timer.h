@@ -2,6 +2,7 @@
 #define SERVER_TIMER_H
 
 #include"./base/Timestamp.h"
+#include"channel.h"
 
 #include<vector>
 #include<set>
@@ -12,7 +13,6 @@
 namespace server{
 
 	class EventLoop;
-	class Channel;
 
 	class Timer{
 	public:
@@ -77,7 +77,7 @@ namespace server{
 		explicit TimerQueue(EventLoop* loop);
 		~TimerQueue();
 
-		int addTimer(const TimerCallBack& cb,Timestamp when,double interval);
+		TimerId addTimer(const TimerCallBack& cb,Timestamp when,double interval);
 
 		void cancel(TimerId timerId);
 

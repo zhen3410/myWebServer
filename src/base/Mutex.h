@@ -10,7 +10,7 @@ public:
 	void operator=(const Mutex&)=delete;
 
 	Mutex(){
-		pthead_mutex_init(&mutex_,NULL);
+		pthread_mutex_init(&mutex_,NULL);
 	}
 	~Mutex(){
 		pthread_mutex_lock(&mutex_);

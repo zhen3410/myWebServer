@@ -1,6 +1,7 @@
 #include"EventLoop.h"
 
 #include<iostream>
+#include<string>
 
 int cnt=0;
 server::EventLoop* g_loop;
