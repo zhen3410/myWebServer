@@ -15,6 +15,60 @@ namespace server{
 	class Channel;
 	class Timestamp;
 
+	class Timer{
+	public:
+		typedef std::function<void()> TimerCallBack;
+		Timer(TimerCallBack cd,Timestamp when,double interval)
+			:callBack_(std::move(cb)),
+			expired_(when),
+			interval_(interval),
+			repeat_(interval>0.0),
+			sequence_(++numCreated_){}
+
+		void run() const{
+			callBack_();
+		}
+		void restart(Timestamp now);
+		int64_t sequence()const{
+			return sequence_;
+		}
+		Timestamp expiration()const{
+			return expiration_;
+		}
+		bool repeat(){
+			return repeat_;
+		}
+
+	private:
+		const TimerCallBack callBack_;
+		Timestamp expiration_;
+		const double interval_;
+		const bool repeat_;
+		const int64_t sequence_;
+
+		static atomic<int64_t> numCreated_;
+	};
+
+	class TimerId{
+	public:
+		TimerId(const TimerId&)=delete;
+		void operator=(const TimerId&)=delete;
+
+		TimerId()
+			:timer_(NULL),
+			sequence_(0)
+		{}
+
+		TimerId(Timer* timer,int64_t seq)
+			:timer_(timer),
+			sequence_(seq)
+		{}
+
+	private:
+		Timer* timer_;
+		int64_t sequence_;
+	};
+
 	class TimerQueue{
 	public:
 		typedef std::function<void()> TimerCallBack;
@@ -54,60 +108,6 @@ namespace server{
 		bool callingExpiredTimers_;
 		ActiveTimerSet cancelingTimers_;
 	};
-
-	class Timer{
-	public:
-		typedef std::function<void()> TimerCallBack;
-		Timer(TimerCallBack cd,Timestamp when,double interval)
-			:callBack_(std::move(cb)),
-			expired_(when),
-			interval_(interval),
-			repeat_(interval>0.0),
-			sequence_(++numCreated_){}
-
-		void run() const{
-			callBack_();
-		}
-		void restart(Timestamp now);
-		int64_t sequence()const{
-			return sequence_;
-		}
-		Timestamp expiration()const{
-			return expiration_;
-		}
-		bool repeat(){
-			return repeat_；
-		}
-
-	private:
-		const TimerCallBack callBack_;
-		Timestamp expiration_;
-		const double interval_;
-		const bool repeat_;
-		const int64_t sequence_;
-
-		static atomic<int64_t> numCreated_;
-	}
-
-	class TimerId{
-	public:
-		TimerId(const TimerId&)=delete;
-		void operator=(const TimerId&)=delete;
-
-		TimerId()
-			:timer_(NULL),
-			sequence_(0)
-		{}
-
-		TimerId(Timer* timer,int64_t seq)
-			:timer_(timer),
-			sequence_(seq)
-		{}
-
-	private:
-		Timer* timer_;
-		int64_t sequence_;
-	}
 
 } // namespace server
 
