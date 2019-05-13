@@ -13,14 +13,13 @@ namespace server{
 
 	class EventLoop;
 	class Channel;
-	class Timestamp;
 
 	class Timer{
 	public:
 		typedef std::function<void()> TimerCallBack;
-		Timer(TimerCallBack cd,Timestamp when,double interval)
+		Timer(TimerCallBack cb,Timestamp when,double interval)
 			:callBack_(std::move(cb)),
-			expired_(when),
+			expiration_(when),
 			interval_(interval),
 			repeat_(interval>0.0),
 			sequence_(++numCreated_){}
@@ -46,7 +45,7 @@ namespace server{
 		const bool repeat_;
 		const int64_t sequence_;
 
-		static atomic<int64_t> numCreated_;
+		static std::atomic<int64_t> numCreated_;
 	};
 
 	class TimerId{
@@ -89,7 +88,7 @@ namespace server{
 		typedef std::set<ActiveTimer> ActiveTimerSet;
 
 		void addTimerInLoop(Timer* timer);
-		void cancelTimerInLoop(TImerId timerId);
+		void cancelTimerInLoop(TimerId timerId);
 
 		void handleRead();
 
