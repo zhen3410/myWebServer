@@ -50,8 +50,6 @@ namespace server{
 
 	class TimerId{
 	public:
-		TimerId(const TimerId&)=delete;
-		void operator=(const TimerId&)=delete;
 
 		TimerId()
 			:timer_(NULL),

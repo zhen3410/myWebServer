@@ -36,8 +36,8 @@ private:
 class MutexGuard{
 
 public:
-	Mutex(const Mutex&)=delete;
-	void operator=(const Mutex&)=delete;
+	MutexGuard(const MutexGuard&)=delete;
+	void operator=(const MutexGuard&)=delete;
 
 	explicit MutexGuard(Mutex& mutex)
 		:mutex_(mutex)
