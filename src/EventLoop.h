@@ -36,13 +36,18 @@ public:
     void updateChannel(Channel* channel);
     void removeChannel(Channel* channel);
 
-    int runAt(const Timestamp& time,const TimerCallBack& cb){
-        return timerQueue_->addTimer(cd,time);
+    TimerId runAt(const Timestamp& time,const TimerCallBack& cb){
+        return timerQueue_->addTimer(cb,time,0.0);
     }
 
-    int runAfter(double delay,const TimerCallBack& cb){
-        Timestamp when(addTimer(Timestamp::now(),delay));
+    TimerId runAfter(double delay,const TimerCallBack& cb){
+        Timestamp when(addTime(Timestamp::now(),delay));
         return runAt(when,cb);
+    }
+
+    TimerId runEvery(double interval,const TimerCallBack& cb){
+        Timestamp time(addTime(Timestamp::now(),interval));
+        return timerQueue_->addTimer(cb,time,interval);
     }
 
     void assertInLoopThread(){

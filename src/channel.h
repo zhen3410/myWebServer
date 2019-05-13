@@ -37,7 +37,7 @@ public:
 	void setRevents(int revt){revents_=revt;}
 	void setIndex(int ind){index_=ind;}
 
-	bool isNoneEvent(){return kNoneEvent;}
+	bool isNoneEvent(){return events_==kNoneEvent;}
 
 	void enableReading(){events_|=kReadEvent;update();}
 	void disableReading(){events_&=~kReadEvent;update();}
@@ -58,6 +58,8 @@ private:
 	int revents_;
 	int index_;
 
+	bool eventHandling_;
+	bool addedToLoop_;
 	EventCallBack readCallback_;
 	EventCallBack writeCallback_;
 	EventCallBack errorCallback_;

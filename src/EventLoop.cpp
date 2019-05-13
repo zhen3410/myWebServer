@@ -62,6 +62,8 @@ void EventLoop::queueInLoop(const EventLoop::functor& cb){
         pendingFunctors_.push_back(cb);
     }
 
+    // 由于doPendingFunctors()调用的Functor可能再次调用queueInLoop()，
+    // 这时queueInLoop()就必须wakeup()，窦泽新加入的cb就不能被及时调用了
     if(!isInLoopThread()||callingPendingFunctors_){
         wakeup();
     }
@@ -129,6 +131,8 @@ void EventLoop::handleRead(){
 
 void EventLoop::quit(){
     quit_=true;
+    // 可以及时终止循环，否则可能会阻塞在调用队列中
+    // 在IO线程中调用quit()会由于Poll超时而退出循环
     if(!isInLoopThread()){
         wakeup();
     }
@@ -138,6 +142,12 @@ void EventLoop::updateChannel(Channel* channel){
     assert(channel->ownerLoop()==this);
     assertInLoopThread();
     poller_->updateChannel(channel);
+}
+
+void EventLoop::removeChannel(Channel* channel){
+    assert(channel->ownerLoop()==this);
+    assertInLoopThread();
+    poller_->removeChannel(channel);
 }
 
 void EventLoop::abortNotInLoopThread(){

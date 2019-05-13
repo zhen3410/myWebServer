@@ -31,7 +31,7 @@ inline bool operator==(Timestamp lhs,Timestamp rhs){
 	return lhs.get()==rhs.get();
 }
 
-int Timestamp addTimer(Timestamp time,double seconds){
+int Timestamp addTime(Timestamp time,double seconds){
 	int64_t delta=static_cast<int64_t>(seconds*Timestamp::kMicroSecondsPreSecond)；
 	return Timestamp(time.get()+delta);
 }
