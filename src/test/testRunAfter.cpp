@@ -3,6 +3,7 @@
 #include<pthread.h>
 #include<iostream>
 #include<string>
+#include<unistd.h>
 
 int cnt=0;
 server::EventLoop* g_loop;
@@ -12,8 +13,8 @@ void printfTid(){
 	std::cout<<"now "<<Timestamp::now().get()<<std::endl;
 }
 
-void print(string str){
-	std::cout<<"msg "<<Timestamp::now()<<" "<<str<<std::endl;
+void print(std::string str){
+	std::cout<<"msg "<<Timestamp::now().get()<<" "<<str<<std::endl;
 	if(++cnt==20){
 		g_loop->quit();
 	}
@@ -22,7 +23,7 @@ void print(string str){
 int main(){
 	printfTid();
 	server::EventLoop loop;
-	g_loop=loop;
+	g_loop=&loop;
 
 	print("main");
 	loop.runAfter(1,bind(print,"once1"));

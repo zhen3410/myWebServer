@@ -2,6 +2,10 @@
 
 #include<sys/timerfd.h>
 #include<iostream>
+#include<unistd.h>
+#include<memory.h>
+#include<assert.h>
+#include<iterator>
 
 namespace{
 
@@ -24,12 +28,12 @@ void readTimerfd(int timerfd,Timestamp now){
 
 void resetTimerfd(int timerfd,Timestamp expiration){
 	struct itimerspec newValue;
-	memZero(&newValue,sizeof newValue);
+	memset(&newValue,0,sizeof newValue);
 	int64_t microSeconds=expiration.get()-Timestamp::now().get();
 	struct timespec ts;
 	ts.tv_sec=static_cast<time_t>(microSeconds/Timestamp::kMicroSecondsPreSecond);
 	ts.tv_nsec=static_cast<time_t>(microSeconds%Timestamp::kMicroSecondsPreSecond*1000);
-	int ret=::timerfd_settime(timerfd,0,newValue,NULL);
+	int ret=::timerfd_settime(timerfd,0,&newValue,NULL);
 	if(ret){
 		std::cerr<<"resetTimerfd():timerfd_settime() failed"<<std::endl;
 	}
@@ -43,18 +47,18 @@ void Timer::restart(Timestamp now){
 	if(repeat_){
 		expiration_=addTime(now,interval_);
 	}else{
-		expiration=Timestamp();
+		expiration=new Timestamp();
 	}
 }
 
 TimerQueue::TimerQueue(EventLoop* loop)
 	:loop_(loop),
 	timerfd_(createTimerfd()),
-	timerfdChannel_(loop_,timerfd),
+	timerfdChannel_(loop_,timerfd_),
 	timers_(),
 	callingExpiredTimers_(false)
 {
-	timerfdChannel_.setReadeCallback(handleRead);
+	timerfdChannel_.setReadeCallback(std::bind(&TimerQueue::handleRead,this));
 	timerfdChannel_.enableReading();
 }
 
@@ -74,12 +78,12 @@ std::vector<server::TimerQueue::Entry> TimerQueue::getExpired(Timestamp now){
 	Entry sentry={now,reinterpret_cast<Timer*>(UINTPTR_MAX)};
 	TimerList::iterator it=timers_.lower_bound(sentry);
 	assert(it==timers_.end()||now<it->first);
-	std::copy(timers_.begin(),it,back_inserter(exired));
+	std::copy(timers_.begin(),it,back_inserter(expired));
 	timers_.erase(timers_.begin(),it);
 	return expired;	
 }
 
-TimerId TimerQueue::addTimer(const server::TimerQueue::TimerCallBack& cb
+TimerId TimerQueue::addTimer(const server::TimerQueue::TimerCallBack& cb,
 	Timestamp when,double interval){
 	Timer* timer=new Timer(cb,when,interval);
 	loop_->runInLoop(addTimerInLoop);

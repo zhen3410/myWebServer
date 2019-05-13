@@ -5,6 +5,7 @@
 #include<iostream>
 #include<assert.h>
 #include<sys/eventfd.h>
+#include<unistd.h>
 
 using namespace server;
 
@@ -39,7 +40,7 @@ EventLoop::EventLoop()
     }else{
         t_loopInThisThread=this;
     }
-    wakeupChannel_->setReadCallback(handleRead);
+    wakeupChannel_->setReadCallback(std::bind(&EventLoop::handleRead,this));
     wakeupChannel_->enableReading();
 }
 
@@ -95,7 +96,7 @@ void EventLoop::loop(){
 }
 
 void EventLoop::doPendingFunctors(){
-    std::vector<Functor> functors;
+    std::vector<functor> functors;
     callingPendingFunctors_=true;
 
     {

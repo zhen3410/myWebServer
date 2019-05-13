@@ -50,7 +50,7 @@ public:
 	}
 
 private:
-	Mutex mutex_;
+	Mutex& mutex_;
 };
 
 #endif
