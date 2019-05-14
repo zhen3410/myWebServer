@@ -114,7 +114,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=testRunAfter
+CMAKE_PROJECT_NAME:STATIC=testCode
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -173,6 +173,12 @@ myWebServer_BINARY_DIR:STATIC=/home/zhangzhen/myWebServer
 
 //Value Computed by CMake
 myWebServer_SOURCE_DIR:STATIC=/home/zhangzhen/myWebServer
+
+//Value Computed by CMake
+testCode_BINARY_DIR:STATIC=/home/zhangzhen/myWebServer
+
+//Value Computed by CMake
+testCode_SOURCE_DIR:STATIC=/home/zhangzhen/myWebServer
 
 //Value Computed by CMake
 testRunAfter_BINARY_DIR:STATIC=/home/zhangzhen/myWebServer

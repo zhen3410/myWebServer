@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named testRunAfter
+# Target rules for targets named testCode
 
 # Build rule for target.
-testRunAfter: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testRunAfter
-.PHONY : testRunAfter
+testCode: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testCode
+.PHONY : testCode
 
 # fast build rule for target.
-testRunAfter/fast:
-	$(MAKE) -f src/CMakeFiles/testRunAfter.dir/build.make src/CMakeFiles/testRunAfter.dir/build
-.PHONY : testRunAfter/fast
+testCode/fast:
+	$(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/build
+.PHONY : testCode/fast
 
 #=============================================================================
 # Target rules for targets named libserver_base
@@ -144,7 +144,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... testRunAfter"
+	@echo "... testCode"
 	@echo "... libserver_base"
 .PHONY : help
 
