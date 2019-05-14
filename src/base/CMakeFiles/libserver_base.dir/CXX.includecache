@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/zhangzhen/myWebServer/src/base/Timestamp.cpp
+Timestamp.h
+/home/zhangzhen/myWebServer/src/base/Timestamp.h
+iostream
+-
+
+/home/zhangzhen/myWebServer/src/base/Timestamp.h
+sys/time.h
+-
+cstdint
+-
+
