@@ -1,4 +1,5 @@
 #include"Timer.h"
+#include"EventLoop.h"
 
 #include<sys/timerfd.h>
 #include<iostream>
@@ -47,7 +48,7 @@ void Timer::restart(Timestamp now){
 	if(repeat_){
 		expiration_=addTime(now,interval_);
 	}else{
-		expiration=new Timestamp();
+		expiration_=new Timestamp();
 	}
 }
 
@@ -58,16 +59,16 @@ TimerQueue::TimerQueue(EventLoop* loop)
 	timers_(),
 	callingExpiredTimers_(false)
 {
-	timerfdChannel_.setReadeCallback(std::bind(&TimerQueue::handleRead,this));
+	timerfdChannel_.setReadCallback(std::bind(&TimerQueue::handleRead,this));
 	timerfdChannel_.enableReading();
 }
 
 TimerQueue::~TimerQueue(){
 	timerfdChannel_.disableAll();
 	timerfdChannel_.remove();
-	::close(timerfd_)
+	::close(timerfd_);
 
-	for(const Entry& timer::timers_){
+	for(const Entry& timer:timers_){
 		delete timer.second;
 	}
 }
@@ -86,7 +87,7 @@ std::vector<server::TimerQueue::Entry> TimerQueue::getExpired(Timestamp now){
 TimerId TimerQueue::addTimer(const server::TimerQueue::TimerCallBack& cb,
 	Timestamp when,double interval){
 	Timer* timer=new Timer(cb,when,interval);
-	loop_->runInLoop(addTimerInLoop);
+	loop_->runInLoop(std::bind(&TimerQueue::addTimerInLoop,this,timer));
 	return TimerId(timer,timer->sequence());
 }
 
@@ -140,10 +141,10 @@ void TimerQueue::reset(const std::vector<Entry>& expired,Timestamp now){
 }
 
 bool TimerQueue::insert(Timer* timer){
-	loop_>assertInLoopThread();
+	loop_->assertInLoopThread();
 	assert(timers_.size()==activeTimers_.size());
 	bool earliestChanged=false;
-	Timestamp when=timer.expiration();
+	Timestamp when=timer->expiration();
 	TimerList::iterator it=timers_.begin();
 	if(it==timers_.end()||when<it->first){
 		earliestChanged=true;
@@ -155,7 +156,7 @@ bool TimerQueue::insert(Timer* timer){
 	}
 	{
 		std::pair<ActiveTimerSet::iterator,bool> result
-		=activaTimers_.insert(ActiveTimer(timer,timer->sequence()));
+		=activeTimers_.insert(ActiveTimer(timer,timer->sequence()));
 		assert(result.second);
 	}
 	assert(timers_.size()==activeTimers_.size());
