@@ -125,6 +125,33 @@ libserver_base/fast:
 	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/build
 .PHONY : libserver_base/fast
 
+Thread.o: Thread.cpp.o
+
+.PHONY : Thread.o
+
+# target to build an object file
+Thread.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/Thread.cpp.o
+.PHONY : Thread.cpp.o
+
+Thread.i: Thread.cpp.i
+
+.PHONY : Thread.i
+
+# target to preprocess a source file
+Thread.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/Thread.cpp.i
+.PHONY : Thread.cpp.i
+
+Thread.s: Thread.cpp.s
+
+.PHONY : Thread.s
+
+# target to generate assembly for a file
+Thread.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/Thread.cpp.s
+.PHONY : Thread.cpp.s
+
 Timestamp.o: Timestamp.cpp.o
 
 .PHONY : Timestamp.o
@@ -161,6 +188,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... libserver_base"
+	@echo "... Thread.o"
+	@echo "... Thread.i"
+	@echo "... Thread.s"
 	@echo "... Timestamp.o"
 	@echo "... Timestamp.i"
 	@echo "... Timestamp.s"

@@ -1,2 +1,2 @@
-/usr/bin/ar qc libserver_base.a  CMakeFiles/libserver_base.dir/Timestamp.cpp.o
+/usr/bin/ar qc libserver_base.a  CMakeFiles/libserver_base.dir/Thread.cpp.o CMakeFiles/libserver_base.dir/Timestamp.cpp.o
 /usr/bin/ranlib libserver_base.a

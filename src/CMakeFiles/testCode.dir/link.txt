@@ -1,0 +1,1 @@
+g++   -g -Wall -std=c++11 -D_PTHREADS -Wno-unused-parameter -O3   CMakeFiles/testCode.dir/EventLoop.cpp.o CMakeFiles/testCode.dir/EventLoopThread.cpp.o CMakeFiles/testCode.dir/Poller.cpp.o CMakeFiles/testCode.dir/Timer.cpp.o CMakeFiles/testCode.dir/channel.cpp.o CMakeFiles/testCode.dir/testCode.cpp.o  -o testCode -rdynamic base/libserver_base.a -lpthread -lrt 

@@ -1,6 +1,7 @@
 #include"Thread.h"
 
 #include<iostream>
+#include<assert.h>
 
 namespace {
 	struct FuncArg{
@@ -10,19 +11,19 @@ namespace {
 
 std::atomic<int> numCreated_(0);
 
-Threaed::Thread(const ThreadFunc& func,string name)
+Thread::Thread(const ThreadFunc& func,std::string name)
 	:started_(false),
 	joined_(false),
 	pthreadId_(0),
 	tid_(0),
 	func_(func),
-	name_(name),
+	name_(name)
 {
 	setDefaultName();
 }
 
 void Thread::setDefaultName(){
-	int num=numCreated_.fetch_add(1).load();
+	int num=++numCreated_;
 	if(name_.empty()){
 		name_="Thread"+std::to_string(num);
 	}
@@ -40,7 +41,7 @@ void Thread::start(){
 	}
 }
 
-void Thread::join(){
+int Thread::join(){
 	assert(started_);
 	assert(!joined_);
 	joined_=true;
