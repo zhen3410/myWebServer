@@ -1,7 +1,7 @@
 #ifndef SERVER_BASE_TIMESTAMP_H
 #define SERVER_BASE_TIMESTAMP_H
 
-#include<ctime>
+#include<sys/time.h>
 #include<cstdint>
 
 class Timestamp{
