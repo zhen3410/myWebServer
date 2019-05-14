@@ -87,6 +87,6 @@ void Poller::removeChannel(Channel* channel){
 	const struct pollfd& pfd=pollfds_[ind];
 	size_t n=channels_.erase(channel->fd());
 	assert(n==1);
-	pollfds_.erase(pollfds.begin()+ind);
+	pollfds_.erase(pollfds_.begin()+ind);
 	assert(n==1);
 }

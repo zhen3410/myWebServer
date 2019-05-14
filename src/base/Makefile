@@ -80,14 +80,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhangzhen/myWebServer/CMakeFiles /home/zhangzhen/myWebServer/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
+	cd /home/zhangzhen/myWebServer && $(CMAKE_COMMAND) -E cmake_progress_start /home/zhangzhen/myWebServer/CMakeFiles /home/zhangzhen/myWebServer/src/base/CMakeFiles/progress.marks
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/base/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhangzhen/myWebServer/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/base/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,44 +97,60 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/base/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/base/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/zhangzhen/myWebServer && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named testRunAfter
+# Convenience name for target.
+src/base/CMakeFiles/libserver_base.dir/rule:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/base/CMakeFiles/libserver_base.dir/rule
+.PHONY : src/base/CMakeFiles/libserver_base.dir/rule
 
-# Build rule for target.
-testRunAfter: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testRunAfter
-.PHONY : testRunAfter
+# Convenience name for target.
+libserver_base: src/base/CMakeFiles/libserver_base.dir/rule
 
-# fast build rule for target.
-testRunAfter/fast:
-	$(MAKE) -f src/CMakeFiles/testRunAfter.dir/build.make src/CMakeFiles/testRunAfter.dir/build
-.PHONY : testRunAfter/fast
-
-#=============================================================================
-# Target rules for targets named libserver_base
-
-# Build rule for target.
-libserver_base: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 libserver_base
 .PHONY : libserver_base
 
 # fast build rule for target.
 libserver_base/fast:
-	$(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/build
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/build
 .PHONY : libserver_base/fast
+
+Timestamp.o: Timestamp.cpp.o
+
+.PHONY : Timestamp.o
+
+# target to build an object file
+Timestamp.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/Timestamp.cpp.o
+.PHONY : Timestamp.cpp.o
+
+Timestamp.i: Timestamp.cpp.i
+
+.PHONY : Timestamp.i
+
+# target to preprocess a source file
+Timestamp.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/Timestamp.cpp.i
+.PHONY : Timestamp.cpp.i
+
+Timestamp.s: Timestamp.cpp.s
+
+.PHONY : Timestamp.s
+
+# target to generate assembly for a file
+Timestamp.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/Timestamp.cpp.s
+.PHONY : Timestamp.cpp.s
 
 # Help Target
 help:
@@ -144,8 +160,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... testRunAfter"
 	@echo "... libserver_base"
+	@echo "... Timestamp.o"
+	@echo "... Timestamp.i"
+	@echo "... Timestamp.s"
 .PHONY : help
 
 
@@ -157,6 +175,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/zhangzhen/myWebServer && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

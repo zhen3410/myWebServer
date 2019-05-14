@@ -28,13 +28,13 @@ int createEventFd(){
 
 EventLoop::EventLoop()
 	:looping_(false),
-    quit_(false),
-    callingPendingFunctors_(false),
+	quit_(false),
+    	callingPendingFunctors_(false),
 	threadId_(pthread_self()),
 	poller_(new Poller(this)),
-    timerQueue_(new TimerQueue_(this)),
-    wakeupFd_(createEventFd()),
-    wakeupChannel_(new Channel(this,wakeupFd_))
+	timerQueue_(new TimerQueue(this)),
+    	wakeupFd_(createEventFd()),
+    	wakeupChannel_(new Channel(this,wakeupFd_))
 {
     if(t_loopInThisThread){
         std::cerr<<"another thread exist"<<std::endl;
@@ -48,14 +48,20 @@ EventLoop::EventLoop()
 EventLoop::~EventLoop(){
     assert(!looping_);
     t_loopInThisThread=NULL;
+    wakeupChannel_->disableAll();
+    wakeupChannel_->remove();
+    ::close(wakeupFd_);
 }
 
 void EventLoop::runInLoop(const EventLoop::functor& cb){
-    if(isInLoopThread()){
-        cb();
-    }else{
-        queueInLoop(cb);
-    }
+	std::cout<<"EventLoop::runInLoop()"<<std::endl;
+	if(isInLoopThread()){
+		std::cout<<"cb()"<<std::endl;
+		cb();
+	}else{
+		std::cout<<"queueInLoop()"<<std::endl;
+		queueInLoop(cb);
+	}
 }
 
 void EventLoop::queueInLoop(const EventLoop::functor& cb){

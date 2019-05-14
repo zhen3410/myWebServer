@@ -45,7 +45,7 @@ public:
 	void enableWriting(){events_|=kWriteEvent;update();}
 	void disableWriting(){events_&=~kWriteEvent;update();}
 	void disableAll(){events_=kNoneEvent;update();}
-	
+
 	void remove();
 
 private:

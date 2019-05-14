@@ -10,6 +10,7 @@
 
 namespace{
 
+
 int createTimerfd(){
 	int timerfd=::timerfd_create(CLOCK_MONOTONIC,TFD_NONBLOCK|TFD_CLOEXEC);
 	if(timerfd<0){
@@ -34,6 +35,7 @@ void resetTimerfd(int timerfd,Timestamp expiration){
 	struct timespec ts;
 	ts.tv_sec=static_cast<time_t>(microSeconds/Timestamp::kMicroSecondsPreSecond);
 	ts.tv_nsec=static_cast<time_t>(microSeconds%Timestamp::kMicroSecondsPreSecond*1000);
+	newValue.it_value=ts;
 	int ret=::timerfd_settime(timerfd,0,&newValue,NULL);
 	if(ret){
 		std::cerr<<"resetTimerfd():timerfd_settime() failed"<<std::endl;
@@ -44,11 +46,13 @@ void resetTimerfd(int timerfd,Timestamp expiration){
 
 using namespace server;
 
+int64_t Timer::numCreated_=0;
+
 void Timer::restart(Timestamp now){
 	if(repeat_){
 		expiration_=addTime(now,interval_);
 	}else{
-		expiration_=new Timestamp();
+		expiration_=Timestamp();
 	}
 }
 
@@ -86,6 +90,8 @@ std::vector<server::TimerQueue::Entry> TimerQueue::getExpired(Timestamp now){
 
 TimerId TimerQueue::addTimer(const server::TimerQueue::TimerCallBack& cb,
 	Timestamp when,double interval){
+	std::cout<<"TimerQueue::addTimer() : when = "<<when.get()<<
+		" , interval = "<<interval<<std::endl;
 	Timer* timer=new Timer(cb,when,interval);
 	loop_->runInLoop(std::bind(&TimerQueue::addTimerInLoop,this,timer));
 	return TimerId(timer,timer->sequence());
@@ -142,7 +148,7 @@ void TimerQueue::reset(const std::vector<Entry>& expired,Timestamp now){
 
 bool TimerQueue::insert(Timer* timer){
 	loop_->assertInLoopThread();
-	assert(timers_.size()==activeTimers_.size());
+	//assert(timers_.size()==activeTimers_.size());
 	bool earliestChanged=false;
 	Timestamp when=timer->expiration();
 	TimerList::iterator it=timers_.begin();
@@ -154,11 +160,13 @@ bool TimerQueue::insert(Timer* timer){
 		=timers_.insert(Entry(when,timer));
 		assert(result.second);
 	}
+	/*
 	{
 		std::pair<ActiveTimerSet::iterator,bool> result
 		=activeTimers_.insert(ActiveTimer(timer,timer->sequence()));
 		assert(result.second);
 	}
-	assert(timers_.size()==activeTimers_.size());
+	*/
+	//assert(timers_.size()==activeTimers_.size());
 	return earliestChanged;
 }
