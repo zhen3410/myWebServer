@@ -1,6 +1,7 @@
-#include"../EventLoop.h"
-#include"../EventLoopThread.h"
+#include"EventLoop.h"
+#include"EventLoopThread.h"
 #include<iostream>
+#include<unistd.h>
 
 void runInThread(){
 	std::cout<<"runInThread() : pid = "<<getpid()<<" , tid = "<<pthread_self()<<std::endl;

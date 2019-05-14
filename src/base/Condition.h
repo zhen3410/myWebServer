@@ -8,6 +8,9 @@
 class Condition{
 
 public:
+	Condition(const Condition&)=delete;
+	void operator=(const Condition&)=delete;
+
 	explicit Condition(Mutex& mutex)
 		:mutex_(mutex)
 	{
@@ -27,6 +30,6 @@ public:
 private:
 	Mutex& mutex_;
 	pthread_cond_t pcond_;
-}
+};
 
 #endif

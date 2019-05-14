@@ -20,6 +20,6 @@ private:
 	mutable Mutex mutex_;
 	Condition condition_;
 	int count_;
-}
+};
 
 #endif

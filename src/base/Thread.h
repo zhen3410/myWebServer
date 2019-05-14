@@ -1,6 +1,8 @@
 #ifndef SERVER_BASE_THREAD_H
 #define SERVER_BASE_THREAD_H
 
+#include"CountDownLatch.h"
+
 #include<functional>
 #include<string>
 #include<pthread.h>
@@ -14,7 +16,7 @@ public:
 	Thread(const Thread&)=delete;
 	void operator=(const Thread&)=delete;
 
-	explicit Thread(const ThreadFunc&,std::string name=std::string());
+	explicit Thread(const ThreadFunc& cb,std::string name=std::string());
 	~Thread();
 
 	void start();

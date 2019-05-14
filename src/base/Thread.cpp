@@ -6,7 +6,7 @@
 namespace {
 	struct FuncAndArg{
 		Thread::ThreadFunc func_;
-		std::string name;
+		std::string name_;
 		pid_t* tid_;
 		CountDownLatch* latch_;
 
@@ -33,9 +33,9 @@ namespace {
 	}
 }
 
-std::atomic<int> numCreated_(0);
+std::atomic<int> Thread::numCreated_(0);
 
-Thread::Thread(const ThreadFunc& func,std::string name)
+Thread::Thread(const Thread::ThreadFunc& func,std::string name)
 	:started_(false),
 	joined_(false),
 	pthreadId_(0),
@@ -45,6 +45,11 @@ Thread::Thread(const ThreadFunc& func,std::string name)
 	latch_(1)
 {
 	setDefaultName();
+}
+
+Thread::~Thread(){
+	if(started_&&!joined_)
+		pthread_detach(pthreadId_);
 }
 
 void Thread::setDefaultName(){
@@ -57,7 +62,7 @@ void Thread::setDefaultName(){
 void Thread::start(){
 	assert(!started_);
 	started_=true;
-	FuncAndArg* data=new FuncAndArg(func_,name_,&tid_,&latch_)；
+	FuncAndArg* data=new FuncAndArg(func_,name_,&tid_,&latch_);
 	int ret=pthread_create(&pthreadId_,NULL,&startThread,data);
 	if(ret){
 		started_=false;

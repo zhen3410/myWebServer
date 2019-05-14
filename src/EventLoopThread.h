@@ -1,9 +1,11 @@
-#ifndef SERVER_SRC_EVENTLOOP_H
-#define SERVER_SRC_EVENTLOOP_H
+#ifndef SERVER_SRC_EVENTLOOPINTHREAD_H
+#define SERVER_SRC_EVENTLOOPINTHREAD_H
 
 #include"base/Condition.h"
 #include"base/Mutex.h"
 #include"base/Thread.h"
+
+#include<string>
 
 namespace server{
 
@@ -13,8 +15,11 @@ class EventLoopThread{
 
 public:
 	//typedef std::function<void(EventLoop*)> ThreadInitCallback;
+	
+	EventLoopThread(const EventLoopThread&)=delete;
+	void operator=(const EventLoopThread&)=delete;
 
-	EventLoopThread(string name=string());
+	EventLoopThread(std::string name="EventLoopThread");
 	~EventLoopThread();
 
 	EventLoop* startLoop();
@@ -28,7 +33,7 @@ private:
 	Mutex mutex_;
 	Condition cond_;
 	//ThreadInitCallback callback_;
-}
+};
 
 }
 

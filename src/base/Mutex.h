@@ -30,7 +30,9 @@ public:
 	}
 
 private:
-	mutable pthread_mutex_t mutex_; 
+	mutable pthread_mutex_t mutex_;
+
+friend class Condition;	
 };
 
 class MutexGuard{

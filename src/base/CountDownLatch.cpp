@@ -16,7 +16,7 @@ void CountDownLatch::countDown(){
 	MutexGuard lock(mutex_);
 	--count_;
 	if(count_==0){
-		condition.notify();
+		condition_.notify();
 	}
 }
 

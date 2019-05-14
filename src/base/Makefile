@@ -125,6 +125,33 @@ libserver_base/fast:
 	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/build
 .PHONY : libserver_base/fast
 
+CountDownLatch.o: CountDownLatch.cpp.o
+
+.PHONY : CountDownLatch.o
+
+# target to build an object file
+CountDownLatch.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/CountDownLatch.cpp.o
+.PHONY : CountDownLatch.cpp.o
+
+CountDownLatch.i: CountDownLatch.cpp.i
+
+.PHONY : CountDownLatch.i
+
+# target to preprocess a source file
+CountDownLatch.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/CountDownLatch.cpp.i
+.PHONY : CountDownLatch.cpp.i
+
+CountDownLatch.s: CountDownLatch.cpp.s
+
+.PHONY : CountDownLatch.s
+
+# target to generate assembly for a file
+CountDownLatch.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/base/CMakeFiles/libserver_base.dir/build.make src/base/CMakeFiles/libserver_base.dir/CountDownLatch.cpp.s
+.PHONY : CountDownLatch.cpp.s
+
 Thread.o: Thread.cpp.o
 
 .PHONY : Thread.o
@@ -188,6 +215,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... libserver_base"
+	@echo "... CountDownLatch.o"
+	@echo "... CountDownLatch.i"
+	@echo "... CountDownLatch.s"
 	@echo "... Thread.o"
 	@echo "... Thread.i"
 	@echo "... Thread.s"

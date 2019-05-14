@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/libserver_base.dir/CountDownLatch.cpp.o"
   "CMakeFiles/libserver_base.dir/Thread.cpp.o"
   "CMakeFiles/libserver_base.dir/Timestamp.cpp.o"
   "libserver_base.pdb"
