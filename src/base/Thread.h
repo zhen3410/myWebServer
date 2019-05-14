@@ -36,7 +36,7 @@ private:
 	pid_t tid_;
 	ThreadFunc func_;
 	std::string name_;
-	//CountDownLatch latch_;
+	CountDownLatch latch_;
 
 	static std::atomic<int> numCreated_; 
 };
