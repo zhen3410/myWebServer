@@ -45,7 +45,7 @@ namespace server{
 		const bool repeat_;
 		const int64_t sequence_;
 
-		static int64_t numCreated_;
+		static atomic<int64_t> numCreated_;
 	};
 
 	//int64_t Timer::numCreated_=0;
