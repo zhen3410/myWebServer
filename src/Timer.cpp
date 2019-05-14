@@ -46,7 +46,7 @@ void resetTimerfd(int timerfd,Timestamp expiration){
 
 using namespace server;
 
-atomic<int64_t> Timer::numCreated_(0);
+std::atomic<int64_t> Timer::numCreated_(0);
 
 void Timer::restart(Timestamp now){
 	if(repeat_){

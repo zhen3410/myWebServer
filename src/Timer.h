@@ -9,6 +9,7 @@
 #include<map>
 #include<functional>
 #include<atomic>
+#include<iostream>
 
 namespace server{
 
@@ -22,7 +23,9 @@ namespace server{
 			expiration_(when),
 			interval_(interval),
 			repeat_(interval>0.0),
-			sequence_(++numCreated_){}
+			sequence_(numCreated_.fetch_add(1)){
+				std::cout<<"Timer expiration "<<expiration_.get()<<" ,sequence ="<<sequence_<<std::endl;
+			}
 
 		void run() const{
 			callBack_();
@@ -45,7 +48,7 @@ namespace server{
 		const bool repeat_;
 		const int64_t sequence_;
 
-		static atomic<int64_t> numCreated_;
+		static std::atomic<int64_t> numCreated_;
 	};
 
 	//int64_t Timer::numCreated_=0;
