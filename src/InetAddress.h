@@ -21,6 +21,9 @@ public:
 		addr_.sin_family=AF_INET;
 		addr_.sin_addr.s_addr=htonl(INADDR_ANY);
 	}
+	explicit InetAddress(const struct sockaddr_in& addr)
+		:addr_(addr)
+	{}
 
 	InetAddress(std::string ip,uint16_t port){
 		memset(&addr_,0,sizeof(addr_));

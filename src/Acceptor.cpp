@@ -46,6 +46,7 @@ void Acceptor::handleRead(){
 	InetAddress peeraddr;
 	int connfd=acceptSocket_.accept(&peeraddr);
 	if(connfd>=0){
+		// 接受了客户机的请求，开始建立新连接，传入连接socket和客户机的地址
 		newConnectionCallBack_(connfd,peeraddr);
 	}
 }

@@ -1,33 +1,37 @@
+#include"TcpServer.h"
 #include"EventLoop.h"
-#include"EventLoopThread.h"
-#include"Acceptor.h"
 #include"InetAddress.h"
 #include<iostream>
-#include<unistd.h>
 
-void runInThread(){
-	std::cout<<"runInThread() : pid = "<<getpid()<<" , tid = "<<pthread_self()<<std::endl;
+void onConnection(const server::TcpConnection::TcpConnectionPtr& conn){
+	if(conn->connected()){
+		std::cout<<"onConnection(): new connection ["<<conn->name()<<"] from "
+		<<conn->getPeerAddress().getInfo()<<std::endl;
+	}else{
+		std::cout<<"onConnection(): connection ["<<conn->name()<<"] is down."<<std::endl;
+	}
 }
 
-void newConnection(int sockfd,const server::InetAddress& peerAddr){
-	std::cout<<"newConnection():accepted a new connection from "<<peerAddr.getInfo()<<std::endl;
-	::write(sockfd,"How are you?\n",13);
-	::close(sockfd);
+void onMessage(const server::TcpConnection::TcpConnectionPtr& conn,
+			   const char* data,
+			   ssize_tlen)
+{
+	std::cout<<"onMessage(): received "<<len<<" bytes from connection ["
+	<<conn->name()<<"]."<<std::endl;
 }
 
 int main(){
-	std::cout<<"main() : pid = "<<getpid()<<" , tid = "<<pthread_self()<<std::endl;
 
-
+	std::cout<<"main() : pid = "<<getpid()<<std::endl;
+	
 	server::InetAddress listenAddr(9981);
-	std::cout<<"listenAddr = "<<listenAddr.getInfo()<<std::endl;
 	server::EventLoop loop;
 
-	server::Acceptor acceptor(&loop,listenAddr);
-	acceptor.setNewConnectionCallBack(newConnection);
-	acceptor.listen();
+	server::TcpServer server(&loop,listenAddr);
+	server.setConnectionCallBack(onConnection);
+	server.setMessageCallBack(onMessage);
+	server.start();
 
 	loop.loop();
-	
-	std::cout<<"exit main."<<std::endl;
+
 }
