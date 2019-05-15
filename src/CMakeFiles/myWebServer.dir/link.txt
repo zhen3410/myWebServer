@@ -1,1 +1,0 @@
-g++   -g -Wall -std=c++11 -D_PTHREADS -Wno-unused-parameter -O3   CMakeFiles/myWebServer.dir/EventLoop.cpp.o CMakeFiles/myWebServer.dir/Poller.cpp.o CMakeFiles/myWebServer.dir/Timer.cpp.o CMakeFiles/myWebServer.dir/channel.cpp.o  -o myWebServer -rdynamic base/libserver_base.a -lpthread -lrt 

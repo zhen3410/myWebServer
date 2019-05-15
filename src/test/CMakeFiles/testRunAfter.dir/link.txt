@@ -1,1 +1,0 @@
-g++   -g -Wall -std=c++11 -D_PTHREADS -Wno-unused-parameter -O3   CMakeFiles/testRunAfter.dir/testRunAfter.cpp.o  -o testRunAfter -rdynamic 
