@@ -125,6 +125,33 @@ testCode/fast:
 	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/build
 .PHONY : testCode/fast
 
+Acceptor.o: Acceptor.cpp.o
+
+.PHONY : Acceptor.o
+
+# target to build an object file
+Acceptor.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Acceptor.cpp.o
+.PHONY : Acceptor.cpp.o
+
+Acceptor.i: Acceptor.cpp.i
+
+.PHONY : Acceptor.i
+
+# target to preprocess a source file
+Acceptor.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Acceptor.cpp.i
+.PHONY : Acceptor.cpp.i
+
+Acceptor.s: Acceptor.cpp.s
+
+.PHONY : Acceptor.s
+
+# target to generate assembly for a file
+Acceptor.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Acceptor.cpp.s
+.PHONY : Acceptor.cpp.s
+
 EventLoop.o: EventLoop.cpp.o
 
 .PHONY : EventLoop.o
@@ -205,6 +232,33 @@ Poller.s: Poller.cpp.s
 Poller.cpp.s:
 	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Poller.cpp.s
 .PHONY : Poller.cpp.s
+
+Socket.o: Socket.cpp.o
+
+.PHONY : Socket.o
+
+# target to build an object file
+Socket.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Socket.cpp.o
+.PHONY : Socket.cpp.o
+
+Socket.i: Socket.cpp.i
+
+.PHONY : Socket.i
+
+# target to preprocess a source file
+Socket.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Socket.cpp.i
+.PHONY : Socket.cpp.i
+
+Socket.s: Socket.cpp.s
+
+.PHONY : Socket.s
+
+# target to generate assembly for a file
+Socket.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Socket.cpp.s
+.PHONY : Socket.cpp.s
 
 Timer.o: Timer.cpp.o
 
@@ -296,6 +350,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... testCode"
+	@echo "... Acceptor.o"
+	@echo "... Acceptor.i"
+	@echo "... Acceptor.s"
 	@echo "... EventLoop.o"
 	@echo "... EventLoop.i"
 	@echo "... EventLoop.s"
@@ -305,6 +362,9 @@ help:
 	@echo "... Poller.o"
 	@echo "... Poller.i"
 	@echo "... Poller.s"
+	@echo "... Socket.o"
+	@echo "... Socket.i"
+	@echo "... Socket.s"
 	@echo "... Timer.o"
 	@echo "... Timer.i"
 	@echo "... Timer.s"

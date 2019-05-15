@@ -3,10 +3,11 @@
 
 #include<sys/socket.h>
 #include<iostream>
+#include<unistd.h>
 
 using namespace server;
 
-static const int Socket::maxListenListNum=2048;
+const int Socket::maxListenListNum=2048;
 
 Socket::~Socket(){
 	::close(socketFd_);
@@ -20,9 +21,13 @@ void Socket::setReuseAddr(bool flag){
 }
 
 void Socket::bindAddr(const InetAddress& addr){
-	int ret=::bind(socketFd_,addr.get(),sizeof(struct sockaddr_in));
+	struct sockaddr_in addr_;
+	addr.get(&addr_);
+	int ret=::bind(socketFd_,(struct sockaddr*)(&addr_),sizeof(struct sockaddr_in));
 	if(ret==-1){
 		std::cerr<<"Socket::bindAddr() error"<<std::endl;
+	}else{
+		std::cout<<"Socket::bindAddr() bind addr : "<<addr.getInfo()<<std::endl;
 	}
 }
 
@@ -36,10 +41,15 @@ void Socket::listen(){
 int Socket::accept(InetAddress* peeraddr){
 	struct sockaddr_in addr;
 	memset(&addr,0,sizeof addr);
-	int connfd=::accept(socketFd_,(struct sockaddr*)addr,NULL);
-	if(connfd=-1){
-		std::cerr<<"Socket::accept() error"<<std::endl;
+	socklen_t addr_len=static_cast<socklen_t>(sizeof addr);
+	int connfd=::accept(socketFd_,(struct sockaddr*)(&addr),&addr_len);
+	std::cout<<"Socket::accetp() : accetp connect from "<<addr.sin_addr.s_addr<<" : "<<ntohs(addr.sin_port)<<std::endl;
+	//if(connfd==-1){
+	//	std::cerr<<"Socket::accept() error"<<std::endl;
+	//}
+	if(connfd>=0){
+		peeraddr->setAddr(addr);
 	}
-	peeraddr->setAddr(addr);
+	//peeraddr->setAddr(addr);
 	return connfd;
 }

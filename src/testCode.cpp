@@ -1,6 +1,7 @@
 #include"EventLoop.h"
 #include"EventLoopThread.h"
 #include"Acceptor.h"
+#include"InetAddress.h"
 #include<iostream>
 #include<unistd.h>
 
@@ -19,10 +20,11 @@ int main(){
 
 
 	server::InetAddress listenAddr(9981);
+	std::cout<<"listenAddr = "<<listenAddr.getInfo()<<std::endl;
 	server::EventLoop loop;
 
 	server::Acceptor acceptor(&loop,listenAddr);
-	acceptor.setNewConnectionBack(newConnection);
+	acceptor.setNewConnectionCallBack(newConnection);
 	acceptor.listen();
 
 	loop.loop();

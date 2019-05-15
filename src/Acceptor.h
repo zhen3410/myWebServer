@@ -34,14 +34,14 @@ public:
 private:
 	void handleRead();
 
-	EvnetLoop* loop_;
+	EventLoop* loop_;
 	Socket acceptSocket_;
 	Channel acceptChannel_;
 	NewConnectionCallBack newConnectionCallBack_;
 	bool listening_;
 	int idleFd_;
 
-}
+};
 
 }
 
