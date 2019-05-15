@@ -1,0 +1,48 @@
+#include"Acceptor.h"
+
+#include<socket.h>
+#include<iostream>
+
+using namespace server;
+
+int createNonblocking(){
+	int fd=::socket(AF_INET,SOCK_STREAM|SOCK_NONBLOCK|SOCK_CLOEXEC,IPPROTO_TCP);
+	if(fd<0){
+		std::cerr<<"createNonblocking()"<<std::endl;
+	}
+	return fd;
+}
+
+
+Acceptor::Acceptor(EventLoop* loop,const InetAddress& listenAddr)
+	:loop_(loop),
+	acceptSocket_(createNonblocking()),
+	acceptChannel_(loop_,acceptSocket_.fd()),
+	listening_(false)
+{
+	acceptSocket_.setReuseAddr(true);
+	acceptSocket_.bindAddr(listenAddr);
+	acceptChannel_.setReadCallback(std::bind(&Acceptor::handleRead,this));
+}
+
+Acceptor::~Acceptor(){
+	acceptChannel_.disableAll();
+	acceptChannel_.remove();
+	//::close()
+}
+
+void Acceptor::listen(){
+	loop_->assertInLoopThread();
+	listening_=true;
+	acceptSocket_.listen();
+	acceptChannel_.enableReading();
+}
+
+void Acceptor::handleRead(){
+	loop_->assertInLoopThread();
+	InetAddress peeraddr;
+	int connfd=acceptSocket_.accept(&peeraddr);
+	if(connfd>=0){
+		newConnectionCallBack_(connfd,peeraddr);
+	}
+}
