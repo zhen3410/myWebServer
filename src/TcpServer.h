@@ -4,6 +4,7 @@
 #include<string>
 #include<functional>
 #include<map>
+#include<memory>
 
 
 namespace server{
@@ -13,6 +14,7 @@ class Acceptor;
 class TcpConnection;
 class Buffer;
 class Timestamp;
+class InetAddress;
 
 class TcpServer{
 public:
@@ -23,7 +25,7 @@ public:
 	TcpServer(const TcpServer&)=delete;
 	void operator=(const TcpServer&)=delete;
 
-	TcpServer(EventLoop*,const InetAddress&);
+	TcpServer(EventLoop*,const InetAddress&,std::string);
 	~TcpServer();
 
 	void start();

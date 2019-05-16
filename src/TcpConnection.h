@@ -1,9 +1,11 @@
 #ifndef SERVER_TCPCONNECTION_H
 #define SERVER_TCPCONNECTION_H
 
+#include"InetAddress.h"
+
 #include<functional>
 #include<string>
-
+#include<memory>
 
 namespace server{
 
@@ -14,7 +16,7 @@ class Buffer;
 class Timestamp;
 
 class TcpConnection:
-	public boost::enable_shared_from_this<TcpConnection>
+	public std::enable_shared_from_this<TcpConnection>
 {
 public:
 
@@ -23,7 +25,7 @@ public:
 	typedef std::function<void(const TcpConnectionPtr&,const char*,int)> MessageCallBack;
 
 	TcpConnection(const TcpConnection&)=delete;
-	void TcpConnection(const TcpConnection&)=delete;
+	void operator=(const TcpConnection&)=delete;
 
 	TcpConnection(EventLoop* loop,
 				  std::string name,
@@ -48,7 +50,7 @@ public:
 		messageCallBack_=cb;
 	}
 
-	void connectionEstablihed();
+	void connectionEstablished();
 
 private:
 	enum StateE{kConnecting,kConnected,};

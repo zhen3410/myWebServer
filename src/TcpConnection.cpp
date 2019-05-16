@@ -1,4 +1,10 @@
 #include"TcpConnection.h"
+#include"Socket.h"
+#include"channel.h"
+#include"EventLoop.h"
+
+#include<unistd.h>
+#include<iostream>
 
 using namespace server;
 
@@ -9,22 +15,25 @@ TcpConnection::TcpConnection(EventLoop* loop,
 	const InetAddress& peerAddr)
 	:loop_(loop),
 	name_(name),
-	sockfd_(new Socket(sockfd)),
-	channel_(new Channel(loop_,sockfd_)),
+	socket_(new Socket(sockfd)),
+	channel_(new Channel(loop_,sockfd)),
 	localAddr_(localAddr),
-	peerAddr_(peerAddr)
+	peerAddr_(peerAddr),
+	state_(kConnecting)
 {
-	channel_->setReadCallBack(std::bind(&TcpConnection::handleRead,this));
+	std::cout<<"TcpConnection::constructor ["<<name_<<"] fd = "<<channel_->fd()<<std::endl;
+	channel_->setReadCallback(std::bind(&TcpConnection::handleRead,this));
 }
 
 TcpConnection::~TcpConnection(){
-
+	std::cout<<"TcpConnection::deconstructor ["<<name_<<"] fd = "<<channel_->fd()<<std::endl;
 }
 
 void TcpConnection::connectionEstablished(){
-	loop_->assertLoopInThread();
+	loop_->assertInLoopThread();
+	std::cout<<"TcpConnection::connectionEstablished() set connection channel fd = ["<<socket_->fd()<<"]"<<std::endl;
 	channel_->enableReading();
-
+	setState(kConnected);
 	connectionCallBack_(shared_from_this());
 }
 

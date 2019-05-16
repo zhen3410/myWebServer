@@ -260,6 +260,60 @@ Socket.cpp.s:
 	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Socket.cpp.s
 .PHONY : Socket.cpp.s
 
+TcpConnection.o: TcpConnection.cpp.o
+
+.PHONY : TcpConnection.o
+
+# target to build an object file
+TcpConnection.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpConnection.cpp.o
+.PHONY : TcpConnection.cpp.o
+
+TcpConnection.i: TcpConnection.cpp.i
+
+.PHONY : TcpConnection.i
+
+# target to preprocess a source file
+TcpConnection.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpConnection.cpp.i
+.PHONY : TcpConnection.cpp.i
+
+TcpConnection.s: TcpConnection.cpp.s
+
+.PHONY : TcpConnection.s
+
+# target to generate assembly for a file
+TcpConnection.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpConnection.cpp.s
+.PHONY : TcpConnection.cpp.s
+
+TcpServer.o: TcpServer.cpp.o
+
+.PHONY : TcpServer.o
+
+# target to build an object file
+TcpServer.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpServer.cpp.o
+.PHONY : TcpServer.cpp.o
+
+TcpServer.i: TcpServer.cpp.i
+
+.PHONY : TcpServer.i
+
+# target to preprocess a source file
+TcpServer.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpServer.cpp.i
+.PHONY : TcpServer.cpp.i
+
+TcpServer.s: TcpServer.cpp.s
+
+.PHONY : TcpServer.s
+
+# target to generate assembly for a file
+TcpServer.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpServer.cpp.s
+.PHONY : TcpServer.cpp.s
+
 Timer.o: Timer.cpp.o
 
 .PHONY : Timer.o
@@ -365,6 +419,12 @@ help:
 	@echo "... Socket.o"
 	@echo "... Socket.i"
 	@echo "... Socket.s"
+	@echo "... TcpConnection.o"
+	@echo "... TcpConnection.i"
+	@echo "... TcpConnection.s"
+	@echo "... TcpServer.o"
+	@echo "... TcpServer.i"
+	@echo "... TcpServer.s"
 	@echo "... Timer.o"
 	@echo "... Timer.i"
 	@echo "... Timer.s"

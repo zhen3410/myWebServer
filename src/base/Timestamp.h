@@ -4,6 +4,8 @@
 #include<sys/time.h>
 #include<cstdint>
 
+namespace server{
+
 class Timestamp{
 public:
 
@@ -32,6 +34,8 @@ inline bool operator==(Timestamp lhs,Timestamp rhs){
 inline Timestamp addTime(Timestamp time,double seconds){
 	int64_t delta=static_cast<int64_t>(seconds*Timestamp::kMicroSecondsPreSecond);
 	return Timestamp(time.get()+delta);
+}
+
 }
 
 #endif

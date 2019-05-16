@@ -35,9 +35,11 @@ void Poller::fillActiveChannels(int numEvents,ChannelList* activeChannels)const{
 	for(PollFdList::const_iterator pfd=pollfds_.begin();pfd!=pollfds_.end()&&numEvents>0;++pfd){
 		if(pfd->revents>0){
 			--numEvents;
+			std::cout<<"Poller::fillActiveChannels() fd = ["<<pfd->fd<<"] happened"<<std::endl;
 			ChannelMap::const_iterator ch=channels_.find(pfd->fd);
 			assert(ch!=channels_.end());
 			Channel* channel=ch->second;
+			std::cout<<"Poller::fillActiveChannels() pfd->fd = "<<pfd->fd<<" , channel->fd() = "<<channel->fd()<<" , channel->index() = "<<channel->index()<<std::endl;
 			assert(channel->fd()==pfd->fd);
 			channel->setRevents(pfd->revents);
 			activeChannels->push_back(channel);
@@ -59,6 +61,7 @@ void Poller::updateChannel(Channel* channel){
 		int ind=static_cast<int>(pollfds_.size())-1;
 		channel->setIndex(ind);
 		channels_[pfd.fd]=channel;
+		std::cout<<"Poller::updateChannel() set pfd->fd = "<<pfd.fd<<" , channel->fd() = "<<channel->fd()<<std::endl;
 	}else{
 		// 是一个旧的channel，更新
 		assert(channels_.find(channel->fd())!=channels_.end());

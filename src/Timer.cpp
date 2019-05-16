@@ -8,6 +8,8 @@
 #include<assert.h>
 #include<iterator>
 
+using namespace server;
+
 namespace{
 
 
@@ -44,8 +46,6 @@ void resetTimerfd(int timerfd,Timestamp expiration){
 
 }
 
-using namespace server;
-
 std::atomic<int64_t> Timer::numCreated_(0);
 
 void Timer::restart(Timestamp now){
@@ -63,6 +63,7 @@ TimerQueue::TimerQueue(EventLoop* loop)
 	timers_(),
 	callingExpiredTimers_(false)
 {
+	std::cout<<"TimerQueue::TimerQueue() set timerfd Channel , timerfd = ["<<timerfd_<<"]"<<std::endl;
 	timerfdChannel_.setReadCallback(std::bind(&TimerQueue::handleRead,this));
 	timerfdChannel_.enableReading();
 }

@@ -29,6 +29,7 @@ Acceptor::Acceptor(EventLoop* loop,const InetAddress& listenAddr)
 }
 
 Acceptor::~Acceptor(){
+	std::cout<<"deconstructor Acceptor"<<std::endl;
 	acceptChannel_.disableAll();
 	acceptChannel_.remove();
 	//::close()
@@ -36,8 +37,10 @@ Acceptor::~Acceptor(){
 
 void Acceptor::listen(){
 	loop_->assertInLoopThread();
+	std::cout<<"Acceptor::listen()"<<std::endl;
 	listening_=true;
 	acceptSocket_.listen();
+	std::cout<<"Acceptor::listen() set accept Channel , acceptSocket = ["<<acceptSocket_.fd()<<"]"<<std::endl;
 	acceptChannel_.enableReading();
 }
 
@@ -45,6 +48,7 @@ void Acceptor::handleRead(){
 	loop_->assertInLoopThread();
 	InetAddress peeraddr;
 	int connfd=acceptSocket_.accept(&peeraddr);
+	std::cout<<"Acceptor::handleRead() accept socket fd = ["<<connfd<<"]"<<std::endl;
 	if(connfd>=0){
 		// 接受了客户机的请求，开始建立新连接，传入连接socket和客户机的地址
 		newConnectionCallBack_(connfd,peeraddr);

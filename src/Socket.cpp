@@ -32,6 +32,7 @@ void Socket::bindAddr(const InetAddress& addr){
 }
 
 void Socket::listen(){
+	std::cout<<"Socket::listen()"<<std::endl;
 	int ret=::listen(socketFd_,maxListenListNum);
 	if(ret==-1){
 		std::cerr<<"Socket::listen() error"<<std::endl;

@@ -41,6 +41,7 @@ EventLoop::EventLoop()
     }else{
         t_loopInThisThread=this;
     }
+    std::cout<<"EventLoop::EventLoop() set wakeupChannel wakeFd = "<<wakeupFd_<<std::endl;
     wakeupChannel_->setReadCallback(std::bind(&EventLoop::handleRead,this));
     wakeupChannel_->enableReading();
 }

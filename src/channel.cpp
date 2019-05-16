@@ -23,10 +23,10 @@ Channel::Channel(EventLoop* loop,int fd)
 }
 
 Channel::~Channel(){
-	assert(!addedToLoop_);
-	if(loop_->isInLoopThread()){
+	//assert(!addedToLoop_);
+	//if(loop_->isInLoopThread()){
 
-	}
+	//}
 }
 
 void Channel::update(){
