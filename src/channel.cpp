@@ -45,6 +45,9 @@ void Channel::handleEvent(){
 	if(revents_&POLLNVAL){
 		std::cout<<"Channel::handleEvent() POLLNVAL"<<std::endl;
 	}
+	if((revents_&POLLHUP)&&!(revents_&POLLIN)){
+		if(closeCallback_)closeCallback_();
+	}
 	if(revents_&(POLLERR|POLLNVAL)){
 		if(errorCallback_)errorCallback_();
 	}

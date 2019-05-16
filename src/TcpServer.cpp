@@ -51,9 +51,18 @@ void TcpServer::newConnection(int sockfd,const InetAddress& peerAddr){
 	InetAddress loaclAddr(localAddr_in);
 
 	TcpConnectionPtr conn(new TcpConnection(loop_,connName,sockfd,loaclAddr,peerAddr));
+	// 如果TcpServer不持有TcpConnection的话，conn会在这一步析构，导致socket文件关闭，连接出错
 	connections_[connName]=conn;
 	conn->setConnectionCallBack(connectionCallBack_);
 	conn->setMessageCallBack(messageCallBack_);
+	conn->setCloseCallBack(std::bind(&TcpServer::removeConnection,this,_1));
 	conn->connectionEstablished();
 
+}
+
+void TcpServer::removeConnection(const TcpConnectionPtr& conn){
+	loop_->assertInLoopThread();
+	std::cout<<"TcpServer::removeConnection ["<<name_<<"] - connection ["<<conn->getName()<<"]"<<std::endl;
+	connections_.erase(conn->getName());
+	loop_->queueInLoop(std::bind(&TcpConnection::connectionDestroyed,conn));
 }

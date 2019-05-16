@@ -29,6 +29,9 @@ public:
 	void setErrorCallback(const EventCallBack& cb){
 		errorCallback_=cb;
 	}
+	void setCloseCallback(const EventCallBack& cb){
+		closeCallback_=cb;
+	}
 
 	EventLoop* ownerLoop()const{return loop_;}
 
@@ -66,6 +69,7 @@ private:
 	EventCallBack readCallback_;
 	EventCallBack writeCallback_;
 	EventCallBack errorCallback_;
+	EventCallBack closeCallback_;
 };
 
 }

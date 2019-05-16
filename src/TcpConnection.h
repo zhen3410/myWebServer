@@ -51,12 +51,14 @@ public:
 	}
 
 	void connectionEstablished();
+	void connectionDistroyed();
 
 private:
 	enum StateE{kConnecting,kConnected,};
 
 	void setState(StateE s){state_=s;}
 	void handleRead();
+	void handleclose();
 
 	EventLoop* loop_;
 	std::string name_;

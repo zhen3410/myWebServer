@@ -37,10 +37,34 @@ void TcpConnection::connectionEstablished(){
 	connectionCallBack_(shared_from_this());
 }
 
+void TcpConnection::connectionDistroyed(){
+	loop_->assertInLoopThread();
+	std::cout<<"TcpConnection::connectionDistroyed() connection ["<<name_<<"] closed"<<std::endl;
+	assert(state_==kConnected);
+	//setState(kDisconnected);
+	channel_->disableAll();
+	connectionCallBack_(shared_from_this());
+
+	loop_->removeChannel(channel_.get());
+}
+
 void TcpConnection::handleRead(){
 
 	char buf[65536];
 	ssize_t n=::read(channel_->fd(),buf,sizeof buf);
-	messageCallBack_(shared_from_this(),buf,n);
+	if(n>0){
+		messageCallBack_(shared_from_this(),buf,n);
+	}else if(n==0){
+		handleClose();
+	}else{
+		std::cout<<"TcpConnection::handleRead() read error"<<std::endl;
+	}
 
+}
+
+void TcpConnection::handleClose(){
+	loop_->assertInLoopThread();
+	assert(state_==kConnected);
+	channel_->disableAll();
+	closeCallBack_(shared_from_this());
 }
