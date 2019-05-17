@@ -6,6 +6,7 @@
 namespace server{
 
 class EventLoop;
+class Timestamp;
 
 class Channel{
 public:
@@ -14,13 +15,14 @@ public:
 	void operator=(const Channel&)=delete;
 
 	typedef std::function<void()> EventCallBack;
+	typedef std::function<void(Timestamp)> ReadEventCallBack;
 
 	Channel(EventLoop* loop,int fd);
 	~Channel();
 
-	void handleEvent();
+	void handleEvent(Timestamp receiveTime);
 
-	void setReadCallback(const EventCallBack& cb){
+	void setReadCallback(const ReadEventCallBack& cb){
 		readCallback_=cb;
 	}
 	void setWriteCallback(const EventCallBack& cb){
@@ -66,7 +68,7 @@ private:
 
 	bool eventHandling_;
 	bool addedToLoop_;
-	EventCallBack readCallback_;
+	ReadEventCallBack readCallback_;
 	EventCallBack writeCallback_;
 	EventCallBack errorCallback_;
 	EventCallBack closeCallback_;

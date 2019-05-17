@@ -5,37 +5,35 @@
 
 #include<iostream>
 #include<unistd.h>
+#include<sys/timerfd.h>
 
-void onConnection(const server::TcpConnection::TcpConnectionPtr& conn){
-	if(conn->connected()){
-		std::cout<<"onConnection(): new connection ["<<conn->getName()<<"] from "
-		<<conn->getPeerAddress().getInfo()<<std::endl;
-	}else{
-		std::cout<<"onConnection(): connection ["<<conn->getName()<<"] is down."<<std::endl;
-	}
-}
+EventLoop* g_loop;
 
-void onMessage(const server::TcpConnection::TcpConnectionPtr& conn,
-			   const char* data,
-			   ssize_t len)
-{
-	std::cout<<"onMessage(): received "<<len<<" bytes from connection ["
-	<<conn->getName()<<"]."<<std::endl;
+void timeout(server::Timestamp reveiveTime){
+	std::cout<<reveiveTime.get()<<" timeout!"<<std::endl;
+	g_loop->quit();
 }
 
 int main(){
 
 	std::cout<<"main() : pid = "<<getpid()<<std::endl;
 	
-	server::InetAddress listenAddr(9981);
+	//server::InetAddress listenAddr(9981);
 	server::EventLoop loop;
+	g_loop=&loop;
 
-	server::TcpServer server(&loop,listenAddr,"FirstServer");
-	server.setConnectionCallBack(onConnection);
-	server.setMessageCallBack(onMessage);
-	server.start();
-	
-	std::cout<<"start loop"<<std::endl;
+	int timerfd=::timerfd_create(CLOCK_MONOTONIC,TFD_NONBLOCK|TFD_CLOEXEC);
+	server::Channel channel(&loop,timerfd);
+	channel.setReadCallBack(timeout);
+	channel.enableReading();
+
+	struct itimerspec howlong;
+	bzero(&howlong,sizeof howlong);
+	howlong.it_valur.tv_sec=5;
+	::timerfd_settime(timerfd,0,&howlong,NULL);
+
 	loop.loop();
 
+	::close(timerfd);
+	return 0;
 }

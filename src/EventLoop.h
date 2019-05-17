@@ -33,6 +33,10 @@ public:
     void loop();
     void quit();
 
+    Timestamp pollReturnTime()const{
+        return pollReturnTime_;
+    }
+
     void updateChannel(Channel* channel);
     void removeChannel(Channel* channel);
 
@@ -74,6 +78,8 @@ private:
     bool quit_;
     bool callingPendingFunctors_;
     const long threadId_;
+
+    Timestamp pollReturnTime_;
 
     std::unique_ptr<Poller> poller_;
     std::unique_ptr<TimerQueue> timerQueue_;
