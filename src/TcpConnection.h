@@ -22,7 +22,9 @@ public:
 
 	typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
 	typedef std::function<void(const TcpConnectionPtr&)> ConnectionCallBack;
+	typedef std::function<void(const TcpConnectionPtr&)> CloseCallBack;
 	typedef std::function<void(const TcpConnectionPtr&,const char*,int)> MessageCallBack;
+
 
 	TcpConnection(const TcpConnection&)=delete;
 	void operator=(const TcpConnection&)=delete;
@@ -50,15 +52,19 @@ public:
 		messageCallBack_=cb;
 	}
 
+	void setCloseCallBack(const CloseCallBack& cb){
+		closeCallBack_=cb;
+	}
+
 	void connectionEstablished();
-	void connectionDistroyed();
+	void connectionDestroyed();
 
 private:
 	enum StateE{kConnecting,kConnected,};
 
 	void setState(StateE s){state_=s;}
 	void handleRead();
-	void handleclose();
+	void handleClose();
 
 	EventLoop* loop_;
 	std::string name_;
@@ -70,6 +76,7 @@ private:
 	InetAddress peerAddr_;
 	ConnectionCallBack connectionCallBack_;
 	MessageCallBack messageCallBack_;
+	CloseCallBack closeCallBack_;
 };
 
 }

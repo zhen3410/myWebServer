@@ -5,6 +5,7 @@
 
 #include<unistd.h>
 #include<iostream>
+#include<assert.h>
 
 using namespace server;
 
@@ -37,7 +38,7 @@ void TcpConnection::connectionEstablished(){
 	connectionCallBack_(shared_from_this());
 }
 
-void TcpConnection::connectionDistroyed(){
+void TcpConnection::connectionDestroyed(){
 	loop_->assertInLoopThread();
 	std::cout<<"TcpConnection::connectionDistroyed() connection ["<<name_<<"] closed"<<std::endl;
 	assert(state_==kConnected);
