@@ -38,6 +38,11 @@ public:
 		return readerIndex_;
 	}
 
+	void retrieve(size_t len){
+		assert(len<=readableBytes());
+		readerIndex_+=len;
+	}
+
 	const char* peek()const{
 		return begin()+readerIndex_;
 	}

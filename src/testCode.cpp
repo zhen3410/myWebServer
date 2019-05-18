@@ -25,12 +25,8 @@ void onMessage(const server::TcpConnection::TcpConnectionPtr& conn,
 	std::cout<<"onMessage(): received "<<buf->readableBytes()<<" bytes from connection["<<conn->getName()
 	<<"] at "<<receiveTime.get()<<std::endl;
 	std::string str=buf->retrieveAsString();
-	for(int i=0;i<str.size();i++){
-		std::bitset<8> bitvec(str[i]);
-		std::cout<<bitvec.to_string()<<std::endl;
-	}
-	printf("%s",str.c_str());
-	//std::cout<<"onMessage(): "<<buf->retrieveAsString().size()<<std::endl;
+	std::cout<<"onMessage(): "<<str<<std::endl;
+	conn->send(str);
 }
 
 int main(){

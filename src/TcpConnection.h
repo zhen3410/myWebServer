@@ -60,12 +60,18 @@ public:
 	void connectionEstablished();
 	void connectionDestroyed();
 
+	void send(const std::string& message);
+	void shutdown();
+
 private:
-	enum StateE{kConnecting,kConnected,};
+	enum StateE{kConnecting,kConnected,kDisconnecting,kDisconnected,};
 
 	void setState(StateE s){state_=s;}
 	void handleRead(Timestamp);
 	void handleClose();
+
+	void sendInLoop(const std::string& message);
+	void shutdownInLoop();
 
 	EventLoop* loop_;
 	std::string name_;
@@ -79,6 +85,7 @@ private:
 	MessageCallBack messageCallBack_;
 	CloseCallBack closeCallBack_;
 	Buffer inputBuffer_;
+	Buffer outputBuffer_;
 };
 
 }

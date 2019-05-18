@@ -51,6 +51,8 @@ public:
 	void disableWriting(){events_&=~kWriteEvent;update();}
 	void disableAll(){events_=kNoneEvent;update();}
 
+	bool isWriting()const{return events_&kWriteEvent;}
+
 	void remove();
 
 private:

@@ -43,8 +43,8 @@ void TcpConnection::connectionEstablished(){
 void TcpConnection::connectionDestroyed(){
 	loop_->assertInLoopThread();
 	std::cout<<"TcpConnection::connectionDistroyed() connection ["<<name_<<"] closed"<<std::endl;
-	assert(state_==kConnected);
-	//setState(kDisconnected);
+	assert(state_==kConnecting);
+	setState(kDisconnected);
 	channel_->disableAll();
 	connectionCallBack_(shared_from_this());
 
@@ -78,7 +78,73 @@ void TcpConnection::handleRead(Timestamp receiveTime){
 
 void TcpConnection::handleClose(){
 	loop_->assertInLoopThread();
-	assert(state_==kConnected);
+	assert(state_==kConnecting);
+	setState(kConnected);
 	channel_->disableAll();
 	closeCallBack_(shared_from_this());
+}
+
+void TcpConnection::shutdown(){
+	if(state_==kConnected){
+		setState(kDisconnecting);
+		loop_->runInLoop(std::bind(&TcpConnection::shutdownInLoop,this));
+	}
+}
+
+void TcpConnection::shutdownInLoop(){
+	loop_->assertInLoopThread();
+	if(!channel_->isWriting()){
+		socket_->shutdownWrite();
+	}
+}
+
+void TcpConnection::send(const std::string& message){
+	if(state_==kConnected){
+		loop_->runInLoop(std::bind(&TcpConnection::sendInLoop,this,message));
+	}
+}
+
+void TcpConnection::sendInLoop(const std::string& message){
+	loop_->assertInLoopThread();
+	ssize_t nwrote=0;
+	if(!channel_->isWriting()&&outputBuffer_.readableBytes()==0){
+		nwrote=::write(channel_->fd(),message.data(),message.size());
+		if(nwrote>=0){
+			if(static_cast<size_t>(nwrote)<message.size()){
+				std::cout<<"data write incompleted"<<std::endl;
+			}
+		}else{
+			nwrote=0;
+			std::cerr<<"TcpConnection::sendInLoop is writing data "<<std::endl;
+		}
+	}
+	assert(nwrote>=0);
+	if(static_cast<size_t>(nwrote)<message.size()){
+		outputBuffer_.append(message.data()+nwrote,message.size()-nwrote);
+		if(!channel_->isWriting()){
+			channel_->enableWriting();
+		}
+	}
+}
+
+void TcpConnection::handleWrite(){
+	loop_->assertInLoopThread();
+	if(channel_->isWriting()){
+		ssize_t n=::write(channel_->fd(),outputBuffer_.peek(),outputBuffer_.readableBytes());
+		if(n>0){
+			outputBuffer_.retrieve(n);
+			if(outputBuffer_.readableBytes()==0){
+				channel_->disableWriting();
+				if(state_==kDisconnecting){
+					shutdownInLoop();
+				}
+			}else{
+				std::cout<<"TcpConnection::handleWrite is writing more data"<<std::endl;
+			}
+		}else{
+			std::cerr<<"TcpConnection::handleWrite"<<std::endl;
+		}
+	}else{
+		std::cout<<"Connection is down, no more writing."<<std::endl;
+	}
 }
