@@ -23,7 +23,8 @@ public:
 	typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
 	typedef std::function<void(const TcpConnectionPtr&)> ConnectionCallBack;
 	typedef std::function<void(const TcpConnectionPtr&)> CloseCallBack;
-	typedef std::function<void(const TcpConnectionPtr&,const char*,int)> MessageCallBack;
+	//typedef std::function<void(const TcpConnectionPtr&,const char*,int)> MessageCallBack;
+	typedef std::function<void(const TcpConnectionPtr&,Buffer*,Timestamp)> MessageCallBack;
 
 
 	TcpConnection(const TcpConnection&)=delete;
@@ -77,6 +78,7 @@ private:
 	ConnectionCallBack connectionCallBack_;
 	MessageCallBack messageCallBack_;
 	CloseCallBack closeCallBack_;
+	Buffer inputBuffer_;
 };
 
 }

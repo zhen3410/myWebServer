@@ -6,6 +6,7 @@
 #include<unistd.h>
 #include<iostream>
 #include<assert.h>
+#include<errno.h>
 
 using namespace server;
 
@@ -51,6 +52,7 @@ void TcpConnection::connectionDestroyed(){
 
 void TcpConnection::handleRead(){
 
+/*
 	char buf[65536];
 	ssize_t n=::read(channel_->fd(),buf,sizeof buf);
 	if(n>0){
@@ -60,7 +62,17 @@ void TcpConnection::handleRead(){
 	}else{
 		std::cout<<"TcpConnection::handleRead() read error"<<std::endl;
 	}
-
+*/
+	int savedErrno=0;
+	ssize_t n=inputBuffer_.readFd(channel_->fd(),&savedErrno);
+	if(n>0){
+		messageCallBack_(shared_from_this(),&inputBuffer_,receiveTime);
+	}else if(n==0){
+		handleClose();
+	}else{
+		errno=savedErrno;
+		std::cout<<"TcpConnection::handleRead errno = "<<strerror(errno)<<std::endl;
+	}
 }
 
 void TcpConnection::handleClose(){
