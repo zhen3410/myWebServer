@@ -12,6 +12,7 @@ struct pollfd;
 namespace server{
 
 class Channel;
+class Timestamp;
 
 class Poller {
 
@@ -25,7 +26,7 @@ public:
 	Poller(EventLoop* loop);
 	~Poller();
 
-	time_t poll(int timeoutMs,ChannelList* activeChannels);
+	Timestamp poll(int timeoutMs,ChannelList* activeChannels);
 
 	void updateChannel(Channel* channel);
 	void removeChannel(Channel* channel);

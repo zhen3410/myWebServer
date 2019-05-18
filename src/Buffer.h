@@ -3,6 +3,9 @@
 
 #include<vector>
 #include<assert.h>
+#include<string>
+
+#include<iostream>
 
 namespace server{
 
@@ -14,8 +17,8 @@ public:
 
 	Buffer()
 		:buffer_(kCheapPrepend+kInitialSize),
-		readerIndex_(0),
-		writerIndex_(0),
+		readerIndex_(kCheapPrepend),
+		writerIndex_(kCheapPrepend)
 	{
 		assert(readableBytes()==0);
 		assert(writableBytes()==kInitialSize);
@@ -28,15 +31,20 @@ public:
 	}
 
 	size_t writableBytes()const{
-		return buffer_.size()-writableBytes;
+		return buffer_.size()-writerIndex_;
 	}
 
 	size_t prependableBytes()const{
 		return readerIndex_;
 	}
 
+	const char* peek()const{
+		return begin()+readerIndex_;
+	}
+
 	std::string retrieveAsString(){
-		std::string str(buffer_.begin()+readerIndex_,readableBytes());
+		std::string str(peek(),readableBytes());
+		std::cout<<"Buffer::retrieveAsString() str = "<<str.c_str()<<" , size() = "<<str.size()<<" , readerIndex = "<<readerIndex_<<" , writerIndex = "<<writerIndex_<<std::endl;
 		readerIndex_=kCheapPrepend;
 		writerIndex_=kCheapPrepend;
 		return str;
@@ -44,7 +52,7 @@ public:
 
 	void append(const char* data,size_t len){
 		ensureWritableBytes(len);
-		std::copy(data,len,buffer_.begin()+writerIndex_);
+		std::copy(data,data+len,(begin()+writerIndex_));
 		writerIndex_+=len;
 	}
 
@@ -65,6 +73,13 @@ public:
 	size_t readFd(int fd,int* savedErrno);
 
 private:
+	char* begin(){
+		return &*buffer_.begin();
+	}
+	const char* begin()const{
+		return &*buffer_.begin();
+	}
+
 	void makeSpace(size_t len){
 		if(writableBytes()+prependableBytes()<len+kCheapPrepend){
 			buffer_.resize(writerIndex_+len);
@@ -84,7 +99,7 @@ private:
 	std::vector<char> buffer_;
 	size_t readerIndex_;
 	size_t writerIndex_;
-}
+};
 
 }
 

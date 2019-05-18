@@ -11,18 +11,20 @@ size_t Buffer::readFd(int fd,int* savedErrno){
 	char extrabuf[65536];
 	struct iovec vec[2];
 	const size_t writable=writableBytes();
-	vec[0].iov_base=&*buffer_.begin()+writerIndex_;
+	vec[0].iov_base=begin()+writerIndex_;
 	vec[0].iov_len=writable;
-	vec[0].iov_base=extrabuf;
-	vec[0].iov_len=sizeof extrabuf;
+	vec[1].iov_base=extrabuf;
+	vec[1].iov_len=sizeof extrabuf;
 	const ssize_t n=readv(fd,vec,2);
+	std::string str(peek(),readableBytes());
+	std::cout<<"Buffer::readFd() : str = "<<str<<std::endl;
 	if(n<0){
 		*savedErrno=errno;
 	}else if(static_cast<size_t>(n)<=writable){
 		writerIndex_+=n;
 	}else{
 		writerIndex_=buffer_.size();
-		append(extrabuf,n-wriatble);
+		append(extrabuf,n-writable);
 	}
 	return n;
 }

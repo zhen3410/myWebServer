@@ -20,7 +20,7 @@ class TcpServer{
 public:
 	typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
 	typedef std::function<void(const TcpConnectionPtr&)> ConnectionCallBack;
-	typedef std::function<void(const TcpConnectionPtr&,const char*,int)> MessageCallBack;
+	typedef std::function<void(const TcpConnectionPtr&,Buffer*,Timestamp)> MessageCallBack;
 
 	TcpServer(const TcpServer&)=delete;
 	void operator=(const TcpServer&)=delete;

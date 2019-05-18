@@ -1,5 +1,6 @@
 #include"Poller.h"
 #include"channel.h"
+#include"base/Timestamp.h"
 
 #include<poll.h>
 #include<assert.h>
@@ -15,10 +16,10 @@ Poller::Poller(EventLoop* loop)
 Poller::~Poller(){
 }
 
-time_t Poller::poll(int timeoutMs,ChannelList* activeChannels){
+Timestamp Poller::poll(int timeoutMs,ChannelList* activeChannels){
 	int numEvents=::poll(&*pollfds_.begin(),pollfds_.size(),timeoutMs);
 
-	time_t now=time(0);
+	Timestamp now=Timestamp::now();
 
 	if(numEvents>0){
 		std::cout<<numEvents<<" events happended "<<std::endl;

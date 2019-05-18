@@ -9,6 +9,7 @@
 #include<errno.h>
 
 using namespace server;
+using std::placeholders::_1;
 
 TcpConnection::TcpConnection(EventLoop* loop,
 	std::string name,
@@ -24,7 +25,7 @@ TcpConnection::TcpConnection(EventLoop* loop,
 	state_(kConnecting)
 {
 	std::cout<<"TcpConnection::constructor ["<<name_<<"] fd = "<<channel_->fd()<<std::endl;
-	channel_->setReadCallback(std::bind(&TcpConnection::handleRead,this));
+	channel_->setReadCallback(std::bind(&TcpConnection::handleRead,this,_1));
 }
 
 TcpConnection::~TcpConnection(){
@@ -50,7 +51,7 @@ void TcpConnection::connectionDestroyed(){
 	loop_->removeChannel(channel_.get());
 }
 
-void TcpConnection::handleRead(){
+void TcpConnection::handleRead(Timestamp receiveTime){
 
 /*
 	char buf[65536];

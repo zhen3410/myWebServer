@@ -2,6 +2,7 @@
 #define SERVER_TCPCONNECTION_H
 
 #include"InetAddress.h"
+#include"Buffer.h"
 
 #include<functional>
 #include<string>
@@ -12,7 +13,6 @@ namespace server{
 class EventLoop;
 class Channel;
 class Socket;
-class Buffer;
 class Timestamp;
 
 class TcpConnection:
@@ -64,7 +64,7 @@ private:
 	enum StateE{kConnecting,kConnected,};
 
 	void setState(StateE s){state_=s;}
-	void handleRead();
+	void handleRead(Timestamp);
 	void handleClose();
 
 	EventLoop* loop_;

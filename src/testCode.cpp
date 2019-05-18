@@ -5,6 +5,9 @@
 
 #include<iostream>
 #include<unistd.h>
+#include<string>
+#include<bitset>
+#include<stdio.h>
 
 //EventLoop* g_loop;
 void onConnection(const server::TcpConnection::TcpConnectionPtr& conn){
@@ -16,12 +19,18 @@ void onConnection(const server::TcpConnection::TcpConnectionPtr& conn){
 	}
 }
 
-void onMessage(const server::TcpConnection::TcpConnectionPtr& connm,
+void onMessage(const server::TcpConnection::TcpConnectionPtr& conn,
 			   server::Buffer* buf,
-			   serber::Timestamp receiveTime){
-	std::cout<<"onMessage(): received "<<buf->readableBytes()<<" bytes from connection["<<conn.getName()
-	<<"] at "<<reveivedTime.get()<<std::endl;
-	std::cout<<"onMessage(): "<<buf->retrieveAsString()<<std::endl;
+			   server::Timestamp receiveTime){
+	std::cout<<"onMessage(): received "<<buf->readableBytes()<<" bytes from connection["<<conn->getName()
+	<<"] at "<<receiveTime.get()<<std::endl;
+	std::string str=buf->retrieveAsString();
+	for(int i=0;i<str.size();i++){
+		std::bitset<8> bitvec(str[i]);
+		std::cout<<bitvec.to_string()<<std::endl;
+	}
+	printf("%s",str.c_str());
+	//std::cout<<"onMessage(): "<<buf->retrieveAsString().size()<<std::endl;
 }
 
 int main(){
@@ -32,7 +41,7 @@ int main(){
 	server::EventLoop loop;
 	//g_loop=&loop;
 
-	server::TcpServer server(&loop,listenAddr);
+	server::TcpServer server(&loop,listenAddr,"FirstServer");
 	server.setConnectionCallBack(onConnection);
 	server.setMessageCallBack(onMessage);
 	server.start();

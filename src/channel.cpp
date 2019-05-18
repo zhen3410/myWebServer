@@ -40,7 +40,7 @@ void Channel::remove(){
 	loop_->removeChannel(this);
 }
 
-void Channel::handleEvent(Timestamp reveiveTime){
+void Channel::handleEvent(Timestamp receiveTime){
 
 	eventHandling_=true;
 	if(revents_&POLLNVAL){
