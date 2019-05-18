@@ -9,11 +9,17 @@
 #include<bitset>
 #include<stdio.h>
 
+std::string message1;
+std::string message2;
+
 //EventLoop* g_loop;
 void onConnection(const server::TcpConnection::TcpConnectionPtr& conn){
 	if(conn->connected()){
 		std::cout<<"onConnection(): new connection ["<<conn->getName()<<"] from "
 		<<conn->getPeerAddress().getInfo()<<std::endl;
+		conn->send(message1);
+		conn->send(message2);
+		conn->shutdown();
 	}else{
 		std::cout<<"onConnection(): connection ["<<conn->getName()<<"] is down."<<std::endl;
 	}
@@ -32,6 +38,9 @@ void onMessage(const server::TcpConnection::TcpConnectionPtr& conn,
 int main(){
 
 	std::cout<<"main() : pid = "<<getpid()<<std::endl;
+
+	message1=std::string(1000,'a');
+	message2=std::string(500,'b');
 	
 	server::InetAddress listenAddr(9981);
 	server::EventLoop loop;
