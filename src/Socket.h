@@ -23,6 +23,8 @@ public:
 	void listen();
 	int accept(InetAddress*);
 
+	void shutdownWrite();
+
 private:
 	const int socketFd_;
 

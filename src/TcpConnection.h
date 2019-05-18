@@ -68,6 +68,7 @@ private:
 
 	void setState(StateE s){state_=s;}
 	void handleRead(Timestamp);
+	void handleWrite();
 	void handleClose();
 
 	void sendInLoop(const std::string& message);

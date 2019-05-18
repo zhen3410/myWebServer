@@ -35,6 +35,7 @@ TcpConnection::~TcpConnection(){
 void TcpConnection::connectionEstablished(){
 	loop_->assertInLoopThread();
 	std::cout<<"TcpConnection::connectionEstablished() set connection channel fd = ["<<socket_->fd()<<"]"<<std::endl;
+	assert(state_==kConnecting);
 	channel_->enableReading();
 	setState(kConnected);
 	connectionCallBack_(shared_from_this());
@@ -43,7 +44,7 @@ void TcpConnection::connectionEstablished(){
 void TcpConnection::connectionDestroyed(){
 	loop_->assertInLoopThread();
 	std::cout<<"TcpConnection::connectionDistroyed() connection ["<<name_<<"] closed"<<std::endl;
-	assert(state_==kConnecting);
+	assert(state_==kConnected||state_==kDisconnecting);
 	setState(kDisconnected);
 	channel_->disableAll();
 	connectionCallBack_(shared_from_this());
@@ -78,8 +79,7 @@ void TcpConnection::handleRead(Timestamp receiveTime){
 
 void TcpConnection::handleClose(){
 	loop_->assertInLoopThread();
-	assert(state_==kConnecting);
-	setState(kConnected);
+	assert(state_==kConnected||state_==kDisconnecting);
 	channel_->disableAll();
 	closeCallBack_(shared_from_this());
 }

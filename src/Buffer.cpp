@@ -16,8 +16,6 @@ size_t Buffer::readFd(int fd,int* savedErrno){
 	vec[1].iov_base=extrabuf;
 	vec[1].iov_len=sizeof extrabuf;
 	const ssize_t n=readv(fd,vec,2);
-	std::string str(peek(),readableBytes());
-	std::cout<<"Buffer::readFd() : str = "<<str<<std::endl;
 	if(n<0){
 		*savedErrno=errno;
 	}else if(static_cast<size_t>(n)<=writable){

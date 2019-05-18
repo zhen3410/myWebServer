@@ -54,3 +54,10 @@ int Socket::accept(InetAddress* peeraddr){
 	//peeraddr->setAddr(addr);
 	return connfd;
 }
+
+void Socket::shutdownWrite(){
+	int ret=::shutdown(socketFd_,SHUT_WR);
+	if(ret<0){
+		std::cerr<<"Socket::shutdownWrite() error"<<std::endl;
+	}
+}
