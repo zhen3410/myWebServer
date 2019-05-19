@@ -55,7 +55,8 @@ int main(){
 	server::TcpServer server(&loop,listenAddr,"FirstServer");
 	server.setConnectionCallBack(onConnection);
 	server.setMessageCallBack(onMessage);
-	server.setWriteCompleteCallBack(onWriteComplete);
+	//server.setWriteCompleteCallBack(onWriteComplete);
+	server.setThreadNum(5);
 	server.start();
 	loop.loop();
 	return 0;
