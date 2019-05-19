@@ -67,7 +67,7 @@ public:
 
 	void send(const std::string& message);
 	void shutdown();
-	void setTcpNoDelay();
+	void setTcpNoDelay(bool);
 
 private:
 	enum StateE{kConnecting,kConnected,kDisconnecting,kDisconnected,};

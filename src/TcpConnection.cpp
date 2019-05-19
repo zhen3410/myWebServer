@@ -106,6 +106,7 @@ void TcpConnection::shutdownInLoop(){
 
 void TcpConnection::send(const std::string& message){
 	if(state_==kConnected){
+		std::cout<<"TcpConnection::send() send message = ["<<message<<"]"<<std::endl;
 		loop_->runInLoop(std::bind(&TcpConnection::sendInLoop,this,message));
 	}
 }
@@ -119,7 +120,7 @@ void TcpConnection::sendInLoop(const std::string& message){
 			if(static_cast<size_t>(nwrote)<message.size()){
 				std::cout<<"data write incompleted"<<std::endl;
 			}else if(writeCompleteCallBack_){
-				loop_->runInLoop(std::bind(writeCompleteCallBack_,shared_from_this()));
+				loop_->queueInLoop(std::bind(writeCompleteCallBack_,shared_from_this()));
 			}
 		}else{
 			nwrote=0;
@@ -144,7 +145,7 @@ void TcpConnection::handleWrite(){
 			if(outputBuffer_.readableBytes()==0){
 				channel_->disableWriting();
 				if(writeCompleteCallBack_){
-					loop_->runInLoop(writeCompleteCallBack_,shared_from_this());
+					loop_->runInLoop(std::bind(writeCompleteCallBack_,shared_from_this()));
 				}
 				if(state_==kDisconnecting){
 					shutdownInLoop();

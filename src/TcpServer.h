@@ -20,7 +20,7 @@ class TcpServer{
 public:
 	typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
 	typedef std::function<void(const TcpConnectionPtr&)> ConnectionCallBack;
-	typedef std::function<void(const TcpConnectionPtr&)> WriteConnectionCallBack;
+	typedef std::function<void(const TcpConnectionPtr&)> WriteCompleteCallBack;
 	typedef std::function<void(const TcpConnectionPtr&,Buffer*,Timestamp)> MessageCallBack;
 
 
@@ -37,8 +37,8 @@ public:
 	void setMessageCallBack(const MessageCallBack& cb){
 		messageCallBack_=cb;
 	}
-	void setWriteConnectionCallBack(const WriteConnectionCallBack& cb){
-		writeConnectionCallBack_=cb;
+	void setWriteCompleteCallBack(const WriteCompleteCallBack& cb){
+		writeCompleteCallBack_=cb;
 	}
 
 private:
@@ -52,7 +52,7 @@ private:
 	std::unique_ptr<Acceptor> acceptor_;
 	ConnectionCallBack connectionCallBack_;
 	MessageCallBack messageCallBack_;
-	WriteConnectionCallBack writeConnectionCallBack_;
+	WriteCompleteCallBack writeCompleteCallBack_;
 	bool started_;
 	int nextConnId_;
 	ConnectionMap connections_;
