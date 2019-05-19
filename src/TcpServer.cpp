@@ -27,6 +27,11 @@ TcpServer::~TcpServer(){
 
 }
 
+void TcpServer::setThreadNum(int numThreads){
+	assert(numThreads>=0);
+	threadPool_->setThreadNum(numThreads);
+}
+
 void TcpServer::start(){
 
 	std::cout<<"TcpServer::start() ["<<name_<<"] started"<<std::endl;
@@ -49,21 +54,30 @@ void TcpServer::newConnection(int sockfd,const InetAddress& peerAddr){
 	socklen_t addrLen=static_cast<socklen_t>(sizeof localAddr_in);
 	getsockname(sockfd,(struct sockaddr*)(&localAddr_in),&addrLen);
 	InetAddress loaclAddr(localAddr_in);
+	EventLoop* ioLoop=threadPool_->getNextLoop();
 
-	TcpConnectionPtr conn(new TcpConnection(loop_,connName,sockfd,loaclAddr,peerAddr));
+	TcpConnectionPtr conn(new TcpConnection(ioLoop,connName,sockfd,loaclAddr,peerAddr));
 	// 如果TcpServer不持有TcpConnection的话，conn会在这一步析构，导致socket文件关闭，连接出错
 	connections_[connName]=conn;
 	conn->setConnectionCallBack(connectionCallBack_);
 	conn->setMessageCallBack(messageCallBack_);
 	conn->setWriteCompleteCallBack(writeCompleteCallBack_);
 	conn->setCloseCallBack(std::bind(&TcpServer::removeConnection,this,_1));
-	conn->connectionEstablished();
-
+	//conn->connectionEstablished();
+	ioLoop->runInLoop(std::bind(&TcpConnection::connectionEstablished,conn));
 }
 
 void TcpServer::removeConnection(const TcpConnectionPtr& conn){
 	loop_->assertInLoopThread();
 	std::cout<<"TcpServer::removeConnection ["<<name_<<"] - connection ["<<conn->getName()<<"]"<<std::endl;
-	connections_.erase(conn->getName());
-	loop_->queueInLoop(std::bind(&TcpConnection::connectionDestroyed,conn));
+	loop_->runInLoop(std::bind(&TcpServer::removeConnectionInLoop,this,conn));	
+}
+
+
+void TcpServer::removeConnectionInLoop(const TcpConnectionPtr& conn){
+	loop_->assertInLoopThread();
+	std::cout<<"TcpServer::removeConnectionInLoop ["<<name_<<"] - connection ["<<conn->getName()<<"]"<<std::endl;
+	size_t n=connections_.erase(conn->getName());
+	EventLoop* ioLoop=conn->getLoop();
+	ioLoop->queueInLoop(std::bind(&TcpConnection::connectionDestroyed,conn));
 }

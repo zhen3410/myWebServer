@@ -15,6 +15,7 @@ class TcpConnection;
 class Buffer;
 class Timestamp;
 class InetAddress;
+class EventLoopThreadPool;
 
 class TcpServer{
 public:
@@ -30,6 +31,8 @@ public:
 	TcpServer(EventLoop*,const InetAddress&,std::string);
 	~TcpServer();
 
+	void setThreadNum(int numThreads);
+	
 	void start();
 	void setConnectionCallBack(const ConnectionCallBack& cb){
 		connectionCallBack_=cb;
@@ -44,12 +47,14 @@ public:
 private:
 	void newConnection(int sockfd,const InetAddress& peeraddr);
 	void removeConnection(const TcpConnectionPtr&);
+	void removeConnectionInLoop(const TcpConnectionPtr& conn);
 
 	typedef std::map<std::string,TcpConnectionPtr> ConnectionMap;
 
 	EventLoop* loop_;
 	const std::string name_;
 	std::unique_ptr<Acceptor> acceptor_;
+	std::unique_ptr<EventLoopThreadPool> threadPool_;
 	ConnectionCallBack connectionCallBack_;
 	MessageCallBack messageCallBack_;
 	WriteCompleteCallBack writeCompleteCallBack_;
