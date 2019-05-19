@@ -24,6 +24,7 @@ public:
 	int accept(InetAddress*);
 
 	void shutdownWrite();
+	void setTcpNoDelay(bool);
 
 private:
 	const int socketFd_;

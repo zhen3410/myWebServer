@@ -23,6 +23,7 @@ public:
 	typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
 	typedef std::function<void(const TcpConnectionPtr&)> ConnectionCallBack;
 	typedef std::function<void(const TcpConnectionPtr&)> CloseCallBack;
+	typedef std::function<void(const TcpConnectionPtr&)> WriteCompleteCallBack;
 	//typedef std::function<void(const TcpConnectionPtr&,const char*,int)> MessageCallBack;
 	typedef std::function<void(const TcpConnectionPtr&,Buffer*,Timestamp)> MessageCallBack;
 
@@ -57,11 +58,16 @@ public:
 		closeCallBack_=cb;
 	}
 
+	void setWriteCompleteCallBack(const WriteCompleteCallBack& cb){
+		writeCompleteCallBack_=cb;
+	}
+
 	void connectionEstablished();
 	void connectionDestroyed();
 
 	void send(const std::string& message);
 	void shutdown();
+	void setTcpNoDelay();
 
 private:
 	enum StateE{kConnecting,kConnected,kDisconnecting,kDisconnected,};
@@ -84,6 +90,7 @@ private:
 	InetAddress peerAddr_;
 	ConnectionCallBack connectionCallBack_;
 	MessageCallBack messageCallBack_;
+	WriteCompleteCallBack writeCompleteCallBack_;
 	CloseCallBack closeCallBack_;
 	Buffer inputBuffer_;
 	Buffer outputBuffer_;

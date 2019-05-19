@@ -55,6 +55,7 @@ void TcpServer::newConnection(int sockfd,const InetAddress& peerAddr){
 	connections_[connName]=conn;
 	conn->setConnectionCallBack(connectionCallBack_);
 	conn->setMessageCallBack(messageCallBack_);
+	conn->setWriteCompleteCallBack(writeCompleteCallBack_);
 	conn->setCloseCallBack(std::bind(&TcpServer::removeConnection,this,_1));
 	conn->connectionEstablished();
 

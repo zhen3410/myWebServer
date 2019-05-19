@@ -26,6 +26,8 @@ TcpConnection::TcpConnection(EventLoop* loop,
 {
 	std::cout<<"TcpConnection::constructor ["<<name_<<"] fd = "<<channel_->fd()<<std::endl;
 	channel_->setReadCallback(std::bind(&TcpConnection::handleRead,this,_1));
+	channel_->setWriteCallback(std::bind(&TcpConnection::handleWrite,this));
+	channel_->setCloseCallback(std::bind(&TcpConnection::handleClose,this));
 }
 
 TcpConnection::~TcpConnection(){
@@ -91,6 +93,10 @@ void TcpConnection::shutdown(){
 	}
 }
 
+void TcpConnection::setTcpNoDelay(bool on){
+	socket_->setTcpNoDelay(on);
+}
+
 void TcpConnection::shutdownInLoop(){
 	loop_->assertInLoopThread();
 	if(!channel_->isWriting()){
@@ -112,10 +118,12 @@ void TcpConnection::sendInLoop(const std::string& message){
 		if(nwrote>=0){
 			if(static_cast<size_t>(nwrote)<message.size()){
 				std::cout<<"data write incompleted"<<std::endl;
+			}else if(writeCompleteCallBack_){
+				loop_->runInLoop(std::bind(writeCompleteCallBack_,shared_from_this()));
 			}
 		}else{
 			nwrote=0;
-			std::cerr<<"TcpConnection::sendInLoop is writing data "<<std::endl;
+			std::cerr<<"TcpConnection::sendInLoop write error "<<std::endl;
 		}
 	}
 	assert(nwrote>=0);
@@ -135,6 +143,9 @@ void TcpConnection::handleWrite(){
 			outputBuffer_.retrieve(n);
 			if(outputBuffer_.readableBytes()==0){
 				channel_->disableWriting();
+				if(writeCompleteCallBack_){
+					loop_->runInLoop(writeCompleteCallBack_,shared_from_this());
+				}
 				if(state_==kDisconnecting){
 					shutdownInLoop();
 				}

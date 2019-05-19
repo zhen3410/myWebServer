@@ -61,3 +61,8 @@ void Socket::shutdownWrite(){
 		std::cerr<<"Socket::shutdownWrite() error"<<std::endl;
 	}
 }
+
+void Socket::setTcpNoDelay(bool on){
+	int optval=on?1:0;
+	::setsockopt(socketFd_,IPPROTO_TCP,TCP_NODELAY,&optval,sizeof optval);
+}
