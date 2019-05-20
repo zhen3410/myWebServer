@@ -60,7 +60,7 @@ public:
         }
     }
     bool isInLoopThread()const{
-        return threadId_==pthread_self();
+        return threadId_==gettid();
     }
 
     EventLoop* getEventLoopOfCurrentThread();
@@ -77,7 +77,7 @@ private:
     bool looping_;
     bool quit_;
     bool callingPendingFunctors_;
-    const long threadId_;
+    const tid_t threadId_;
 
     Timestamp pollReturnTime_;
 

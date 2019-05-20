@@ -30,7 +30,7 @@ EventLoop::EventLoop()
 	:looping_(false),
 	quit_(false),
     	callingPendingFunctors_(false),
-	threadId_(pthread_self()),
+	threadId_(gettid()),
 	poller_(new EPoller(this)),
 	timerQueue_(new TimerQueue(this)),
     	wakeupFd_(createEventFd()),
