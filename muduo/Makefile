@@ -152,6 +152,60 @@ Acceptor.cpp.s:
 	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Acceptor.cpp.s
 .PHONY : Acceptor.cpp.s
 
+Buffer.o: Buffer.cpp.o
+
+.PHONY : Buffer.o
+
+# target to build an object file
+Buffer.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Buffer.cpp.o
+.PHONY : Buffer.cpp.o
+
+Buffer.i: Buffer.cpp.i
+
+.PHONY : Buffer.i
+
+# target to preprocess a source file
+Buffer.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Buffer.cpp.i
+.PHONY : Buffer.cpp.i
+
+Buffer.s: Buffer.cpp.s
+
+.PHONY : Buffer.s
+
+# target to generate assembly for a file
+Buffer.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Buffer.cpp.s
+.PHONY : Buffer.cpp.s
+
+EPoller.o: EPoller.cpp.o
+
+.PHONY : EPoller.o
+
+# target to build an object file
+EPoller.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EPoller.cpp.o
+.PHONY : EPoller.cpp.o
+
+EPoller.i: EPoller.cpp.i
+
+.PHONY : EPoller.i
+
+# target to preprocess a source file
+EPoller.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EPoller.cpp.i
+.PHONY : EPoller.cpp.i
+
+EPoller.s: EPoller.cpp.s
+
+.PHONY : EPoller.s
+
+# target to generate assembly for a file
+EPoller.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EPoller.cpp.s
+.PHONY : EPoller.cpp.s
+
 EventLoop.o: EventLoop.cpp.o
 
 .PHONY : EventLoop.o
@@ -205,6 +259,33 @@ EventLoopThread.s: EventLoopThread.cpp.s
 EventLoopThread.cpp.s:
 	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThread.cpp.s
 .PHONY : EventLoopThread.cpp.s
+
+EventLoopThreadPool.o: EventLoopThreadPool.cpp.o
+
+.PHONY : EventLoopThreadPool.o
+
+# target to build an object file
+EventLoopThreadPool.cpp.o:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.o
+.PHONY : EventLoopThreadPool.cpp.o
+
+EventLoopThreadPool.i: EventLoopThreadPool.cpp.i
+
+.PHONY : EventLoopThreadPool.i
+
+# target to preprocess a source file
+EventLoopThreadPool.cpp.i:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.i
+.PHONY : EventLoopThreadPool.cpp.i
+
+EventLoopThreadPool.s: EventLoopThreadPool.cpp.s
+
+.PHONY : EventLoopThreadPool.s
+
+# target to generate assembly for a file
+EventLoopThreadPool.cpp.s:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.s
+.PHONY : EventLoopThreadPool.cpp.s
 
 Poller.o: Poller.cpp.o
 
@@ -407,12 +488,21 @@ help:
 	@echo "... Acceptor.o"
 	@echo "... Acceptor.i"
 	@echo "... Acceptor.s"
+	@echo "... Buffer.o"
+	@echo "... Buffer.i"
+	@echo "... Buffer.s"
+	@echo "... EPoller.o"
+	@echo "... EPoller.i"
+	@echo "... EPoller.s"
 	@echo "... EventLoop.o"
 	@echo "... EventLoop.i"
 	@echo "... EventLoop.s"
 	@echo "... EventLoopThread.o"
 	@echo "... EventLoopThread.i"
 	@echo "... EventLoopThread.s"
+	@echo "... EventLoopThreadPool.o"
+	@echo "... EventLoopThreadPool.i"
+	@echo "... EventLoopThreadPool.s"
 	@echo "... Poller.o"
 	@echo "... Poller.i"
 	@echo "... Poller.s"

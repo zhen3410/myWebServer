@@ -11,7 +11,7 @@
 
 namespace server{
 
-class Poller;
+class EPoller;
 class Channel;
 
 class EventLoop {
@@ -81,7 +81,7 @@ private:
 
     Timestamp pollReturnTime_;
 
-    std::unique_ptr<Poller> poller_;
+    std::unique_ptr<EPoller> poller_;
     std::unique_ptr<TimerQueue> timerQueue_;
     int wakeupFd_;
     std::unique_ptr<Channel> wakeupChannel_;

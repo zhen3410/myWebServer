@@ -2,6 +2,7 @@
 #include"Acceptor.h"
 #include"EventLoop.h"
 #include"TcpConnection.h"
+#include"EventLoopThreadPool.h"
 
 #include<netinet/in.h>
 #include<functional>
@@ -16,6 +17,7 @@ TcpServer::TcpServer(EventLoop* loop,const InetAddress& listenAddr,std::string n
 	:loop_(loop),
 	name_(name),
 	acceptor_(new Acceptor(loop_,listenAddr)),
+	threadPool_(new EventLoopThreadPool(loop)),
 	started_(false),
 	nextConnId_(1)
 {

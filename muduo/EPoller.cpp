@@ -1,5 +1,5 @@
 #include"EPoller.h"
-#include"Timestamp.h"
+#include"base/Timestamp.h"
 #include"channel.h"
 
 #include<assert.h>
@@ -7,6 +7,8 @@
 #include<poll.h>
 #include<sys/epoll.h>
 #include<iostream>
+#include<unistd.h>
+#include<string.h>
 
 using namespace server;
 
@@ -17,7 +19,7 @@ const int kDeleted=3;
 }
 
 EPoller::EPoller(EventLoop* loop)
-	:ownerLoop_(loop),
+	:ownerloop_(loop),
 	epollfd_(::epoll_create1(EPOLL_CLOEXEC)),
 	events_(16)
 {
@@ -72,13 +74,13 @@ void EPoller::updateChannel(Channel* channel){
 			assert(channels_.find(fd)!=channels_.end());
 			assert(channels_[fd]=channel);
 		}
-		channel->set_index(kAdded);
+		channel->setIndex(kAdded);
 		update(EPOLL_CTL_ADD,channel);
 	}else{
 		int fd=channel->fd();
 		if(channel->isNoneEvent()){
 			update(EPOLL_CTL_DEL,channel);
-			channel->set_index(kDeleted);
+			channel->setIndex(kDeleted);
 		}else{
 			update(EPOLL_CTL_MOD,channel);
 		}
@@ -94,7 +96,7 @@ void EPoller::removeChannel(Channel* channel){
 	if(index==kAdded){
 		update(EPOLL_CTL_DEL,channel);
 	}
-	channel->set_index(kNew);
+	channel->setIndex(kNew);
 }
 
 void EPoller::update(int operation,Channel* channel){

@@ -7,12 +7,13 @@
 namespace server{
 
 class EventLoop;
+class EventLoopThread;
 
 class EventLoopThreadPool{
 
 public:
 	EventLoopThreadPool(const EventLoopThreadPool&)=delete;
-	void operator(const EventLoopThreadPool&)=delete;
+	void operator=(const EventLoopThreadPool&)=delete;
 
 	EventLoopThreadPool(EventLoop* baseLoop);
 	~EventLoopThreadPool();
@@ -30,10 +31,10 @@ private:
 	bool started_;
 	int numThreads_;
 	int next_;
-	std::vector<unique_ptr<EventLoopThreadPool>> threads_;
+	std::vector<std::unique_ptr<EventLoopThread>> threads_;
 	std::vector<EventLoop*> loops_;
 
-}
+};
 
 }
 
