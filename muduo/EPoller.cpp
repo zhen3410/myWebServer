@@ -13,9 +13,9 @@
 using namespace server;
 
 namespace {
-const int kNew=1;
-const int kAdded=2;
-const int kDeleted=3;
+const int kNew=-1;
+const int kAdded=1;
+const int kDeleted=2;
 }
 
 EPoller::EPoller(EventLoop* loop)
@@ -23,6 +23,7 @@ EPoller::EPoller(EventLoop* loop)
 	epollfd_(::epoll_create1(EPOLL_CLOEXEC)),
 	events_(16)
 {
+	std::cout<<"EPoller::EPoller() constructer epollfd = "<<epollfd_<<std::endl;
 	if(epollfd_<0){
 		std::cerr<<"EPoller::EPoller constructer"<<std::endl;
 	}
@@ -33,7 +34,8 @@ EPoller::~EPoller(){
 }
 
 Timestamp EPoller::poll(int timeoutMs,ChannelList* activeChannels){
-	int numEvents=::epoll_wait(epollfd_,events_.data(),static_cast<int>(events_.size()),timeoutMs);
+	std::cout<<"EPoller::poll() wait "<<events_.size()<<" events"<<std::endl;
+	int numEvents=::epoll_wait(epollfd_,&*events_.begin(),static_cast<int>(events_.size()),timeoutMs);
 	Timestamp now(Timestamp::now());
 	if(numEvents>0){
 		std::cout<<numEvents<<" events happended"<<std::endl;

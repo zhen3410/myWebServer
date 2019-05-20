@@ -80,14 +80,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/zhangzhen/myWebServer && $(CMAKE_COMMAND) -E cmake_progress_start /home/zhangzhen/myWebServer/CMakeFiles /home/zhangzhen/myWebServer/src/CMakeFiles/progress.marks
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	cd /home/zhangzhen/myWebServer && $(CMAKE_COMMAND) -E cmake_progress_start /home/zhangzhen/myWebServer/CMakeFiles /home/zhangzhen/myWebServer/muduo/CMakeFiles/progress.marks
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 muduo/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhangzhen/myWebServer/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 muduo/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,12 +97,12 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 muduo/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 muduo/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
@@ -111,18 +111,18 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-src/CMakeFiles/testCode.dir/rule:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/testCode.dir/rule
-.PHONY : src/CMakeFiles/testCode.dir/rule
+muduo/CMakeFiles/testCode.dir/rule:
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f CMakeFiles/Makefile2 muduo/CMakeFiles/testCode.dir/rule
+.PHONY : muduo/CMakeFiles/testCode.dir/rule
 
 # Convenience name for target.
-testCode: src/CMakeFiles/testCode.dir/rule
+testCode: muduo/CMakeFiles/testCode.dir/rule
 
 .PHONY : testCode
 
 # fast build rule for target.
 testCode/fast:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/build
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/build
 .PHONY : testCode/fast
 
 Acceptor.o: Acceptor.cpp.o
@@ -131,7 +131,7 @@ Acceptor.o: Acceptor.cpp.o
 
 # target to build an object file
 Acceptor.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Acceptor.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Acceptor.cpp.o
 .PHONY : Acceptor.cpp.o
 
 Acceptor.i: Acceptor.cpp.i
@@ -140,7 +140,7 @@ Acceptor.i: Acceptor.cpp.i
 
 # target to preprocess a source file
 Acceptor.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Acceptor.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Acceptor.cpp.i
 .PHONY : Acceptor.cpp.i
 
 Acceptor.s: Acceptor.cpp.s
@@ -149,7 +149,7 @@ Acceptor.s: Acceptor.cpp.s
 
 # target to generate assembly for a file
 Acceptor.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Acceptor.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Acceptor.cpp.s
 .PHONY : Acceptor.cpp.s
 
 Buffer.o: Buffer.cpp.o
@@ -158,7 +158,7 @@ Buffer.o: Buffer.cpp.o
 
 # target to build an object file
 Buffer.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Buffer.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Buffer.cpp.o
 .PHONY : Buffer.cpp.o
 
 Buffer.i: Buffer.cpp.i
@@ -167,7 +167,7 @@ Buffer.i: Buffer.cpp.i
 
 # target to preprocess a source file
 Buffer.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Buffer.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Buffer.cpp.i
 .PHONY : Buffer.cpp.i
 
 Buffer.s: Buffer.cpp.s
@@ -176,7 +176,7 @@ Buffer.s: Buffer.cpp.s
 
 # target to generate assembly for a file
 Buffer.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Buffer.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Buffer.cpp.s
 .PHONY : Buffer.cpp.s
 
 EPoller.o: EPoller.cpp.o
@@ -185,7 +185,7 @@ EPoller.o: EPoller.cpp.o
 
 # target to build an object file
 EPoller.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EPoller.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EPoller.cpp.o
 .PHONY : EPoller.cpp.o
 
 EPoller.i: EPoller.cpp.i
@@ -194,7 +194,7 @@ EPoller.i: EPoller.cpp.i
 
 # target to preprocess a source file
 EPoller.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EPoller.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EPoller.cpp.i
 .PHONY : EPoller.cpp.i
 
 EPoller.s: EPoller.cpp.s
@@ -203,7 +203,7 @@ EPoller.s: EPoller.cpp.s
 
 # target to generate assembly for a file
 EPoller.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EPoller.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EPoller.cpp.s
 .PHONY : EPoller.cpp.s
 
 EventLoop.o: EventLoop.cpp.o
@@ -212,7 +212,7 @@ EventLoop.o: EventLoop.cpp.o
 
 # target to build an object file
 EventLoop.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoop.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoop.cpp.o
 .PHONY : EventLoop.cpp.o
 
 EventLoop.i: EventLoop.cpp.i
@@ -221,7 +221,7 @@ EventLoop.i: EventLoop.cpp.i
 
 # target to preprocess a source file
 EventLoop.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoop.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoop.cpp.i
 .PHONY : EventLoop.cpp.i
 
 EventLoop.s: EventLoop.cpp.s
@@ -230,7 +230,7 @@ EventLoop.s: EventLoop.cpp.s
 
 # target to generate assembly for a file
 EventLoop.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoop.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoop.cpp.s
 .PHONY : EventLoop.cpp.s
 
 EventLoopThread.o: EventLoopThread.cpp.o
@@ -239,7 +239,7 @@ EventLoopThread.o: EventLoopThread.cpp.o
 
 # target to build an object file
 EventLoopThread.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThread.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoopThread.cpp.o
 .PHONY : EventLoopThread.cpp.o
 
 EventLoopThread.i: EventLoopThread.cpp.i
@@ -248,7 +248,7 @@ EventLoopThread.i: EventLoopThread.cpp.i
 
 # target to preprocess a source file
 EventLoopThread.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThread.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoopThread.cpp.i
 .PHONY : EventLoopThread.cpp.i
 
 EventLoopThread.s: EventLoopThread.cpp.s
@@ -257,7 +257,7 @@ EventLoopThread.s: EventLoopThread.cpp.s
 
 # target to generate assembly for a file
 EventLoopThread.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThread.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoopThread.cpp.s
 .PHONY : EventLoopThread.cpp.s
 
 EventLoopThreadPool.o: EventLoopThreadPool.cpp.o
@@ -266,7 +266,7 @@ EventLoopThreadPool.o: EventLoopThreadPool.cpp.o
 
 # target to build an object file
 EventLoopThreadPool.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.o
 .PHONY : EventLoopThreadPool.cpp.o
 
 EventLoopThreadPool.i: EventLoopThreadPool.cpp.i
@@ -275,7 +275,7 @@ EventLoopThreadPool.i: EventLoopThreadPool.cpp.i
 
 # target to preprocess a source file
 EventLoopThreadPool.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.i
 .PHONY : EventLoopThreadPool.cpp.i
 
 EventLoopThreadPool.s: EventLoopThreadPool.cpp.s
@@ -284,7 +284,7 @@ EventLoopThreadPool.s: EventLoopThreadPool.cpp.s
 
 # target to generate assembly for a file
 EventLoopThreadPool.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/EventLoopThreadPool.cpp.s
 .PHONY : EventLoopThreadPool.cpp.s
 
 Poller.o: Poller.cpp.o
@@ -293,7 +293,7 @@ Poller.o: Poller.cpp.o
 
 # target to build an object file
 Poller.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Poller.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Poller.cpp.o
 .PHONY : Poller.cpp.o
 
 Poller.i: Poller.cpp.i
@@ -302,7 +302,7 @@ Poller.i: Poller.cpp.i
 
 # target to preprocess a source file
 Poller.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Poller.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Poller.cpp.i
 .PHONY : Poller.cpp.i
 
 Poller.s: Poller.cpp.s
@@ -311,7 +311,7 @@ Poller.s: Poller.cpp.s
 
 # target to generate assembly for a file
 Poller.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Poller.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Poller.cpp.s
 .PHONY : Poller.cpp.s
 
 Socket.o: Socket.cpp.o
@@ -320,7 +320,7 @@ Socket.o: Socket.cpp.o
 
 # target to build an object file
 Socket.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Socket.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Socket.cpp.o
 .PHONY : Socket.cpp.o
 
 Socket.i: Socket.cpp.i
@@ -329,7 +329,7 @@ Socket.i: Socket.cpp.i
 
 # target to preprocess a source file
 Socket.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Socket.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Socket.cpp.i
 .PHONY : Socket.cpp.i
 
 Socket.s: Socket.cpp.s
@@ -338,7 +338,7 @@ Socket.s: Socket.cpp.s
 
 # target to generate assembly for a file
 Socket.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Socket.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Socket.cpp.s
 .PHONY : Socket.cpp.s
 
 TcpConnection.o: TcpConnection.cpp.o
@@ -347,7 +347,7 @@ TcpConnection.o: TcpConnection.cpp.o
 
 # target to build an object file
 TcpConnection.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpConnection.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/TcpConnection.cpp.o
 .PHONY : TcpConnection.cpp.o
 
 TcpConnection.i: TcpConnection.cpp.i
@@ -356,7 +356,7 @@ TcpConnection.i: TcpConnection.cpp.i
 
 # target to preprocess a source file
 TcpConnection.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpConnection.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/TcpConnection.cpp.i
 .PHONY : TcpConnection.cpp.i
 
 TcpConnection.s: TcpConnection.cpp.s
@@ -365,7 +365,7 @@ TcpConnection.s: TcpConnection.cpp.s
 
 # target to generate assembly for a file
 TcpConnection.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpConnection.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/TcpConnection.cpp.s
 .PHONY : TcpConnection.cpp.s
 
 TcpServer.o: TcpServer.cpp.o
@@ -374,7 +374,7 @@ TcpServer.o: TcpServer.cpp.o
 
 # target to build an object file
 TcpServer.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpServer.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/TcpServer.cpp.o
 .PHONY : TcpServer.cpp.o
 
 TcpServer.i: TcpServer.cpp.i
@@ -383,7 +383,7 @@ TcpServer.i: TcpServer.cpp.i
 
 # target to preprocess a source file
 TcpServer.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpServer.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/TcpServer.cpp.i
 .PHONY : TcpServer.cpp.i
 
 TcpServer.s: TcpServer.cpp.s
@@ -392,7 +392,7 @@ TcpServer.s: TcpServer.cpp.s
 
 # target to generate assembly for a file
 TcpServer.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/TcpServer.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/TcpServer.cpp.s
 .PHONY : TcpServer.cpp.s
 
 Timer.o: Timer.cpp.o
@@ -401,7 +401,7 @@ Timer.o: Timer.cpp.o
 
 # target to build an object file
 Timer.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Timer.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Timer.cpp.o
 .PHONY : Timer.cpp.o
 
 Timer.i: Timer.cpp.i
@@ -410,7 +410,7 @@ Timer.i: Timer.cpp.i
 
 # target to preprocess a source file
 Timer.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Timer.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Timer.cpp.i
 .PHONY : Timer.cpp.i
 
 Timer.s: Timer.cpp.s
@@ -419,7 +419,7 @@ Timer.s: Timer.cpp.s
 
 # target to generate assembly for a file
 Timer.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/Timer.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/Timer.cpp.s
 .PHONY : Timer.cpp.s
 
 channel.o: channel.cpp.o
@@ -428,7 +428,7 @@ channel.o: channel.cpp.o
 
 # target to build an object file
 channel.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/channel.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/channel.cpp.o
 .PHONY : channel.cpp.o
 
 channel.i: channel.cpp.i
@@ -437,7 +437,7 @@ channel.i: channel.cpp.i
 
 # target to preprocess a source file
 channel.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/channel.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/channel.cpp.i
 .PHONY : channel.cpp.i
 
 channel.s: channel.cpp.s
@@ -446,7 +446,7 @@ channel.s: channel.cpp.s
 
 # target to generate assembly for a file
 channel.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/channel.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/channel.cpp.s
 .PHONY : channel.cpp.s
 
 testCode.o: testCode.cpp.o
@@ -455,7 +455,7 @@ testCode.o: testCode.cpp.o
 
 # target to build an object file
 testCode.cpp.o:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/testCode.cpp.o
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/testCode.cpp.o
 .PHONY : testCode.cpp.o
 
 testCode.i: testCode.cpp.i
@@ -464,7 +464,7 @@ testCode.i: testCode.cpp.i
 
 # target to preprocess a source file
 testCode.cpp.i:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/testCode.cpp.i
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/testCode.cpp.i
 .PHONY : testCode.cpp.i
 
 testCode.s: testCode.cpp.s
@@ -473,7 +473,7 @@ testCode.s: testCode.cpp.s
 
 # target to generate assembly for a file
 testCode.cpp.s:
-	cd /home/zhangzhen/myWebServer && $(MAKE) -f src/CMakeFiles/testCode.dir/build.make src/CMakeFiles/testCode.dir/testCode.cpp.s
+	cd /home/zhangzhen/myWebServer && $(MAKE) -f muduo/CMakeFiles/testCode.dir/build.make muduo/CMakeFiles/testCode.dir/testCode.cpp.s
 .PHONY : testCode.cpp.s
 
 # Help Target
