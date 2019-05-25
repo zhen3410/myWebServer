@@ -10,6 +10,17 @@ namespace CurrenThread{
 	__thread const char* t_threadName="default";
 }
 
+pid_t gettid(){
+	return static_cast<pid_t>(::syscall(SYS_gettid));
+}
+
+void CurrenThread::cacheTid(){
+	if(t_cachedTid==0){
+		t_cachedTid=gettid();
+		t_tidStringLength=snprintf(t_tidString,sizeof t_tidString,"%5d ",t_cachedTid);
+	}
+}
+
 namespace {
 	struct FuncAndArg{
 		Thread::ThreadFunc func_;
@@ -28,7 +39,10 @@ namespace {
 			tid_=NULL;
 			latch_->countDown();
 			latch_=NULL;
+			CurrenThread::t_threadName=name_.empty()?"Thread":name_.c_str();
+			prctl(PR_SET_NAME,CurrenThread::t_threadName);
 			func_();
+			CurrenThread::t_threadName="finished";
 		}
 	};
 

@@ -8,7 +8,7 @@ __thread EventLoop* t_loopInThisThread=NULL;
 }
 
 EventLoop::EventLoop()
-	:threadId_(syscall(SYS_gettid)),
+	:threadId_(CurrentThread::tid()),
 	looping_(false);
 {
 	if(t_loopInThisThread){

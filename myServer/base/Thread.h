@@ -1,6 +1,12 @@
 #ifndef SERVER_BASE_THREAD_H
 #define SERVER_BASE_THREAD_H
 
+#include"CountDownLatch.h"
+
+#include<pthread.h>
+#include<functional>
+#include<string>
+
 class Thread{
 
 public:

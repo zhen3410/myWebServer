@@ -25,7 +25,13 @@ public:
 		pthread_mutex_unlock(&mutex_);
 	}
 
+	pthread_mutex_t* get(){
+		return &mutex_;
+	}
+
 private:
+	friend class Condition;
+
 	 pthread_mutex_t mutex_;
 };
 

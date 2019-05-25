@@ -1,6 +1,8 @@
 #ifndef SERVER_EVENTLOOP_H
 #define SERVER_EVENTLOOP_H
 
+#include"CurrentThead.h"
+
 #include<pthread.h>
 #include<unistd.h>
 #include<sys/syscall.h>
@@ -20,7 +22,7 @@ public:
 	}
 
 	bool isInLoopThread(){
-		return threadId_==syscall(SYS_gettid);
+		return threadId_==CurrentThead::tid();
 	}
 
 private:
