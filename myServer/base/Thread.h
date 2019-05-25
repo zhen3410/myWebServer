@@ -6,6 +6,7 @@
 #include<pthread.h>
 #include<functional>
 #include<string>
+#include<atomic>
 
 class Thread{
 
@@ -14,11 +15,14 @@ public:
 	void operator=(const Thread&)=delete;
 
 	typedef std::function<void()> ThreadFunc;
-	explicit Thread(const ThreadFunc&,const std::string& name=std::string());
+	explicit Thread(const ThreadFunc&,const std::string name=std::string());
 	~Thread();
 
 	void start();
-	void join();
+	int join();
+
+	pid_t tid()const{return tid_;}
+	std::string name()const{return name_;}
 
 private:
 	void setDefaultName();
@@ -30,6 +34,8 @@ private:
 	ThreadFunc func_;
 	std::string name_;
 	CountDownLatch latch_;
-}
+
+	static std::atomic<int> numCreated_;
+};
 
 #endif

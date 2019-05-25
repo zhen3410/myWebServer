@@ -8,6 +8,8 @@
 #include<pthread.h>
 #include<vector>
 #include<memory>
+#include<sys/syscall.h>
+#include<unistd.h>
 
 namespace server{
 
@@ -60,7 +62,7 @@ public:
         }
     }
     bool isInLoopThread()const{
-        return threadId_==gettid();
+        return threadId_==syscall(SYS_gettid);
     }
 
     EventLoop* getEventLoopOfCurrentThread();
@@ -77,7 +79,7 @@ private:
     bool looping_;
     bool quit_;
     bool callingPendingFunctors_;
-    const tid_t threadId_;
+    const pid_t threadId_;
 
     Timestamp pollReturnTime_;
 

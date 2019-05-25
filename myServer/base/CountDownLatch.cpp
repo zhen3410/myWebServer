@@ -11,7 +11,7 @@ CountDownLatch::CountDownLatch(int count)
 
 void CountDownLatch::wait(){
 	MutexLockGuard lock(mutex_);
-	whlle(count_>0){
+	while(count_>0){
 		condition_.wait();
 	}
 }

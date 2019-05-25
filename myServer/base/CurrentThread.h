@@ -1,6 +1,8 @@
 #ifndef SERVER_BASE_CURRENTTHREAD_H
 #define SERVER_BASE_CURRENTTHREAD_H
 
+#include<stdint.h>
+
 namespace CurrentThread{
 
 extern __thread int t_cachedTid;

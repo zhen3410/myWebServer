@@ -1,5 +1,8 @@
 #include"EventLoop.h"
-#include"poll.h"
+
+#include<poll.h>
+#include<iostream>
+#include<assert.h>
 
 namespace {
 
@@ -9,13 +12,10 @@ __thread EventLoop* t_loopInThisThread=NULL;
 
 EventLoop::EventLoop()
 	:threadId_(CurrentThread::tid()),
-	looping_(false);
+	looping_(false)
 {
-	if(t_loopInThisThread){
-		std::cerr<<"EventLoop::EventLoop() another EventLoop in this thread"<<std::endl;
-	}else{
-		t_loopInThisThread=this;
-	}
+	assert(t_loopInThisThread==NULL);
+	t_loopInThisThread=this;
 }
 
 EventLoop::~EventLoop(){

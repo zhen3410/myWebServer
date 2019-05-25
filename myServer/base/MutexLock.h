@@ -38,7 +38,7 @@ private:
 class MutexLockGuard{
 public:
 	MutexLockGuard(const MutexLockGuard&)=delete;
-	void MutexLockGuard(const MutexLockGuard&)=delete;
+	void operator=(const MutexLockGuard&)=delete;
 
 	explicit MutexLockGuard(MutexLock& mutex)
 		:mutex_(mutex)
@@ -53,6 +53,6 @@ public:
 private:
 	MutexLock& mutex_;
 
-}
+};
 
 #endif

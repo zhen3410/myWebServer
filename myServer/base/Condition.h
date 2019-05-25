@@ -3,6 +3,11 @@
 
 #include"MutexLock.h"
 
+#include<time.h>
+#include<stdint.h>
+#include<pthread.h>
+#include<errno.h>
+
 class Condition{
 
 public:
@@ -34,22 +39,22 @@ public:
 	bool waitForSeconds(int seconds){
 		// timespec 精度为纳秒
 		struct timespec abstime;
-		colck_gettime(CLOCK_REALTIME,&abstime);
+		clock_gettime(CLOCK_REALTIME,&abstime);
 
 		const int64_t kNanoSecondsPerSecond=1000000000;
-		int64_t nanoseconds=static_cast<int64_t>(seconds*kNanoSecondsPerSecond)；
+		int64_t nanoseconds=static_cast<int64_t>(seconds*kNanoSecondsPerSecond);
 
 		abstime.tv_sec+=static_cast<time_t>((abstime.tv_nsec+nanoseconds)/kNanoSecondsPerSecond);
 		abstime.tv_nsec=static_cast<long>((abstime.tv_nsec+nanoseconds)%kNanoSecondsPerSecond);
 
-		return ETIMEDOUT==pthread_cond_timewait(&pcond_,mutex_.get(),&abstime);
+		return ETIMEDOUT==pthread_cond_timedwait(&pcond_,mutex_.get(),&abstime);
 	}
 
 private:
 	MutexLock& mutex_;
 	pthread_cond_t pcond_;
 
-}
+};
 
 
 #endif

@@ -6,6 +6,7 @@
 #include<assert.h>
 #include<sys/eventfd.h>
 #include<unistd.h>
+#include<sys/syscall.h>
 
 using namespace server;
 
@@ -30,7 +31,7 @@ EventLoop::EventLoop()
 	:looping_(false),
 	quit_(false),
     	callingPendingFunctors_(false),
-	threadId_(gettid()),
+	threadId_(syscall(SYS_gettid)),
 	poller_(new EPoller(this)),
 	timerQueue_(new TimerQueue(this)),
     	wakeupFd_(createEventFd()),

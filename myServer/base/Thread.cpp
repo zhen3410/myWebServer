@@ -1,9 +1,13 @@
 #include"Thread.h"
+#include"CurrentThread.h"
 
 #include<iostream>
 #include<assert.h>
+#include<unistd.h>
+#include<sys/syscall.h>
+#include<sys/prctl.h>
 
-namespace CurrenThread{
+namespace CurrentThread{
 	__thread int t_cachedTid=0;
 	__thread char t_tidString[32];
 	__thread int t_tidStringLength=6;
@@ -14,7 +18,7 @@ pid_t gettid(){
 	return static_cast<pid_t>(::syscall(SYS_gettid));
 }
 
-void CurrenThread::cacheTid(){
+void CurrentThread::cacheTid(){
 	if(t_cachedTid==0){
 		t_cachedTid=gettid();
 		t_tidStringLength=snprintf(t_tidString,sizeof t_tidString,"%5d ",t_cachedTid);
@@ -39,10 +43,10 @@ namespace {
 			tid_=NULL;
 			latch_->countDown();
 			latch_=NULL;
-			CurrenThread::t_threadName=name_.empty()?"Thread":name_.c_str();
-			prctl(PR_SET_NAME,CurrenThread::t_threadName);
+			CurrentThread::t_threadName=name_.empty()?"Thread":name_.c_str();
+			prctl(PR_SET_NAME,CurrentThread::t_threadName);
 			func_();
-			CurrenThread::t_threadName="finished";
+			CurrentThread::t_threadName="finished";
 		}
 	};
 

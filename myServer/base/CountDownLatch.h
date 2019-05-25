@@ -1,8 +1,8 @@
 #ifndef SERVER_BASE_COUNTDOWNLATCH_H
 #define SERVER_BASE_COUNTDOWNLATCH_H
 
-class MutexLock;
-class Condition;
+#include"MutexLock.h"
+#include"Condition.h"
 
 class CountDownLatch{
 
