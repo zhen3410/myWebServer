@@ -1,5 +1,6 @@
 #include"EventLoop.h"
 #include"EPoller.h"
+#include"Channel.h"
 
 #include<iostream>
 #include<assert.h>
@@ -13,7 +14,8 @@ __thread EventLoop* t_loopInThisThread=NULL;
 EventLoop::EventLoop()
 	:threadId_(CurrentThread::tid()),
 	looping_(false),
-	quit_(false);
+	quit_(false),
+	poller_(new EPoller(*this))
 {
 	assert(t_loopInThisThread==NULL);
 	t_loopInThisThread=this;
@@ -31,7 +33,7 @@ void EventLoop::loop(){
 	quit_=false;
 
 	while(!quit_){
-		poll(&activeChannel_);
+		poller_->poll(activeChannel_);
 		for(int i=0;i<activeChannel_.size();i++){
 			auto it=activeChannel_[i];
 			it->handleEvent();

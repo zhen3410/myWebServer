@@ -45,10 +45,10 @@ private:
 	const pid_t threadId_;
 	bool looping_;
 	bool quit_;
-	unique_ptr<EPoller> poller_;
+	std::unique_ptr<EPoller> poller_;
 	
 	typedef std::vector<std::shared_ptr<Channel>> ChannelList;
-	ChannelList avtiveChannel_;
+	ChannelList activeChannel_;
 };
 
 #endif

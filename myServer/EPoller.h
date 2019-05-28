@@ -16,14 +16,14 @@ public:
     EPoller(const EPoller&)=delete;
     void operator=(const EPoller&)=delete;
 
-    EPoller();
+    EPoller(EventLoop&);
     ~EPoller();
 
     void poll(std::vector<std::shared_ptr<Channel>>& avtiveChannel);
 
-    void add_event(int epollfd,int fd,int state);
-    void del_event(int epollfd,int fd,int state);
-    void mod_event(int epollfd,int fd,int state);
+    void add_event(std::shared_ptr<Channel>);
+    void del_event(std::shared_ptr<Channel>);
+    void mod_event(std::shared_ptr<Channel>);
 
 private:
     EventLoop& loop_;

@@ -1,12 +1,13 @@
 #ifndef SERVER_CHANNEL_H
 #define SERVER_CHANNEL_H
 
+#include"EventLoop.h"
+
 #include<functional>
 #include<memory>
 
-class EventLoop;
 
-class Channel : std::enable_shared_from_this<Channel>{
+class Channel : public std::enable_shared_from_this<Channel>{
 
 public:
 
@@ -47,13 +48,13 @@ public:
 		revents_=revent;
 	}
 
-	void setReadCallBack(CallBack& cb){
+	void setReadCallBack(const CallBack& cb){
 		readCallBack_=cb;
 	}
-	void setWriteCallBack(CallBack& cb){
+	void setWriteCallBack(const CallBack& cb){
 		writeCallBack_=cb;
 	}
-	void setErrorCallBack(CallBack& cb){
+	void setErrorCallBack(const CallBack& cb){
 		errorCallBack_=cb;
 	}
 
@@ -64,12 +65,12 @@ public:
 
 private:
 	void update(){
-		loop_.updateChannel(std::shared_from_this());
+		loop_.updateChannel(shared_from_this());
 	}
 
-	static const int kNonoEvent;
+	static const int kNoneEvent;
 	static const int kReadEvent;
-	static const inr kWriteEvent;
+	static const int kWriteEvent;
 
 	CallBack readCallBack_;
 	CallBack writeCallBack_;

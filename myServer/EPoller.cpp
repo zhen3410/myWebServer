@@ -4,13 +4,16 @@
 
 #include<sys/epoll.h>
 #include<assert.h>
+#include<iostream>
+#include<string.h>
+#include<errno.h>
 
 const int EVENTNUM=4096;
 const int EPOLLWAIT_TIME=10000;
 
 EPoller::EPoller(EventLoop& loop)
     :loop_(loop),
-    epollFd_(epoll_creat1(EPOLL_CLOEXEC)),
+    epollFd_(epoll_create1(EPOLL_CLOEXEC)),
     events_(EVENTNUM)
 {
 
@@ -27,7 +30,10 @@ void EPoller::add_event(std::shared_ptr<Channel> channel){
     event.data.fd=fd;
     event.events=channel->events();
     int ret=epoll_ctl(epollFd_,EPOLL_CTL_ADD,fd,&event);
-    assert(ret>0);
+    if(ret<0){
+	std::cout<<"add_event error = "<<strerror(errno)<<std::endl;
+	exit(0);
+    }
     fd2channel_[fd]=channel;
 }
 
@@ -38,18 +44,22 @@ void EPoller::del_event(std::shared_ptr<Channel> channel){
     event.data.fd=fd;
     event.events=channel->events();
     int ret=epoll_ctl(epollFd_,EPOLL_CTL_DEL,fd,&event);
-    assert(ret>0);
+    assert(ret>=0);
     fd2channel_.erase(fd);
 }
 
 void EPoller::mod_event(std::shared_ptr<Channel> channel){
     int fd=channel->fd();
-    assert(fd2channel_.find(fd)!=fd2channel_.end());
+    if(fd2channel_.size()==0||fd2channel_.find(fd)==fd2channel_.end()){
+	    std::cout<<"EPoller::mod_event add_event"<<std::endl;
+	add_event(channel);
+	return;
+    }
     struct epoll_event event;
     event.data.fd=fd;
     event.events=channel->events();
     int ret=epoll_ctl(epollFd_,EPOLL_CTL_MOD,fd,&event);
-    assert(ret>0);
+    assert(ret>=0);
 }
 
 
@@ -67,7 +77,7 @@ void EPoller::poll(std::vector<std::shared_ptr<Channel>> &activeChannel){
         std::shared_ptr<Channel> curChannel=fd2channel_[fd];
 
         // 将此Channel的活动事件设置为文件描述符产生的事件
-        curChannel->setRevent(events_[i].events);
+        curChannel->setRevents(events_[i].events);
 
         // 添加到activeChannel中
         activeChannel.push_back(curChannel);

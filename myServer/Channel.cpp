@@ -1,10 +1,11 @@
 #include"Channel.h"
 
 #include<sys/epoll.h>
+#include<iostream>
 
 const int Channel::kNoneEvent=0;
 const int Channel::kReadEvent=EPOLLIN|EPOLLPRI;
-const int Channel::kWriteEvent=EPOLLOT;
+const int Channel::kWriteEvent=EPOLLOUT;
 
 Channel::Channel(EventLoop& loop,int fd)
 	:loop_(loop),
@@ -12,7 +13,7 @@ Channel::Channel(EventLoop& loop,int fd)
 	events_(0),
 	revents_(0)
 {
-
+	std::cout<<"Channel::constructor fd = "<<fd_<<std::endl;
 }
 
 Channel::~Channel()
