@@ -20,7 +20,7 @@ public:
         k404NotFound=404,
     };
 
-    explicit HTTPResponse(bool close):statusCode_(kUnknown),closeConnextion_(close){}
+    explicit HTTPResponse(bool close):statusCode_(kUnknown),closeConnection_(close){}
 
     void setStatusCode(HttpStatusCode code){
         statusCode_=code;
@@ -29,10 +29,10 @@ public:
         statusMessage_=message;
     }
     void setCloseConnection(bool on){
-        closeConnextion_=on;
+        closeConnection_=on;
     }
     void setContentType(const std::string& contentType){
-
+        addHeader("Content-Type",contentType);
     }
     void addHeader(const std::string& key,const std::string& value){
         headers_[key]=value;
@@ -46,7 +46,7 @@ private:
     std::map<std::string,std::string> headers_;
     HttpStatusCode statusCode_;
     std::string statusMessage_;
-    bool closeConnextion_;
+    bool closeConnection_;
     std::string body_;
 };
 

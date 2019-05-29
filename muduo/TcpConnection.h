@@ -7,6 +7,7 @@
 #include<functional>
 #include<string>
 #include<memory>
+#include<any>
 
 namespace server{
 
@@ -69,6 +70,14 @@ public:
 	void shutdown();
 	void setTcpNoDelay(bool);
 
+	const std::any& getContext()const{
+		return context_;
+	}
+
+	std::any* getMutableContext(){
+		return &context_;
+	}
+
 private:
 	enum StateE{kConnecting,kConnected,kDisconnecting,kDisconnected,};
 
@@ -94,6 +103,9 @@ private:
 	CloseCallBack closeCallBack_;
 	Buffer inputBuffer_;
 	Buffer outputBuffer_;
+
+	std::any context_;
+
 };
 
 }

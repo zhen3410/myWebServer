@@ -24,7 +24,7 @@ public:
     HTTPServer(const HTTPServer&)=delete;
     void operator=(const HTTPServer&)=delete;
 
-    HTTPServer(const EventLoop& loop,
+    HTTPServer(EventLoop* loop,
                const std::string& name,
                const InetAddress& listenAddr);
     ~HTTPServer();

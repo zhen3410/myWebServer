@@ -21,6 +21,7 @@ public:
     HTTPContext(/* args */):state_(kExpectRequestLine){}
     
     bool parseRequest(Buffer* buf,Timestamp receiveTime);
+    bool processRequestLine(const char* begin,const char* end);
     bool gotAll()const{return state_==kGotAll;}
 
     void reset(){
@@ -28,7 +29,6 @@ public:
         request_=HTTPRequest();
     }
 private:
-    bool processRequestLine(const char* begin,const char* end);
 
     HttpRequestParseState state_;
     HTTPRequest request_;

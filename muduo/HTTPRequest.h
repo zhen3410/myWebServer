@@ -36,11 +36,24 @@ public:
         }
         return method_!=kInvalid;
     }
+    void setVersion(Version v){
+        version_=v;
+    }
+    Version version()const{
+        return version_;
+    }
+
     void setPath(const char* start,const char* end){
         path_.assign(start,end);
     }
+    const string& path() const {
+        return path_;
+    }
     void setQuery(const char* start,const char* end){
         query_.assign(start,end);
+    }
+    const string& query()const{
+        return query_;
     }
     void setReceiveTime(Timestamp t){
         receiveTime_=t;

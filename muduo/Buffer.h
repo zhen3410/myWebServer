@@ -4,6 +4,7 @@
 #include<vector>
 #include<assert.h>
 #include<string>
+#include<algorithm>
 
 #include<iostream>
 
@@ -55,6 +56,26 @@ public:
 		return str;
 	}
 
+	void retrieveUntil(const char* end){
+		assert(peek()<=end);
+		assert(end<=begin()+writerIndex_);
+		if(end<begin()+writerIndex_){
+			readerIndex_+=end-peek();
+		}else{
+			readerIndex_=kCheapPrepend;
+			writerIndex_=kCheapPrepend;
+		}
+	}
+
+
+	void append(const std::string& data){
+		append(data.c_str(),data.size());
+	}
+
+	void append(const char* data){
+		append(data,strlen(data));
+	}
+
 	void append(const char* data,size_t len){
 		ensureWritableBytes(len);
 		std::copy(data,data+len,(begin()+writerIndex_));
@@ -76,6 +97,15 @@ public:
 	}
 
 	size_t readFd(int fd,int* savedErrno);
+
+	const char* findEnter(){
+		for(int i=readerIndex_;i<writerIndex_-1;i++){
+			if(buffer_[i]=='\r'&&buffer_[i+1]=='\n'){
+				return &buffer_[i];
+			}
+		}
+		return NULL;
+	}
 
 private:
 	char* begin(){
