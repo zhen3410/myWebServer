@@ -1,5 +1,7 @@
 #include"LogFile.h"
 
+#include"FileUtil.h"
+
 using namespace server;
 
 LogFile::LogFile(const strign& basename,
