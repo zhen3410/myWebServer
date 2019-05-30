@@ -5,6 +5,7 @@
 #include<assert.h>
 #include<string>
 #include<algorithm>
+#include<string.h>
 
 #include<iostream>
 
