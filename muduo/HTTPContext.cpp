@@ -1,6 +1,8 @@
 #include"HTTPContext.h"
 #include"Buffer.h"
 
+#include<algorithm>
+
 using namespace server;
 
 
@@ -9,7 +11,7 @@ bool HTTPContext::processRequestLine(const char* begin,const char* end){
     // 请求方法 | 空格 | URL | 空格 | 协议版本 | 回车符 | 换行符
     bool ok=false;
     const char* start=begin;
-    const char* space=std::fidn(start,end,' ');
+    const char* space=std::find(start,end,' ');
     if(space!=end&&request_.setMethod(start,space)){
         start=space+1;
         space=std::find(start,end,' ');
