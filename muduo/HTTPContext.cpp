@@ -3,8 +3,7 @@
 
 #include<algorithm>
 
-using namespace server;
-
+namespace server{
 
 bool HTTPContext::processRequestLine(const char* begin,const char* end){
     // HTTP消息请求的第一个字段是请求方法，具体格式是
@@ -74,4 +73,6 @@ bool HTTPConext::parseRequest(Buffer* buf,Timestamp receiveTime){
         }
     }
     return ok;
+}
+
 }
