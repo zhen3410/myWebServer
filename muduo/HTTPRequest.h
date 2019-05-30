@@ -4,6 +4,7 @@
 #include"base/Timestamp.h"
 
 #include<string>
+#include<map>
 
 namespace server{
 
@@ -46,13 +47,13 @@ public:
     void setPath(const char* start,const char* end){
         path_.assign(start,end);
     }
-    const string& path() const {
+    const std::string& path() const {
         return path_;
     }
     void setQuery(const char* start,const char* end){
         query_.assign(start,end);
     }
-    const string& query()const{
+    const std::string& query()const{
         return query_;
     }
     void setReceiveTime(Timestamp t){
@@ -72,8 +73,8 @@ public:
         value.resize(len);
         headers_[field]=value;
     }
-    string getHeader(const std::string& field){
-        string result;
+    std::string getHeader(const std::string& field){
+        std::string result;
         auto it=headers_.find(field);
         if(it!=headers_.end()){
             result=it->second;
@@ -86,7 +87,7 @@ private:
     Version version_;
     std::string path_;
     std::string query_;
-    TimeStamp receiveTime_;
+    Timestamp receiveTime_;
     std::map<std::string,std::string> headers_;
 };
 
