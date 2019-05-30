@@ -40,6 +40,10 @@ public:
     void bzero(){
         memset(data_,0,sizeof data_);
     }
+    std::string toString()const{
+        return std::string(data_,length());
+    }
+
 private:
     const char* end()const {return data_+sizeo data_;}
     /* data */
