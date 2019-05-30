@@ -22,12 +22,13 @@ public:
 
 private:
     class Impl{
+	    public:
         Impl(const char* filename,int line);
         void formatTime();
 
         Timestamp time_;
         LogStream stream_;
-        int line;
+        int line_;
         std::string baseName_;
     };
     Impl impl_;

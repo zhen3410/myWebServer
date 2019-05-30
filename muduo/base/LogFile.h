@@ -2,9 +2,11 @@
 #define SERVER_BASE_LOGFILE_H
 
 #include"Mutex.h"
+#include"FileUtil.h"
 
 #include<string>
 #include<memory>
+#include<unistd.h>
 
 namespace server{
 
@@ -12,7 +14,7 @@ class LogFile{
 
 public:
 	LogFile(const LogFile&)=delete;
-	void LogFile(const LogFile&)=delete;
+	void operator=(const LogFile&)=delete;
 
 	LogFile(const std::string& basename,
 			//off_t用于指示文件的偏移量，long类型
@@ -24,13 +26,13 @@ public:
 
 	void append(const char* logline,int len);
 	void flush();
-	void rollFile();
+	bool rollFile();
 
 private:
 	void append_unlocked(const char* logline,int len);
 	static std::string getLogFileName(const std::string& basename,time_t* now);
 
-	const std::string basename;
+	const std::string basename_;
 	const off_t rollSize_;
 	const int flushInterval_;
 	const int checkEveryN_;

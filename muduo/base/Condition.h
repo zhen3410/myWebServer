@@ -5,6 +5,7 @@
 
 #include<pthread.h>
 #include<errno.h>
+#include<stdint.h>
 
 class Condition{
 

@@ -29,7 +29,7 @@ void AsyncLogging::append(const char* logline,int len){
     if(currentBuffer_->avail()>len){
         currentBuffer_->append(logline,len);
     }else{
-        buffers_.push_back(currentBuffer_.release());
+        buffers_.push_back(std::move(currentBuffer_));
         if(nextBuffer_){
             currentBuffer_=std::move(nextBuffer_);
         }else{
@@ -40,7 +40,7 @@ void AsyncLogging::append(const char* logline,int len){
     }
 }
 
-void AsyncLogging::ThreadFunc(){
+void AsyncLogging::threadFunc(){
     assert(running_==true);
     latch_.countDown();
     LogFile output(basename_,rollSize_,false);

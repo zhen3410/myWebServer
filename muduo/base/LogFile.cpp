@@ -2,9 +2,11 @@
 
 #include"FileUtil.h"
 
+#include<assert.h>
+
 using namespace server;
 
-LogFile::LogFile(const strign& basename,
+LogFile::LogFile(const std::string& basename,
 				 off_t rollSize,
 				 bool threadSafe,
 				 int flushInterval,
@@ -19,7 +21,7 @@ LogFile::LogFile(const strign& basename,
 	lastRoll_(0),
 	lastFlush_(0)
 {
-	assert(basename.find('/')==string==npos);
+	assert(basename.find('/')==std::string::npos);
 	rollFile();
 }
 
@@ -50,7 +52,7 @@ void LogFile::append_unlocked(const char* logline,int len){
 		if(count_>=checkEveryN_){
 			count_=0;
 			time_t now=::time(NULL);
-			time_t thisPeriod_=now/kRollPerSeconds_*kRollPerSeconds_
+			time_t thisPeriod_=now/kRollPerSeconds_*kRollPerSeconds_;
 			if(thisPeriod_!=startOfPeriod_){ // 转换文件
 				rollFile();
 			}else if(now-lastFlush_>flushInterval_){ // 超出了刷新时间，进行刷新
@@ -63,7 +65,7 @@ void LogFile::append_unlocked(const char* logline,int len){
 
 bool LogFile::rollFile(){
 	time_t now=0;
-	string filename=getLogFileName(basename_,&now);
+	std::string filename=getLogFileName(basename_,&now);
 	time_t start=now/kRollPerSeconds_*kRollPerSeconds_;
 	if(now>lastRoll_){
 		lastRoll_=now;
@@ -75,10 +77,10 @@ bool LogFile::rollFile(){
 	return false;
 }
 
-string LogFile::getLogFileName(const string& basename,time_t* now){
-	string filename;
+std::string LogFile::getLogFileName(const std::string& basename,time_t* now){
+	std::string filename;
 	filename.reserve(basename.size()+64);
-	fil =basename;
+	filename =basename;
 
 	char timebuf[32];
 	// tm 存储时间的结构

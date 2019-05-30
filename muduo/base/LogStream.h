@@ -17,19 +17,22 @@ public:
     void operator=(const FixedBuffer&)=delete;
 
     FixedBuffer(/* args */):cur_(data_){}
-    ~FixedBuffer();
+    ~FixedBuffer(){}
     void append(const char* buf,size_t len){
-        if()
+        if(avail()>static_cast<int>(len)){
+		memcpy(cur_,buf,len);
+		cur_+=len;
+	}
     }
     const char* data()const{return data_;}
     int length()const{
         return static_cast<int>(cur_-data_);
     }
     char* current(){
-        return cur;
+        return cur_;
     }
     int avail()const{
-        return static_cast<int>(end()-cur);
+        return static_cast<int>(end()-cur_);
     }
     void add(size_t len){
         cur_+=len;
@@ -45,7 +48,7 @@ public:
     }
 
 private:
-    const char* end()const {return data_+sizeo data_;}
+    const char* end()const {return data_+sizeof data_;}
     /* data */
     char data_[Size];
     char* cur_;
@@ -58,9 +61,8 @@ public:
     typedef FixedBuffer<kSmallBuffer> Buffer;
     LogStream(const LogStream&)=delete;
     void operator=(const LogStream&)=delete;
-
-    LogStream(/* args */);
-    ~LogStream();
+    LogStream(){}
+    ~LogStream(){}
 
     LogStream& operator<<(bool v){
         buffer_.append(v?"1":"0",1);
@@ -127,4 +129,4 @@ private:
 }
 
 
-#endif;
+#endif

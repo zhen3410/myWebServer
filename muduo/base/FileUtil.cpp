@@ -5,6 +5,7 @@
 #include<fcntl.h>
 #include<sys/stat.h>
 #include<unistd.h>
+#include<string.h>
 
 using namespace server;
 
@@ -23,11 +24,11 @@ void AppendFile::append(const char* logline,const size_t len){
     size_t n=write(logline,len);
     size_t remain=len-n;
     while(remain>0){
-        size_t x=write(logfile+n,remain);
+        size_t x=write(logline+n,remain);
         if(x==0){
             int err=ferror(fp_);
             if(err){
-                fprintf(stderr,"AppendFile::append() failed %s\n",strerror_tl(err));
+                fprintf(stderr,"AppendFile::append() failed %s\n",strerror(err));
             }
             break;
             n+=x;

@@ -2,6 +2,7 @@
 #define SERVER_BASE_FILEUTIL_H
 
 #include<string>
+#include<unistd.h>
 
 namespace server{
 

@@ -47,7 +47,7 @@ private:
 
 
 	const int flushInterval_;
-	const string basename_;
+	const std::string basename_;
 	const off_t rollSize_;
 
 	Thread thread_;
@@ -60,9 +60,9 @@ private:
 	BufferPtr nextBuffer_;
 	BufferVector buffers_;
 
-}
+};
 
 }
 
 
-#define
+#endif

@@ -1,10 +1,12 @@
 #include"Logging.h"
 
-#include"CurrentThread.h"
+//#include"CurrentThread.h"
 #include"AsyncLogging.h"
 #include"Timestamp.h"
 
 #include<pthread.h>
+#include<sys/syscall.h>
+#include<unistd.h>
 
 namespace server{
 
@@ -30,7 +32,7 @@ Logger::Impl::Impl(const char* filename,int line)
     baseName_(filename)
 {
     formatTime();
-    stream_<<CurrentThread::tid();
+    stream_<<syscall(SYS_gettid);
 }
 
 void Logger::Impl::formatTime(){
@@ -44,7 +46,7 @@ Logger::Logger(const char* filename,int line)
 }
 
 Logger::~Logger(){
-    impl_.stream_<<"--"<<impl_.baseName_<<":"<<impl_.line<<'\n';
+    impl_.stream_<<"--"<<impl_.baseName_<<":"<<impl_.line_<<'\n';
     const LogStream::Buffer& buf(stream().buffer());
     output(buf.data(),buf.length());
 }
