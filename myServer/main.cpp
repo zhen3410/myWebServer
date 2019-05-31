@@ -2,6 +2,7 @@
 #include"EventLoopThread.h"
 #include"Channel.h"
 #include"Socket.h"
+#include"TcpServer.h"
 
 #include<iostream>
 #include<memory>
@@ -23,13 +24,10 @@ void newConnection(){
 
 int main(){
 	std::cout<<"main() pid = "<<getpid()<<" , tid = "<<CurrentThread::tid()<<std::endl;
+	
 	EventLoop loop;
-	Socket socket(9981);
-	g_socket=&socket;
-	std::shared_ptr<Channel> pCh(new Channel(loop,socket.fd()));
-	pCh->enableReading();
-	pCh->setReadCallBack(newConnection);
-	socket.bindAndListening();
+	TcpServer server(loop,9981,"Server");
+	server.start();
 
 	loop.loop();
 
