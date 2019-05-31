@@ -63,7 +63,8 @@ private:
 
 	bool callingFunctors_;
 	int wakeupFd_;
-	std::unique_ptr<Channel> wakeupChannel_;
+	// 这里不能用unique_ptr,否则会造成weak_ptr错误
+	std::shared_ptr<Channel> wakeupChannel_;
 
 	MutexLock mutex_;
 	std::vector<Functor> pendingFunctors_;
