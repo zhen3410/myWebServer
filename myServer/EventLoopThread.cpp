@@ -19,7 +19,7 @@ EventLoopThread::EventLoopThread(const std::string& name)
 
 EventLoopThread::~EventLoopThread(){
     if(loop_!=NULL){
-        loop_.quit();
+        loop_->quit();
         thread_.join();
     }
 }
