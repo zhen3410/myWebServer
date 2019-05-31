@@ -3,6 +3,7 @@
 
 #include"base/CurrentThread.h"
 #include"EPoller.h"
+#include"base/MutexLock.h"
 
 #include<pthread.h>
 #include<unistd.h>
@@ -10,10 +11,12 @@
 #include<assert.h>
 #include<memory>
 #include<vector>
+#include<functional>
 
 
 class EventLoop{
 public:
+	typedef std::function<void()> Functor;
 	EventLoop(const EventLoop&)=delete;
 	void operator=(const EventLoop&)=delete;
 
@@ -22,6 +25,9 @@ public:
 
 	void loop();
 	void quit();
+
+	void runInLoop(const Functor&);
+	void queueInLoop(const Functor&);
 
 	void assertInLoopThread(){
 		assert(isInLoopThread());
@@ -42,6 +48,11 @@ public:
 	}
 
 private:
+	void handleRead();
+	void wakeUp();
+	void doPendingFunctors();
+
+
 	const pid_t threadId_;
 	bool looping_;
 	bool quit_;
@@ -49,6 +60,13 @@ private:
 	
 	typedef std::vector<std::shared_ptr<Channel>> ChannelList;
 	ChannelList activeChannel_;
+
+	bool callingFunctors_;
+	int wakeupFd_;
+	std::unique_ptr<Channel> wakeupChannel_;
+
+	MutexLock mutex_;
+	std::vector<Functor> pendingFunctors_;
 };
 
 #endif
