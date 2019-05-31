@@ -47,7 +47,7 @@ void Socket::bindAndListening(){
 }
 
 int Socket::accept(struct sockaddr_in& acAddr){
-    int connfd=accept(socketFd_,(struct sockaddr*)(&acAddr),sizeof acAddr);
+    int connfd=accept(socketFd_,(struct sockaddr*)(&acAddr),(socklen_t)(sizeof acAddr));
     assert(connfd>=0);
     setNonBlockAndCloseOnExec(connfd);
     return connfd;
