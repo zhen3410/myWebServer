@@ -1,0 +1,55 @@
+#include"Socket.h"
+
+#include<sys/socket.h>
+#include<netinet/in.h>
+#include<fcntl.h>
+
+void setNonBlockAndCloseOnExec(int fd){
+    int flags=fcntl(fd,F_GETFL,0);
+    flags|=O_NONBLOCK;
+    int ret=fcntl(fd,F_SETFL,flags);
+    assert(ret>=0);
+
+    int flags=fcntl(fd,F_GETFD,0);
+    flags|=O_CLOEXEC;
+    int ret=fcntl(fd,F_SETFD,flags);
+    assert(ret>=0);
+}
+
+Socket::Socket(int port)
+    :closed_(falseS),
+    socketFd_(socket(AF_INET,SOCK_STREAM,0)),
+    port_(port)
+{
+    assert(socketFd_>=0);
+    setNonBlockAndCloseOnExec(socketFd_);
+}
+
+Socket::~Socket(){
+    if(!closed_)
+        close(socketFd_);
+}
+
+void Socket::bindAndListening(){
+    struct sockaddr_in servaddr;
+    memset(&servaddr,0,sizeof servaddr);
+    servaddr.sin_family=AF_INET;
+    servaddr.sin_addr.s_addr=htonl(INADDR_ANY);
+    servaddr.sin_port=htons(port_);
+    int ret=bind(socketFd_,(cosnt struct sockaddr*)servaddr,(socklen_t)(sizeof servaddr));
+    assert(ret==0);
+    int ret=listen(socketFd_,SOMAXCONN);
+    assert(ret==0);
+}
+
+int Socket::accept(struct sockaddr_in& acAddr){
+    int connfd=accept(socketFd_,(struct sockaddr*)acAddr,sizeof acAddr);
+    assert(connfd>=0);
+    setNonBlockAndCloseOnExec(connfd);
+    return connfd;
+}
+
+void Socket::close(){
+    close(socketFd_);
+    closed_=true;
+}
