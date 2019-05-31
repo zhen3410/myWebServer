@@ -13,7 +13,7 @@ __thread EventLoop* t_loopInThisThread=NULL;
 int creatEventFd(){
 	int evFd=eventfd(0,EFD_NONBLOCK|EFD_CLOEXEC);
 	assert(evFd>=0);
-	retrun evFd;
+	return evFd;
 }
 
 }
@@ -30,7 +30,7 @@ EventLoop::EventLoop()
 {
 	assert(t_loopInThisThread==NULL);
 	t_loopInThisThread=this;
-	wakeupChannel_->setReadCallBack(std::bind(&EventLoop::handleRead(),this));
+	wakeupChannel_->setReadCallBack(std::bind(&EventLoop::handleRead,this));
 	wakeupChannel_->enableReading();
 }
 

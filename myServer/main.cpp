@@ -1,42 +1,30 @@
 #include"EventLoop.h"
-#include"base/Thread.h"
-#include"Channel.h"
-
 #include<iostream>
-#include<unistd.h>
-#include<string.h>
-#include<sys/timerfd.h>
-#include<memory>
 
 EventLoop* g_loop;
+int flag=0;
 
-void ThreadFunc(){
-	//g_loop->loop();
-	std::cout<<"threadFunc() pid = "<<getpid()<<" , tid = "<<CurrentThread::tid()<<std::endl;
-	EventLoop loop;
-	loop.loop();
-}
-
-void timeout(){
-	std::cout<<"Timeout!"<<std::endl;
+void run3(){
+	std::cout<<"run3() pid = "<<getpid()<<" , flag = "<<flag<<std::endl;
 	g_loop->quit();
 }
 
+void run2(){
+	std::cout<<"run2() pid = "<<getpid()<<" , flag = "<<flag<<std::endl;
+	flag=2;
+	g_loop->runInLoop(run3);
+}
+
+void run1(){
+	std::cout<<"run1() pid = "<<getpid()<<" , flag = "<<flag<<std::endl;
+	flag=1;
+	g_loop->runInLoop(run2);
+}
+
 int main(){
-	std::cout<<"main() pid = "<<getpid()<<" , tid = "<<CurrentThread::tid()<<std::endl;
+	std::cout<<"main() pid = "<<getpid()<<" , flag = "<<flag<<std::endl;
 	EventLoop loop;
 	g_loop=&loop;
-
-	int timerfd=timerfd_create(CLOCK_MONOTONIC,TFD_NONBLOCK|TFD_CLOEXEC);
-	std::shared_ptr<Channel> pCh(new Channel(loop,timerfd));
-	pCh->setReadCallBack(timeout);
-	pCh->enableReading();
-
-	struct itimerspec howlong;
-	bzero(&howlong,sizeof howlong);
-	howlong.it_value.tv_sec=5;
-	timerfd_settime(timerfd,0,&howlong,NULL);
-
+	g_loop->runInLoop(run1);
 	loop.loop();
-	return 0;
 }
