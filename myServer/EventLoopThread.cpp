@@ -9,9 +9,9 @@
 EventLoopThread::EventLoopThread(const std::string& name)
     :loop_(NULL),
     //existing_(false),
-    thread_(std::bind(&EventLoopThread::threadFunc(),this),name),
+    thread_(std::bind(&EventLoopThread::threadFunc,this),name),
     mutex_(),
-    cond_(mutex_),
+    cond_(mutex_)
     //callback_(cb)
 {
 
