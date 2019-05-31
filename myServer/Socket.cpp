@@ -6,6 +6,7 @@
 #include<assert.h>
 #include<unistd.h>
 #include<memory>
+#include<string.h>
 
 void setNonBlockAndCloseOnExec(int fd){
     int flags=fcntl(fd,F_GETFL,0);
@@ -30,7 +31,7 @@ Socket::Socket(int port)
 
 Socket::~Socket(){
     if(!closed_)
-        close(socketFd_);
+        ::close(socketFd_);
 }
 
 void Socket::bindAndListening(){
@@ -39,20 +40,20 @@ void Socket::bindAndListening(){
     servaddr.sin_family=AF_INET;
     servaddr.sin_addr.s_addr=htonl(INADDR_ANY);
     servaddr.sin_port=htons(port_);
-    int ret=bind(socketFd_,(const struct sockaddr*)servaddr,(socklen_t)(sizeof servaddr));
+    int ret=bind(socketFd_,(const struct sockaddr*)(&servaddr),(socklen_t)(sizeof servaddr));
     assert(ret==0);
     ret=listen(socketFd_,SOMAXCONN);
     assert(ret==0);
 }
 
 int Socket::accept(struct sockaddr_in& acAddr){
-    int connfd=accept(socketFd_,(struct sockaddr*)acAddr,sizeof acAddr);
+    int connfd=accept(socketFd_,(struct sockaddr*)(&acAddr),sizeof acAddr);
     assert(connfd>=0);
     setNonBlockAndCloseOnExec(connfd);
     return connfd;
 }
 
 void Socket::close(){
-    close(socketFd_);
+    ::close(socketFd_);
     closed_=true;
 }
