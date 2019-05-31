@@ -1,6 +1,7 @@
 #ifndef SERVER_SOCKET_H
 #define SERVER_SOCKET_H
 
+struct sockaddr_in;
 
 class Socket{
 
@@ -12,7 +13,7 @@ public:
     ~Socket();
 
     void bindAndListening();
-    int accept();
+    int accept(struct sockaddr_in&);
     void close();
 
     int fd()const{return socketFd_;}
