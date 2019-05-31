@@ -15,7 +15,7 @@ void setNonBlockAndCloseOnExec(int fd){
     assert(ret>=0);
 
     flags=fcntl(fd,F_GETFD,0);
-    flags|=O_CLOEXEC;
+    flags|=FD_CLOEXEC;
     ret=fcntl(fd,F_SETFD,flags);
     assert(ret>=0);
 }
@@ -47,7 +47,7 @@ void Socket::bindAndListening(){
 }
 
 int Socket::accept(struct sockaddr_in& acAddr){
-    int connfd=accept(socketFd_,(struct sockaddr*)(&acAddr),(socklen_t)(sizeof acAddr));
+    int connfd=::accept(socketFd_,(struct sockaddr*)(&acAddr),(socklen_t*)(sizeof acAddr));
     assert(connfd>=0);
     setNonBlockAndCloseOnExec(connfd);
     return connfd;

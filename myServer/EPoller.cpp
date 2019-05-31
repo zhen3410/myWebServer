@@ -51,7 +51,7 @@ void EPoller::del_event(std::shared_ptr<Channel> channel){
 void EPoller::mod_event(std::shared_ptr<Channel> channel){
     int fd=channel->fd();
     if(fd2channel_.size()==0||fd2channel_.find(fd)==fd2channel_.end()){
-	    std::cout<<"EPoller::mod_event add_event"<<std::endl;
+	//    std::cout<<"EPoller::mod_event add_event"<<std::endl;
 	add_event(channel);
 	return;
     }
