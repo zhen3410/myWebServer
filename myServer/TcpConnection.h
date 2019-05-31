@@ -19,7 +19,7 @@ public:
     TcpConnection(const TcpConnection&)=delete;
     void operator=(const TcpConnection&)=delete;
 
-    TcpConnection(const EventLoop& loop,int fd,const struct sockaddr& peerAddr);
+    TcpConnection(EventLoop& loop,int fd,const struct sockaddr_in& peerAddr);
     ~TcpConnection();
 
     void setConnectionCallBack(const ConnectionCallBack& cb){
@@ -36,9 +36,9 @@ private:
     void errorHandle();
 
     /* data */
-    const EventLoop& loop_;
+    EventLoop& loop_;
     int fd_;
-    struct sockaddr peerAddr_;
+    struct sockaddr_in peerAddr_;
 
     std::shared_ptr<Channel> channelPtr_;
 

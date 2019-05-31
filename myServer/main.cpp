@@ -26,19 +26,8 @@ int main(){
 	std::cout<<"main() pid = "<<getpid()<<" , tid = "<<CurrentThread::tid()<<std::endl;
 	
 	EventLoop loop;
-<<<<<<< HEAD
 	TcpServer server(loop,9981,"Server");
 	server.start();
-=======
-	Socket socket(9981);
-	g_socket=&socket;
-	std::shared_ptr<Channel> pCh(new Channel(loop,socket.fd()));
-	pCh->enableReading();
-	pCh->setReadCallBack(newConnection);
-	socket.bindAndListening();
-	
-	std::cout<<"loop started"<<std::endl;
->>>>>>> d5d92ef8fa090a1a1642d960642224c4a6925f1e
 
 	loop.loop();
 

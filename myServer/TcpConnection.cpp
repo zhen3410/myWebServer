@@ -2,8 +2,9 @@
 #include"Channel.h"
 
 #include<iostream>
+#include<string.h>
 
-TcpConnection::TcpConnection(const EventLoop& loop,int fd, const struct sockaddr& peerAddr)
+TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& peerAddr)
     :loop_(loop),
     fd_(fd),
     peerAddr_(peerAddr),
@@ -23,7 +24,7 @@ TcpConnection::~TcpConnection(){
 
 void TcpConnection::readHandle(){
     char buf[4092];
-    int n=read(fd_,buf);
+    int n=read(fd_,buf,strlen(buf));
     std::cout<<"recv"<<buf<<std::endl;
 }
 

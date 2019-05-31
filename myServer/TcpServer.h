@@ -24,7 +24,7 @@ public:
     TcpServer(const TcpServer&)=delete;
     void operator=(const TcpServer&)=delete;
 
-    TcpServer(const EventLoop&,int port,const std::string& name);
+    TcpServer(EventLoop&,int port,const std::string& name);
     ~TcpServer();
 
     void start();
@@ -38,7 +38,7 @@ public:
 
 private:
     /* data */
-    EventLoop& loop;
+    EventLoop& loop_;
     Socket socket_;
     std::string name_;
 
