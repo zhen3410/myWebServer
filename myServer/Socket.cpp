@@ -6,7 +6,9 @@
 #include<assert.h>
 #include<unistd.h>
 #include<memory>
+#include<errno.h>
 #include<string.h>
+#include<iostream>
 
 void setNonBlockAndCloseOnExec(int fd){
     int flags=fcntl(fd,F_GETFL,0);
@@ -47,10 +49,14 @@ void Socket::bindAndListening(){
 }
 
 int Socket::accept(struct sockaddr_in& acAddr){
-    int connfd=::accept(socketFd_,(struct sockaddr*)(&acAddr),(socklen_t*)(sizeof acAddr));
-    assert(connfd>=0);
-    setNonBlockAndCloseOnExec(connfd);
-    return connfd;
+	int len=sizeof acAddr;
+	int connfd=::accept(socketFd_,(struct sockaddr*)(&acAddr),(socklen_t*)(&len));
+    	if(connfd<0){
+		std::cout<<"accept error = "<<strerror(errno)<<std::endl;
+    	}
+    	assert(connfd>=0);
+    	setNonBlockAndCloseOnExec(connfd);
+    	return connfd;
 }
 
 void Socket::close(){

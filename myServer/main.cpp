@@ -30,6 +30,8 @@ int main(){
 	pCh->enableReading();
 	pCh->setReadCallBack(newConnection);
 	socket.bindAndListening();
+	
+	std::cout<<"loop started"<<std::endl;
 
 	loop.loop();
 
