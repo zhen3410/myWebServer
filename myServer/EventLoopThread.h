@@ -19,7 +19,7 @@ public:
     void operator=(const EventLoopThread&)=delete;
 
     //EventLoopThread(const ThreadInitCallBack& cb=ThreadInitCallBack(),const std::string& name=std::String());
-    EventLoopThread(const std::string& name=std::String());
+    EventLoopThread(const std::string& name=std::string());
     ~EventLoopThread();
     EventLoop* startLoop();
 
@@ -28,7 +28,7 @@ private:
 
     EventLoop* loop_;
     //bool existing_;
-    Thread thread_:
+    Thread thread_;
     MutexLock mutex_;
     Condition cond_;
     //ThreadInitCallBack callback_;
