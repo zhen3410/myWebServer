@@ -13,7 +13,7 @@ class TcpConnection : public std::enable_shared_from_this<TcpConnection>
 public:
     typedef std::function<void()> ConnectionCallBack;
     typedef std::function<void()> MessageCallBack;
-    typedef std::function<void(std::shared_ptr<TcpConnection>)> CloseCallBack;
+    typedef std::function<void(const std::string&)> CloseCallBack;
 
     TcpConnection(const TcpConnection&)=delete;
     void operator=(const TcpConnection&)=delete;
@@ -38,13 +38,13 @@ private:
     void readHandle();
     void writeHandle();
     void errorHandle();
-    void closeHanlde();
+    void closeHandle();
 
     /* data */
     EventLoop& loop_;
     int fd_;
     struct sockaddr_in peerAddr_;
-    const std::string& name_;
+    const std::string name_;
 
     std::shared_ptr<Channel> channelPtr_;
 

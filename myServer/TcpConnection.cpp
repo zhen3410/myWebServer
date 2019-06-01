@@ -4,6 +4,7 @@
 #include<iostream>
 #include<string.h>
 #include<arpa/inet.h>
+#include<unistd.h>
 
 TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& peerAddr,const std::string& name)
     :loop_(loop),
@@ -21,7 +22,7 @@ TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& p
 }
 
 TcpConnection::~TcpConnection(){
-
+	::close(fd_);
 }
 
 void TcpConnection::readHandle(){

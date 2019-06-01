@@ -35,6 +35,7 @@ public:
     void setMessageCallBack(const MessageCallBack& cb){
         messageCallBack_=cb;
     }
+    void ConnectionCloseCallBack(const std::string&);
     void newConnection();
 
 private:
@@ -49,7 +50,7 @@ private:
 
     ConnectionCallBack connectionCallBack_;
     MessageCallBack messageCallBack_;
-    CloseCallBack ConnectioncloseCallBack_;
+    CloseCallBack ConnectionCloseCallBack_;
 
     std::map<std::string,TcpConnectionPtr> conn_;
 };
