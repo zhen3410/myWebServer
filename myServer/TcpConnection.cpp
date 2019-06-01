@@ -70,7 +70,7 @@ TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& p
     channelPtr_->setReadCallBack(std::bind(&TcpConnection::readHandle,this));
     channelPtr_->enableReading();
     channelPtr_->setWriteCallBack(std::bind(&TcpConnection::writeHandle,this));
-    //channelPtr_->enableWriting();
+    //channelPtr_->enableWriting(); 不能再此設置可讀，否則邊緣觸發，會在一瞬間立即退出
     channelPtr_->setErrorCallBack(std::bind(&TcpConnection::errorHandle,this));
     //channelPtr_->setET();
 }
