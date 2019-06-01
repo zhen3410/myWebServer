@@ -37,11 +37,17 @@ public:
     void send(const std::string&);
     void sendInLoop(const std::string&);
 
+    void inputBufferClear(){
+	    inputBuffer_=std::string();
+    }
+
 private:
     void readHandle();
     void writeHandle();
     void errorHandle();
     void closeHandle();
+
+    bool EAGAIN_=false;
 
     /* data */
     EventLoop& loop_;

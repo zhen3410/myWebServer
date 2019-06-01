@@ -6,6 +6,7 @@
 const int Channel::kNoneEvent=0;
 const int Channel::kReadEvent=EPOLLIN|EPOLLPRI;
 const int Channel::kWriteEvent=EPOLLOUT;
+const int Channel::kEdgeTrigger=EPOLLET;
 
 Channel::Channel(EventLoop& loop,int fd)
 	:loop_(loop),

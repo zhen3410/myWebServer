@@ -28,6 +28,7 @@ void onConnection(std::shared_ptr<TcpConnection> conn){
 }
 
 void onMessage(std::shared_ptr<TcpConnection> conn){
+	conn->inputBufferClear();
 	conn->send("hello new server");
 }
 

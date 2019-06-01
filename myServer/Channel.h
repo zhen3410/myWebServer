@@ -21,10 +21,12 @@ public:
 
 	void enableReading(){
 		events_|=kReadEvent;
+		setET();
 		update();
 	}
 	void enableWriting(){
 		events_|=kWriteEvent;
+		setET();
 		update();
 	}
 	void disableReading(){
@@ -41,7 +43,7 @@ public:
 	}
 
 	void setET(){
-		events_|=EPOLLET;
+		events_|=kEdgeTrigger;
 	}
 
 	void setRevents(int revent){
@@ -70,6 +72,7 @@ private:
 	static const int kNoneEvent;
 	static const int kReadEvent;
 	static const int kWriteEvent;
+	static const int kEdgeTrigger;
 
 	CallBack readCallBack_;
 	CallBack writeCallBack_;
