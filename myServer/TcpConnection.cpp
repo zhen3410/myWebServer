@@ -31,7 +31,7 @@ void TcpConnection::readHandle(){
     if(n>0){
 	    std::cout<<"recv "<<strlen(buf)<<" bytes"<<std::endl;
         // 执行消息回调函数
-        messageCallBack_();
+        messageCallBack_(shared_from_this());
     }else if(n==0){
         closeHandle();
     }else{

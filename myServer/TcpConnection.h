@@ -12,7 +12,7 @@ class TcpConnection : public std::enable_shared_from_this<TcpConnection>
 {
 public:
     typedef std::function<void()> ConnectionCallBack;
-    typedef std::function<void()> MessageCallBack;
+    typedef std::function<void(std::shared_ptr<TcpConnection>)> MessageCallBack;
     typedef std::function<void(const std::string&)> CloseCallBack;
 
     TcpConnection(const TcpConnection&)=delete;
