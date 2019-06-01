@@ -37,6 +37,7 @@ void TcpServer::newConnection(){
     TcpConnectionPtr newConn(new TcpConnection(loop_,connfd,peerAddr,newTcpConnectionName));
     conn_[newTcpConnectionName]=newConn;
     newConn->setCloseCallBack(std::bind(&TcpServer::ConnectionCloseCallBack,this,std::placeholders::_1));
+    newConn->setMessageCallBack(messageCallBack_);
 }
 
 void TcpServer::ConnectionCloseCallBack(const std::string& name){

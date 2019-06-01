@@ -30,6 +30,8 @@ void TcpConnection::readHandle(){
     int n=read(fd_,buf,4092);
     if(n>0){
 	    std::cout<<"recv "<<strlen(buf)<<" bytes"<<std::endl;
+        // 执行消息回调函数
+        messageCallBack_();
     }else if(n==0){
         closeHandle();
     }else{
@@ -54,4 +56,17 @@ void TcpConnection::closeHandle(){
 void TcpConnection::connectionDestroy(){
     channelPtr_->disableAll();
     loop_.removeChannel(channelPtr_);
+}
+
+void TcpConnection::send(const std::string& msg){
+    if(loop_.isInLoopThread()){
+        sendInLoop(msg);
+    }else{
+        loop_.runInLoop(std::bind(&TcpConnection::sendInLoop,this,msg));
+    }
+}
+
+void TcpConnection::sendInLoop(const std::string& msg){
+    int n=write(fd_,msg.c_str(),msg.size());
+    assert(n>=0);
 }

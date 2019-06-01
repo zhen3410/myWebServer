@@ -3,6 +3,7 @@
 #include"Channel.h"
 #include"Socket.h"
 #include"TcpServer.h"
+#include"TcpConnection.h"
 
 #include<iostream>
 #include<memory>
@@ -22,11 +23,21 @@ void newConnection(){
 	g_socket->close();
 }
 
+void onConnection(std::shared_ptr<TcpConnection> conn){
+
+}
+
+void onMessage(std::shared_ptr<TcpConnection> conn){
+	conn->send("hello new server");
+}
+
 int main(){
 	std::cout<<"main() pid = "<<getpid()<<" , tid = "<<CurrentThread::tid()<<std::endl;
 	
 	EventLoop loop;
 	TcpServer server(loop,9981,"Server");
+	server.setConnectionCallBack(onConnection);
+	server.setMessageCallBack(onMessage);
 	server.start();
 
 	loop.loop();

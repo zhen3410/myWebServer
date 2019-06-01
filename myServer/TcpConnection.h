@@ -33,6 +33,8 @@ public:
 
     void connectionDestroy();
 
+    void send(const std::string&);
+    void sendInLoop(const std::string&);
 
 private:
     void readHandle();
@@ -51,6 +53,7 @@ private:
     ConnectionCallBack connectionCallBack_;
     MessageCallBack messageCallBack_;
     CloseCallBack closeCallBack_;
+
 };
 
 
