@@ -19,10 +19,6 @@ public:
 	Channel(EventLoop& loop,int fd);
 	~Channel();
 
-	void setEvents(int event){
-		events_=event;
-	}
-
 	void enableReading(){
 		events_|=kReadEvent;
 		update();
@@ -44,10 +40,13 @@ public:
 		update();
 	}
 
+	void setET(){
+		events_|=EPOLLET;
+	}
+
 	void setRevents(int revent){
 		revents_=revent;
 	}
-
 	void setReadCallBack(const CallBack& cb){
 		readCallBack_=cb;
 	}

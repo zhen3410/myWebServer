@@ -6,6 +6,8 @@
 #include<arpa/inet.h>
 #include<unistd.h>
 
+//const int TcpConnection::BUFFERSIZE=4096;
+
 TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& peerAddr,const std::string& name)
     :loop_(loop),
     fd_(fd),
@@ -16,9 +18,9 @@ TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& p
     channelPtr_->setReadCallBack(std::bind(&TcpConnection::readHandle,this));
     channelPtr_->enableReading();
     channelPtr_->setWriteCallBack(std::bind(&TcpConnection::writeHandle,this));
-    //channelPtr_->enableWriting();
+    channelPtr_->enableWriting();
     channelPtr_->setErrorCallBack(std::bind(&TcpConnection::errorHandle,this));
-
+    channelPtr_->setET();
 }
 
 TcpConnection::~TcpConnection(){
@@ -27,7 +29,7 @@ TcpConnection::~TcpConnection(){
 
 void TcpConnection::readHandle(){
     char buf[4092];
-    int n=read(fd_,buf,4092);
+    int n=readn(fd_,inputBuffer_);
     if(n>0){
 	    std::cout<<"recv "<<strlen(buf)<<" bytes"<<std::endl;
         // 执行消息回调函数
@@ -40,7 +42,16 @@ void TcpConnection::readHandle(){
 }
 
 void TcpConnection::writeHandle(){
-
+    int n=writen(fd_,outputBuffer_);
+    if(n>0){
+        if(outputBuffer_.size()>0){
+            channelPtr_->enableWriting();
+        }
+    }else if(n<0){
+        errorHandle();
+    }else{
+        closeHandle();
+    }
 }
 
 void TcpConnection::errorHandle(){
@@ -67,6 +78,52 @@ void TcpConnection::send(const std::string& msg){
 }
 
 void TcpConnection::sendInLoop(const std::string& msg){
-    int n=write(fd_,msg.c_str(),msg.size());
-    assert(n>=0);
+    outputBuffer_+=msg;
+    writeHandle();
 }
+
+ssize_t readn(int fd,std::string& buffer){
+    size_t left=65536;
+    size_t nread;
+    ssize_t tot=0;
+    for(;;){
+        char ptr[65536];
+        nread=read(fd,ptr,left);
+        if(nread<0){
+            if(errno==EINTR)
+                continue;
+            else if(errno==EAGIN)
+                return tot;
+            else return -1;
+        }else if(nread==0)
+            return tot;
+        tot+=nread;
+        buffer+=std::string(ptr,nread);
+    }
+    return tot;
+}
+
+ssize_t writen(int fd,const std::string& buffer){
+    size_t left=buffer.size();
+    ssize_t nWriten=0;
+    ssize_t tot=0;
+    const char* ptr=buffer.c_str();
+    while(left>0){
+        nWriten=write(fd,ptr,left);
+        if(nWriten<=0){
+            if(nWriten<0&&errno==EINTR)
+                continue;
+            else if(nWriten<0&&errno==EAGIN)
+                break;
+            else return -1;
+        }
+        ptr+=nWriten;
+        left-=nWriten;
+        tot+=nWriten;
+    }
+    if(nWriten==buffer.size())
+        buffer.clear();
+    else buffer=buffer.substr(nWriten);
+    return tot;
+}
+

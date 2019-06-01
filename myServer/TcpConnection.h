@@ -7,6 +7,7 @@
 #include<netinet/in.h>
 #include<string>
 #include<functional>
+#include<vector>
 
 class TcpConnection : public std::enable_shared_from_this<TcpConnection>
 {
@@ -50,9 +51,17 @@ private:
 
     std::shared_ptr<Channel> channelPtr_;
 
+    //std::vector<char> inputBuffer_;
+    //std::vector<char> outputBuffer_;
+
+    std::string inputBuffer_;
+    std::string outputBuffer_;
+
     ConnectionCallBack connectionCallBack_;
     MessageCallBack messageCallBack_;
     CloseCallBack closeCallBack_;
+
+    //static const int BUFFERSIZE;
 
 };
 
