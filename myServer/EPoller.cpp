@@ -71,6 +71,7 @@ void EPoller::poll(std::vector<std::shared_ptr<Channel>> &activeChannel){
     for(int i=0;i<numEvents;i++){
         // 获取产生事件的文件描述符
         int fd=events_[i].data.fd;
+	std::cout<<"fd = "<<fd<<"happend"<<std::endl;
 
         // 获取次文件描述符对应的Channel
         assert(fd2channel_.find(fd)!=fd2channel_.end());
