@@ -20,6 +20,7 @@ public:
     typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
     typedef std::function<void(TcpConnectionPtr)> ConnectionCallBack;
     typedef std::function<void(TcpConnectionPtr)> MessageCallBack;
+    typedef std::function<void(const std::string&)> CloseCallBack;
 
     TcpServer(const TcpServer&)=delete;
     void operator=(const TcpServer&)=delete;
@@ -48,6 +49,7 @@ private:
 
     ConnectionCallBack connectionCallBack_;
     MessageCallBack messageCallBack_;
+    CloseCallBack ConnectioncloseCallBack_;
 
     std::map<std::string,TcpConnectionPtr> conn_;
 };

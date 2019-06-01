@@ -5,6 +5,7 @@
 
 #include<iostream>
 #include<string.h>
+#include<arpa/inet.h>
 
 TcpServer::TcpServer(EventLoop& loop,int port,const std::string& name)
     :loop_(loop),
@@ -30,10 +31,17 @@ void TcpServer::newConnection(){
 	struct sockaddr_in peerAddr;
 	memset(&peerAddr,0,sizeof peerAddr);
 	int connfd=socket_.accept(peerAddr);
-	std::cout<<"newConnection() accept a new Connection from "
-		<<ntohl(peerAddr.sin_addr.s_addr)<<":"<<ntohs(peerAddr.sin_port)<<std::endl;
-    TcpConnectionPtr newConn(new TcpConnection(loop_,connfd,peerAddr));
     std::string newTcpConnectionName=name_+std::to_string(ConnectionId_);
+	std::cout<<"newConnection() accept a new Connection ["<<newTcpConnectionName<<"] from "
+		<<inet_ntoa(peerAddr.sin_addr)<<":"<<ntohs(peerAddr.sin_port)<<std::endl;
+    TcpConnectionPtr newConn(new TcpConnection(loop_,connfd,peerAddr,newTcpConnectionName));
     conn_[newTcpConnectionName]=newConn;
+    newConn->setCloseCallBack(std::bind(TcpServer::ConnectioncloseCallBack_,this,std::placeholders::_1));
+}
 
+void TcpServer::ConnectionCloseCallBack_(const std::string& name){
+    auto conn=conn_[name];
+    conn_.erase(name);
+    // 为了channel对象声明管理的需要，将channel解注册移至loop中执行
+    loop_.queueInLoop(std::bind(&TcpConnection::connectionDestroy(),conn));
 }

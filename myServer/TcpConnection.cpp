@@ -3,12 +3,14 @@
 
 #include<iostream>
 #include<string.h>
+#include<arpa/inet.h>
 
-TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& peerAddr)
+TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& peerAddr,const std::string& name)
     :loop_(loop),
     fd_(fd),
     peerAddr_(peerAddr),
-    channelPtr_(new Channel(loop_,fd_))
+    channelPtr_(new Channel(loop_,fd_)),
+    name_(name)
 {
     channelPtr_->setReadCallBack(std::bind(&TcpConnection::readHandle,this));
     channelPtr_->enableReading();
@@ -28,9 +30,9 @@ void TcpConnection::readHandle(){
     if(n>0){
 	    std::cout<<"recv "<<strlen(buf)<<" bytes"<<std::endl;
     }else if(n==0){
-
+        closeHandle();
     }else{
-
+        errorHandle();
     }
 }
 
@@ -40,4 +42,15 @@ void TcpConnection::writeHandle(){
 
 void TcpConnection::errorHandle(){
 
+}
+
+void TcpConnection::closeHandle(){
+    std::cout<<"TcpConnection() name =["<<name_<<"] ip:port = "<<inet_ntoa(peerAddr_.sin_addr)<<":"<<ntohs(peerAddr_.sin_port)<<" closed"<<std::endl;
+    channelPtr_->disableAll();
+    closeCallBack_(name_);
+}
+
+void TcpConnection::connectionDestroy(){
+    channelPtr_->disableAll();
+    loop_.removeChannel(channelPtr_);
 }
