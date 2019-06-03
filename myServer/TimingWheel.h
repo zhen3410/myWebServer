@@ -9,7 +9,8 @@
 #include<deque>
 #include<functional>
 #include<map>
-
+#include<string>
+#include<iostream>
 
 class EventLoop;
 
@@ -25,7 +26,7 @@ public:
 
     void addConnection(const TcpConnectionPtr&);
     void onTimer();
-    void touchTimer(const TcpConnectionPtr&);
+    void touchTimer(const std::string&);
 
 private:
     void threadFunc();
@@ -34,9 +35,12 @@ private:
     {
         explicit Entry(const weakPtrTcpConnection& weakConn)
             :weakConn_(weakConn)
-        {}
+        {
+		std::cout<<"Entry constructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
+	}
 
         ~Entry(){
+		std::cout<<"Entry deconstructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
             auto conn=weakConn_.lock();
             if(conn)
                 conn->closeTimeout();
@@ -59,7 +63,7 @@ private:
     //CountDownLatch latch_;
     MutexLock mutex_;
     //Condition cond_;
-    std::map<TcpConnectionPtr,WeakEntryPtr> conn2entry_;
+    std::map<std::string,WeakEntryPtr> conn2entry_;
 
     static const int kDestroySeconds;
 };

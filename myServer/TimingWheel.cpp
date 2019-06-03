@@ -40,13 +40,18 @@ timerfd_settime(fd_,NULL,&sec,NULL);
 }
 
 void TimingWheel::addConnection(const TcpConnectionPtr& conn){
+	//std::cout<<"TimingWheel::addConnection conn use count = "<<conn.use_count()<<std::endl;
     EntryPtr entry(new Entry(conn));
+    //std::cout<<conn.use_count()<<std::endl;
     WeakEntryPtr weakEntry(entry);
-    conn2entry_[conn]=weakEntry;
+    //std::cout<<conn.use_count()<<std::endl;
+    conn2entry_[conn->name()]=weakEntry;
+    //std::cout<<conn.use_count()<<std::endl;
     {
         MutexLockGuard lock(mutex_);
         timingWheel_.back().insert(entry);
     }
+    //std::cout<<"TimingWheel::addConnection conn use count read = "<<conn.use_count()<<std::endl;
 }
 
 void TimingWheel::onTimer(){
@@ -64,10 +69,11 @@ void TimingWheel::onTimer(){
     std::cout<<"TimingWheel::onTimer() timing wheel go 1s"<<std::endl;
 }
 
-void TimingWheel::touchTimer(const TcpConnectionPtr& conn){
+void TimingWheel::touchTimer(const std::string& name){
+	//std::cout<<"TimingWheel::touchTimer() conn use count = "<<conn.use_count()<<std::endl;
     //WeakEntryPtr weakEntry=std::reinterpret_cast<WeakEntryPtr>(conn->getEntry());
-    assert(conn2entry_.find(conn)!=conn2entry_.end());
-    WeakEntryPtr weakEntry=conn2entry_[conn];
+    assert(conn2entry_.find(name)!=conn2entry_.end());
+    WeakEntryPtr weakEntry=conn2entry_[name];
     EntryPtr entry=weakEntry.lock();
     if(entry){
         MutexLockGuard lock(mutex_);

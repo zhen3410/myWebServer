@@ -53,6 +53,10 @@ public:
         return TimingWheelEntry_;
     }
 
+    const std::string& name(){
+	return name_;
+    }
+
 private:
     void readHandle();
     void writeHandle();
