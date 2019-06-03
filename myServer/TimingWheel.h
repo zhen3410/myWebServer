@@ -8,6 +8,8 @@
 #include<memory>
 #include<deque>
 #include<functional>
+#include<map>
+
 
 class EventLoop;
 
@@ -21,9 +23,9 @@ public:
 
     void start();
 
-    void addConnection(TcpConnectionPtr);
+    void addConnection(const TcpConnectionPtr&);
     void onTimer();
-    void touchTimer(TcpConnectionPtr)
+    void touchTimer(const TcpConnectionPtr&);
 
 private:
     void threadFunc();
@@ -45,7 +47,7 @@ private:
     };
       
     typedef std::shared_ptr<Entry> EntryPtr;
-    typedef std::weak_ptr<EntryPtr> WeakEntryPtr;
+    typedef std::weak_ptr<Entry> WeakEntryPtr;
     typedef std::unordered_set<EntryPtr> Bucket;
     typedef std::deque<Bucket> TimingWheelQueue;
 
@@ -54,9 +56,10 @@ private:
     std::shared_ptr<Channel> clearConnChannel_;
 
     TimingWheelQueue timingWheel_;
-    CountDownLatch latch_;
+    //CountDownLatch latch_;
     MutexLock mutex_;
-    Condition cond_;
+    //Condition cond_;
+    std::map<TcpConnectionPtr,WeakEntryPtr> conn2entry_;
 
     static const int kDestroySeconds;
 };

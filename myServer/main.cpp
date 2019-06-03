@@ -23,11 +23,11 @@ void newConnection(){
 	g_socket->close();
 }
 
-void onConnection(std::shared_ptr<TcpConnection> conn){
+void onConnection(const std::shared_ptr<TcpConnection>& conn){
 
 }
 
-void onMessage(std::shared_ptr<TcpConnection> conn){
+void onMessage(const std::shared_ptr<TcpConnection>& conn){
 	conn->inputBufferClear();
 	conn->send("hello new server");
 }

@@ -19,8 +19,8 @@ class TcpServer
 {
 public:
     typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
-    typedef std::function<void(TcpConnectionPtr)> ConnectionCallBack;
-    typedef std::function<void(TcpConnectionPtr)> MessageCallBack;
+    typedef std::function<void(const TcpConnectionPtr&)> ConnectionCallBack;
+    typedef std::function<void(const TcpConnectionPtr&)> MessageCallBack;
     typedef std::function<void(const std::string&)> CloseCallBack;
 
     TcpServer(const TcpServer&)=delete;
@@ -38,7 +38,7 @@ public:
     }
     void ConnectionCloseCallBack(const std::string&);
     void newConnection();
-    void ConnMessageCallBack(TcpConnectionPtr);
+    void ConnMessageCallBack(const TcpConnectionPtr&);
 
 private:
     /* data */

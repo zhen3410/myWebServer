@@ -21,12 +21,12 @@ public:
 
 	void enableReading(){
 		events_|=kReadEvent;
-		setET();
+		//setET();
 		update();
 	}
 	void enableWriting(){
 		events_|=kWriteEvent;
-		setET();
+		//setET();
 		update();
 	}
 	void disableReading(){
