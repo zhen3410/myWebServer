@@ -39,6 +39,7 @@ int main(){
 	TcpServer server(loop,9981,"Server");
 	server.setConnectionCallBack(onConnection);
 	server.setMessageCallBack(onMessage);
+	server.setThreadNum(5);
 	server.start();
 
 	loop.loop();

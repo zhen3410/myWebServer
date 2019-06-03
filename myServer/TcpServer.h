@@ -4,6 +4,7 @@
 #include"EventLoop.h"
 #include"Socket.h"
 #include"TimingWheel.h"
+#include"EventLoopThreadPool.h"
 
 #include<memory>
 #include<map>
@@ -14,6 +15,7 @@
 
 class TcpConnection;
 class Channel;
+class EventLoopThreadPool;
 
 class TcpServer
 {
@@ -30,6 +32,11 @@ public:
     ~TcpServer();
 
     void start();
+
+    void setThreadNum(int num){
+        threadPool_->setThreadNum(num);
+    }
+
     void setConnectionCallBack(const ConnectionCallBack& cb){
         connectionCallBack_=cb;
     }
@@ -37,6 +44,7 @@ public:
         messageCallBack_=cb;
     }
     void ConnectionCloseCallBack(const std::string&);
+    void ConnectionCloseCallBackInLoop(const std::string&)
     void newConnection();
     void ConnMessageCallBack(const TcpConnectionPtr&);
 
@@ -57,6 +65,7 @@ private:
     CloseCallBack ConnectionCloseCallBack_;
 
     std::map<std::string,TcpConnectionPtr> conn_;
+    std::unique_ptr<EventLoopThreadPool> threadPool_;
 };
 
 

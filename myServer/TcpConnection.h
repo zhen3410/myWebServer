@@ -45,16 +45,8 @@ public:
 	    inputBuffer_=std::string();
     }
 
-    void setEntry(std::weak_ptr<struct Entry> entry){
-        TimingWheelEntry_=entry;
-    }
-
-    std::weak_ptr<struct Entry> getEntry(){
-        return TimingWheelEntry_;
-    }
-
     const std::string& name(){
-	return name_;
+	    return name_;
     }
 
 private:
@@ -83,10 +75,10 @@ private:
     MessageCallBack messageCallBack_;
     CloseCallBack closeCallBack_;
 
-    //static const int BUFFERSIZE;
+    bool halfClose_;
+    bool disConnected;
 
-    // 注意这里必须要用weak_ptr，否则，entry的引用计数始终大于等于1，无法调用析构函数关闭连接
-    std::weak_ptr<struct Entry> TimingWheelEntry_;
+    //static const int BUFFERSIZE;
 };
 
 

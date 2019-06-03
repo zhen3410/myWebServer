@@ -36,11 +36,11 @@ private:
         explicit Entry(const weakPtrTcpConnection& weakConn)
             :weakConn_(weakConn)
         {
-		std::cout<<"Entry constructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
+		//std::cout<<"Entry constructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
 	}
 
         ~Entry(){
-		std::cout<<"Entry deconstructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
+		//std::cout<<"Entry deconstructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
             auto conn=weakConn_.lock();
             if(conn)
                 conn->closeTimeout();
@@ -60,9 +60,8 @@ private:
     std::shared_ptr<Channel> clearConnChannel_;
 
     TimingWheelQueue timingWheel_;
-    //CountDownLatch latch_;
     MutexLock mutex_;
-    //Condition cond_;
+    // 这里不能使用TcpConnection 作为键值，否则会导致引用计数增加，无法正确删除连接
     std::map<std::string,WeakEntryPtr> conn2entry_;
 
     static const int kDestroySeconds;

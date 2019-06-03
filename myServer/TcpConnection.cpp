@@ -65,7 +65,9 @@ TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& p
     channelPtr_(new Channel(loop_,fd_)),
     name_(name),
 	inputBuffer_(),
-	outputBuffer_()
+	outputBuffer_(),
+    halfClose_(false),
+    disConnected_(false)
 {
     channelPtr_->setReadCallBack(std::bind(&TcpConnection::readHandle,this));
     channelPtr_->enableReading();
@@ -98,7 +100,8 @@ void TcpConnection::writeHandle(){
     if(n>0){
         if(outputBuffer_.size()>0){
             channelPtr_->enableWriting();
-        }
+        }else if(outputBuffer_.size()==0&&halfClose_)  //数据已发送完毕且设置了半关闭位，则关闭连接
+            closeHandle();
     }else if(n==0){
         closeHandle();
     }else{
@@ -107,13 +110,25 @@ void TcpConnection::writeHandle(){
 }
 
 void TcpConnection::errorHandle(){
+    if(disConnected)return;
 
+    disConnected=true;
 }
 
 void TcpConnection::closeHandle(){
     std::cout<<"TcpConnection() name =["<<name_<<"] ip:port = "<<inet_ntoa(peerAddr_.sin_addr)<<":"<<ntohs(peerAddr_.sin_port)<<" closed"<<std::endl;
+    if(disConnected)return;
+    // 有数据没有发送完毕或者刚刚收到数据
+    if(outputBuffer_.size()>0||inputBuffer_.size()>0){
+        halfClose_=true;
+        if(inputBuffer_.size()>0){
+            messageCallBack_(shared_from_this());
+        }
+        return;
+    }
     channelPtr_->disableAll();
     closeCallBack_(name_);
+    disConnected=true;
 }
 
 void TcpConnection::connectionDestroy(){
