@@ -3,6 +3,7 @@
 
 #include"EventLoop.h"
 #include"Socket.h"
+#include"TimingWheel.h"
 
 #include<memory>
 #include<map>
@@ -37,6 +38,7 @@ public:
     }
     void ConnectionCloseCallBack(const std::string&);
     void newConnection();
+    void ConnMessageCallBack(TcpConnectionPtr);
 
 private:
     /* data */
@@ -45,6 +47,8 @@ private:
     std::string name_;
 
     std::shared_ptr<Channel> acceptChannel_;
+
+    TimingWheel timingWheel_;
 
     int ConnectionId_;
 

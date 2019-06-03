@@ -9,6 +9,8 @@
 #include<functional>
 #include<vector>
 
+struct Entry;
+
 class TcpConnection : public std::enable_shared_from_this<TcpConnection>
 {
 public:
@@ -37,8 +39,18 @@ public:
     void send(const std::string&);
     void sendInLoop(const std::string&);
 
+    void closeTimeout();
+
     void inputBufferClear(){
 	    inputBuffer_=std::string();
+    }
+
+    void setEntry(std::weak_ptr<struct Entry> entry){
+        TimingWheelEntry_=entry;
+    }
+
+    std::weak_ptr<struct Entry> getEntry(){
+        return TimingWheelEntry_;
     }
 
 private:
@@ -69,6 +81,8 @@ private:
 
     //static const int BUFFERSIZE;
 
+    // 注意这里必须要用weak_ptr，否则，entry的引用计数始终大于等于1，无法调用析构函数关闭连接
+    std::weak_ptr<struct Entry> TimingWheelEntry_;
 };
 
 

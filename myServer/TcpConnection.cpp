@@ -135,4 +135,7 @@ void TcpConnection::sendInLoop(const std::string& msg){
     writeHandle();
 }
 
-
+void TcpConnection::closeTimeout(){
+    closeHandle();
+    std::cout<<"TcpConnection::closeTimeout() connection ["<<name_<<"] time out"<<std::endl;
+}

@@ -5,6 +5,7 @@
 #include<iostream>
 #include<assert.h>
 #include<sys/eventfd.h>
+#include<signal.h>
 
 namespace {
 
@@ -17,6 +18,15 @@ int creatEventFd(){
 }
 
 }
+
+class IgnoreSigPipe{
+public:
+	IgnoreSigPipe(){
+		signal(SIGPIPE,SIG_IGN);
+	}
+};
+
+IgnoreSigPipe initObj;
 
 EventLoop::EventLoop()
 	:threadId_(CurrentThread::tid()),

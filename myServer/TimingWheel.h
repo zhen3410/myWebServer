@@ -3,9 +3,6 @@
 
 #include"TcpConnection.h"
 #include"base/MutexLock.h"
-#include"base/Condition.h"
-#include"base/Thread.h"
-#include"base/CountDownLatch.h"
 
 #include<unordered_set>
 #include<memory>
@@ -18,12 +15,15 @@ class TimingWheel
 {
 public:
     typedef std::weak_ptr<TcpConnection> weakPtrTcpConnection;
-    TimingWheel(/* args */);
+    typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
+    TimingWheel(EventLoop& loop);
     ~TimingWheel();
 
     void start();
 
-    void addConnection(weakPtrTcpConnection);
+    void addConnection(TcpConnectionPtr);
+    void onTimer();
+    void touchTimer(TcpConnectionPtr)
 
 private:
     void threadFunc();
@@ -37,7 +37,7 @@ private:
         ~Entry(){
             auto conn=weakConn_.lock();
             if(conn)
-                conn->shutdown();
+                conn->closeTimeout();
         }
         /* data */
 
@@ -46,14 +46,19 @@ private:
       
     typedef std::shared_ptr<Entry> EntryPtr;
     typedef std::weak_ptr<EntryPtr> WeakEntryPtr;
-    typedef std::unordered_set<WeakEntryPtr> Bucket;
+    typedef std::unordered_set<EntryPtr> Bucket;
     typedef std::deque<Bucket> TimingWheelQueue;
 
+    EventLoop& loop_;
+    int fd_;
+    std::shared_ptr<Channel> clearConnChannel_;
+
     TimingWheelQueue timingWheel_;
-    Thread thread_;
     CountDownLatch latch_;
     MutexLock mutex_;
     Condition cond_;
+
+    static const int kDestroySeconds;
 };
 
 
