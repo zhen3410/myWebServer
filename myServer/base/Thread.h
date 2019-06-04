@@ -24,7 +24,7 @@ public:
 	bool started()const{return started_;}
 
 	pid_t tid()const{return tid_;}
-	std::string name()const{return name_;}
+	const std::string& name()const{return name_;}
 
 private:
 	void setDefaultName();
