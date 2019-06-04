@@ -7,7 +7,7 @@
 #include<iostream>
 #include<unistd.h>
 
-const int TimingWheel::kDestroySeconds=600;
+const int TimingWheel::kDestroySeconds=5*60;
 
 int createTimerFd(){
     int timerfd=timerfd_create(CLOCK_MONOTONIC,TFD_NONBLOCK|TFD_CLOEXEC);

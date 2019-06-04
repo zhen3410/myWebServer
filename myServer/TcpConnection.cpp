@@ -66,6 +66,8 @@ TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& p
     name_(name),
 	inputBuffer_(),
 	outputBuffer_(),
+    httpRequest_(),
+    httpResponse_(),
     halfClose_(false),
     disConnected_(false)
 {

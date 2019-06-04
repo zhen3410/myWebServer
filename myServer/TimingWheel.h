@@ -42,8 +42,10 @@ private:
         ~Entry(){
 		//std::cout<<"Entry deconstructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
             auto conn=weakConn_.lock();
-            if(conn)
+            if(conn){
+                conn2entry_.erase(conn->name());
                 conn->closeTimeout();
+            }
         }
         /* data */
 

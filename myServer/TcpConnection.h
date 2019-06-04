@@ -2,6 +2,8 @@
 #define SERVER_TCPCONNECTION_H
 
 #include"EventLoop.h"
+#include"HTTPRequest.h"
+#include"HTTPResponse.h"
 
 #include<memory>
 #include<netinet/in.h>
@@ -45,8 +47,24 @@ public:
 	    inputBuffer_=std::string();
     }
 
+    std::string& getInputBuffer(){
+        return inputBuffer_;
+    }
+
+    std::string& getOutputBuffer(){
+        return outputBuffer_;
+    }
+
     const std::string& name(){
 	    return name_;
+    }
+
+    HTTPRequest* getHTTPRequest(){
+        return &httpRequest_;
+    }
+
+    HTTPResponse* getHTTPResponse(){
+        return &httpResponse_;
     }
 
 private:
@@ -70,6 +88,9 @@ private:
 
     std::string inputBuffer_;
     std::string outputBuffer_;
+
+    HTTPRequest httpRequest_;
+    HTTPResponse httpResponse_;
 
     ConnectionCallBack connectionCallBack_;
     MessageCallBack messageCallBack_;
