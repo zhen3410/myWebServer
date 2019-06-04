@@ -44,7 +44,7 @@ public:
         messageCallBack_=cb;
     }
     void ConnectionCloseCallBack(const std::string&);
-    void ConnectionCloseCallBackInLoop(const std::string&)
+    void ConnectionCloseCallBackInLoop(const std::string&);
     void newConnection();
     void ConnMessageCallBack(const TcpConnectionPtr&);
 

@@ -15,7 +15,7 @@ TcpServer::TcpServer(EventLoop& loop,int port,const std::string& name)
     acceptChannel_(new Channel(loop,socket_.fd())),
     timingWheel_(loop_),
     ConnectionId_(0),
-    threadPool_(loop_,name)
+    threadPool_(new EventLoopThreadPool(loop_,name))
 {
     acceptChannel_->setReadCallBack(std::bind(&TcpServer::newConnection,this));
     acceptChannel_->enableReading();
@@ -48,7 +48,7 @@ void TcpServer::newConnection(){
 }
 
 void TcpServer::ConnectionCloseCallBack(const std::string& name){
-    loop_.runInLoop(std::bind(&TcpServer::ConnectionCallBack,this,name));
+    loop_.runInLoop(std::bind(&TcpServer::ConnectionCloseCallBackInLoop,this,name));
 }
 
 void TcpServer::ConnectionCloseCallBackInLoop(const std::string& name){

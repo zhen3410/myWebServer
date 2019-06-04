@@ -110,14 +110,14 @@ void TcpConnection::writeHandle(){
 }
 
 void TcpConnection::errorHandle(){
-    if(disConnected)return;
+    if(disConnected_)return;
 
-    disConnected=true;
+    disConnected_=true;
 }
 
 void TcpConnection::closeHandle(){
     std::cout<<"TcpConnection() name =["<<name_<<"] ip:port = "<<inet_ntoa(peerAddr_.sin_addr)<<":"<<ntohs(peerAddr_.sin_port)<<" closed"<<std::endl;
-    if(disConnected)return;
+    if(disConnected_)return;
     // 有数据没有发送完毕或者刚刚收到数据
     if(outputBuffer_.size()>0||inputBuffer_.size()>0){
         halfClose_=true;
@@ -128,7 +128,7 @@ void TcpConnection::closeHandle(){
     }
     channelPtr_->disableAll();
     closeCallBack_(name_);
-    disConnected=true;
+    disConnected_=true;
 }
 
 void TcpConnection::connectionDestroy(){

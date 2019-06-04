@@ -19,15 +19,16 @@ EventLoopThreadPool::~EventLoopThreadPool(){
 void EventLoopThreadPool::start(){
     for(int i=0;i<threadNum_;i++){
         std::string threadName=name_+std::to_string(i);
-        std::unique_ptr<EventLoopThread> t(new EventLoopThread(threadName));
+        EventLoopThread* t=(new EventLoopThread(threadName));
         EventLoop* loop=t->startLoop();
-        threads_.push_back(t);
+        threads_.push_back(std::unique_ptr<EventLoopThread>(t));
         loops_.push_back(loop);
     }
 }
 
 EventLoop* EventLoopThreadPool::getNextLoop(){
-    EventLoop* loop=baseLoop_;
+    EventLoop* loop=&baseLoop_;
+    std::cout<<"EventLoopThreadPool::getNextLoop() begin select Loop"<<std::endl;
     if(threadNum_>0){
         loop=loops_[next_++];
     std::cout<<"EventLoopThreadPool::getNextLoop() select EventLoop name = "<<threads_[next_-1]->name()<<std::endl;

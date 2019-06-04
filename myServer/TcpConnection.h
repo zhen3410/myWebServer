@@ -76,7 +76,7 @@ private:
     CloseCallBack closeCallBack_;
 
     bool halfClose_;
-    bool disConnected;
+    bool disConnected_;
 
     //static const int BUFFERSIZE;
 };
