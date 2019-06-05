@@ -26,7 +26,7 @@ void HTTPServer::onMessage(const TcpConnectionPtr& conn){
     bool ok=request->ParseRequest(conn->getInputBuffer());
     if(!ok){
         //解析不成功，返回400错误
-        response->httpError("400 Bad Request\r\n");
+        response->httpError("400 Bad Request");
     }else{
         //解析成功，产生响应
         response->processRequest(request);

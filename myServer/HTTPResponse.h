@@ -2,6 +2,7 @@
 #define SERVER_HTTPRESPONSE_H
 
 #include<string>
+#include<map>
 
 class HTTPRequest;
 
@@ -21,6 +22,8 @@ public:
 private:
     /* data */
     std::string buf_;
+
+    static const std::map<std::string,std::string> mime_;
 };
 
 #endif
