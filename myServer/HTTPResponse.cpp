@@ -4,9 +4,10 @@
 
 #include<sys/mman.h>
 #include<sys/stat.h>
+#include<fcntl.h>
 #include<map>
 
-const std::map<std::string,std::string> HTTPResponse::mime_
+std::map<std::string,std::string> HTTPResponse::mime_
     ={{"html","text/html"},
       {"avi","video/x-msvideo"},
       {"bmp","image/bmp"},
@@ -68,7 +69,7 @@ void HTTPResponse::processRequest(HTTPRequest* req){
                 httpError("404 Not Found");
                 return;
             }
-            fileType=mime_[fileType];
+            fileType=(mime_[fileType]);
         }
 
         struct stat st;
@@ -84,7 +85,7 @@ void HTTPResponse::processRequest(HTTPRequest* req){
         if(req->method()==HTTPRequest::Method::kHead)return;
 
         // todo 读取文件
-        int fd=open(req->path(),O_RDONLY,0);
+        int fd=open(filename.c_str(),O_RDONLY,0);
         if(fd<0){
             httpError("404 Not Found");
             return;

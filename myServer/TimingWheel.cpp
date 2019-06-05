@@ -8,6 +8,7 @@
 #include<unistd.h>
 
 const int TimingWheel::kDestroySeconds=5*60;
+//const std::map<std::string,TimingWheel::WeakEntryPtr> conn2entry_={};
 
 int createTimerFd(){
     int timerfd=timerfd_create(CLOCK_MONOTONIC,TFD_NONBLOCK|TFD_CLOEXEC);

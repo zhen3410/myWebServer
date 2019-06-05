@@ -23,7 +23,7 @@ private:
     /* data */
     std::string buf_;
 
-    static const std::map<std::string,std::string> mime_;
+    static std::map<std::string,std::string> mime_;
 };
 
 #endif

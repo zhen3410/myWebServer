@@ -11,7 +11,7 @@ public:
         kGet,kPost,kHead,kPut,kDelete,kTrace,kConnect,kOptions,kInvalid
     };
     enum Version{
-        kHTTP10,kHTTP11,kInvalid
+        kHTTP10,kHTTP11,kVInvalid
     };
     HTTPRequest();
     ~HTTPRequest();

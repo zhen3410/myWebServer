@@ -43,7 +43,7 @@ private:
 		//std::cout<<"Entry deconstructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
             auto conn=weakConn_.lock();
             if(conn){
-                conn2entry_.erase(conn->name());
+               // conn2entry_.erase(conn->name());
                 conn->closeTimeout();
             }
         }
@@ -51,11 +51,11 @@ private:
 
         weakPtrTcpConnection weakConn_;
     };
-      
     typedef std::shared_ptr<Entry> EntryPtr;
     typedef std::weak_ptr<Entry> WeakEntryPtr;
     typedef std::unordered_set<EntryPtr> Bucket;
     typedef std::deque<Bucket> TimingWheelQueue;
+
 
     EventLoop& loop_;
     int fd_;
@@ -64,7 +64,7 @@ private:
     TimingWheelQueue timingWheel_;
     MutexLock mutex_;
     // 这里不能使用TcpConnection 作为键值，否则会导致引用计数增加，无法正确删除连接
-    std::map<std::string,WeakEntryPtr> conn2entry_;
+    std::map<std::string,WeakEntryPtr> conn2entry_={};
 
     static const int kDestroySeconds;
 };

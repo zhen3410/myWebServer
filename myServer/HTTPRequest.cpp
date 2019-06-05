@@ -61,7 +61,7 @@ bool HTTPRequest::ParseRequestLine(std::string& msg,size_t endPos){
             }else if(v=="HTTP/1.0"){
                 version_=kHTTP10;
             }else{
-                version_=kInvalid;
+                version_=kVInvalid;
                 ok=false;
             } 
         }
