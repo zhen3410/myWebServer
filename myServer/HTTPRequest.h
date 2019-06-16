@@ -3,6 +3,7 @@
 
 #include<string>
 #include<map>
+#include<iostream>
 
 class HTTPRequest
 {
@@ -21,6 +22,7 @@ public:
 
     bool getMethod(const char* start,const char* end){
         std::string msg(start,end);
+        std::cout<<"HTTPRequest::getMethod() method = "<<msg<<std::endl;
         if(msg=="GET"){
             method_=kGet;
         }else if(msg=="POST"){

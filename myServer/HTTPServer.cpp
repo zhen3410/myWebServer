@@ -1,6 +1,8 @@
 #include"HTTPServer.h"
 #include"TcpConnection.h"
 
+#include<iostream>
+
 HTTPServer::HTTPServer(EventLoop& loop,int port,const std::string& name)
     :loop_(loop),
     server_(loop_,port,name)
@@ -21,6 +23,7 @@ void HTTPServer::onConnection(const TcpConnectionPtr& conn){
 }
 
 void HTTPServer::onMessage(const TcpConnectionPtr& conn){
+    std::cout<<"HTTPServer::onMessage() get a http cnnection , and produce response"<<std::endl;
     HTTPRequest* request=conn->getHTTPRequest();
     HTTPResponse* response=conn->getHTTPResponse();
     bool ok=request->ParseRequest(conn->getInputBuffer());
@@ -31,5 +34,6 @@ void HTTPServer::onMessage(const TcpConnectionPtr& conn){
         //解析成功，产生响应
         response->processRequest(request);
     }
+    std::cout<<"HTTPServer::onMessage() send to client response is = "<<response->getResponse()<<std::endl;
     conn->send(response->getResponse());
 }
