@@ -3,6 +3,7 @@
 
 struct sockaddr_in;
 
+
 class Socket{
 
 public:
@@ -15,6 +16,9 @@ public:
     void bindAndListening();
     int accept(struct sockaddr_in&);
     void close();
+
+    void setNoDelay(bool on);
+    void setReuseAddr(bool on);
 
     int fd()const{return socketFd_;}
 

@@ -16,8 +16,9 @@ struct Entry;
 class TcpConnection : public std::enable_shared_from_this<TcpConnection>
 {
 public:
-    typedef std::function<void()> ConnectionCallBack;
-    typedef std::function<void(std::shared_ptr<TcpConnection>)> MessageCallBack;
+    typedef std::shared_ptr<TcpConnection> TcpConnectionPtr; 
+    typedef std::function<void(const TcpConnectionPtr&)> ConnectionCallBack;
+    typedef std::function<void(const TcpConnectionPtr&)> MessageCallBack;
     typedef std::function<void(const std::string&)> CloseCallBack;
 
     TcpConnection(const TcpConnection&)=delete;
@@ -43,6 +44,8 @@ public:
 
     void closeTimeout();
 
+    void setTCPNoDelay(bool on);
+
     void inputBufferClear(){
 	    inputBuffer_=std::string();
     }
@@ -67,6 +70,16 @@ public:
         return &httpResponse_;
     }
 
+    EventLoop& getLoop(){
+        return loop_;
+    }
+
+    void connectionEstablished();
+
+    void shutdown();
+    void shutdownInLoop();
+
+    
 private:
     void readHandle();
     void writeHandle();

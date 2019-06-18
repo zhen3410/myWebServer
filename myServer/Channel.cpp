@@ -14,7 +14,7 @@ Channel::Channel(EventLoop& loop,int fd)
 	events_(0),
 	revents_(0)
 {
-	std::cout<<"Channel::constructor fd = "<<fd_<<std::endl;
+	//std::cout<<"Channel::constructor fd = "<<fd_<<std::endl;
 }
 
 Channel::~Channel()
@@ -23,6 +23,9 @@ Channel::~Channel()
 }
 
 void Channel::handleEvent(){
+	if((revents_&EPOLLHUP)&&!(revents_&EPOLLIN)){
+		if(closeCallBack_)closeCallBack_();
+	}
 	if(revents_&(EPOLLIN|EPOLLPRI|EPOLLRDHUP)){
 		if(readCallBack_)readCallBack_();
 	}

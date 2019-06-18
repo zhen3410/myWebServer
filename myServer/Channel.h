@@ -58,6 +58,9 @@ public:
 	void setErrorCallBack(const CallBack& cb){
 		errorCallBack_=cb;
 	}
+	void setCloseCallBack(const CallBack& cb){
+		closeCallBack_=cb;
+	}
 
 	void handleEvent();
 
@@ -77,6 +80,7 @@ private:
 	CallBack readCallBack_;
 	CallBack writeCallBack_;
 	CallBack errorCallBack_;
+	CallBack closeCallBack_;
 
 	EventLoop& loop_;
 	const int fd_;

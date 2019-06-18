@@ -5,6 +5,9 @@
 #include<string.h>
 #include<arpa/inet.h>
 #include<unistd.h>
+#include<sys/socket.h>
+
+#include<netinet/tcp.h>
 
 //const int TcpConnection::BUFFERSIZE=4096;
 
@@ -72,11 +75,12 @@ TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& p
     disConnected_(false)
 {
     channelPtr_->setReadCallBack(std::bind(&TcpConnection::readHandle,this));
-    channelPtr_->enableReading();
+    //channelPtr_->enableReading();
     channelPtr_->setWriteCallBack(std::bind(&TcpConnection::writeHandle,this));
     //channelPtr_->enableWriting(); 不能再此設置可讀，否則邊緣觸發，會在一瞬間立即退出
     channelPtr_->setErrorCallBack(std::bind(&TcpConnection::errorHandle,this));
-    channelPtr_->setET();
+    channelPtr_->setCloseCallBack(std::bind(&TcpConnection::closeHandle,this));
+    //channelPtr_->setET();
 }
 
 TcpConnection::~TcpConnection(){
@@ -84,10 +88,10 @@ TcpConnection::~TcpConnection(){
 }
 
 void TcpConnection::readHandle(){
-    char buf[4092];
+    //char buf[4092];
     int n=readn(fd_,inputBuffer_);
     if(n>0){
-	    std::cout<<"recv message : "<<inputBuffer_<<std::endl;
+	    // std::cout<<"recv message : "<<inputBuffer_<<std::endl;
         // 执行消息回调函数
         messageCallBack_(shared_from_this());
     }else if(n==0){
@@ -98,7 +102,9 @@ void TcpConnection::readHandle(){
 }
 
 void TcpConnection::writeHandle(){
+
     int n=writen(fd_,outputBuffer_);
+    //std::cout<<"TcpConnection::writeHandle() send "<<n<<" bytes , outputBuffer size = "<<outputBuffer_.size()<<std::endl;
     if(n>0){
         if(outputBuffer_.size()>0){
             channelPtr_->enableWriting();
@@ -118,7 +124,8 @@ void TcpConnection::errorHandle(){
 }
 
 void TcpConnection::closeHandle(){
-    std::cout<<"TcpConnection() name =["<<name_<<"] ip:port = "<<inet_ntoa(peerAddr_.sin_addr)<<":"<<ntohs(peerAddr_.sin_port)<<" closed"<<std::endl;
+    loop_.assertInLoopThread();
+    //std::cout<<"TcpConnection() name =["<<name_<<"] ip:port = "<<inet_ntoa(peerAddr_.sin_addr)<<":"<<ntohs(peerAddr_.sin_port)<<" closed"<<std::endl;
     if(disConnected_)return;
     // 有数据没有发送完毕或者刚刚收到数据
     if(outputBuffer_.size()>0||inputBuffer_.size()>0){
@@ -134,6 +141,7 @@ void TcpConnection::closeHandle(){
 }
 
 void TcpConnection::connectionDestroy(){
+    loop_.assertInLoopThread();
     channelPtr_->disableAll();
     loop_.removeChannel(channelPtr_);
 }
@@ -154,5 +162,17 @@ void TcpConnection::sendInLoop(const std::string& msg){
 
 void TcpConnection::closeTimeout(){
     closeHandle();
-    std::cout<<"TcpConnection::closeTimeout() connection ["<<name_<<"] time out"<<std::endl;
+    //std::cout<<"TcpConnection::closeTimeout() connection ["<<name_<<"] time out"<<std::endl;
+}
+
+void TcpConnection::setTCPNoDelay(bool on){
+    int optval=on?1:0;
+    setsockopt(fd_,IPPROTO_TCP,TCP_NODELAY,&optval,sizeof optval);
+}
+
+void TcpConnection::connectionEstablished(){
+    loop_.assertInLoopThread();
+    channelPtr_->disableReading();
+    channelPtr_->setET();
+    connectionCallBack_(shared_from_this());
 }

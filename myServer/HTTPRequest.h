@@ -22,7 +22,7 @@ public:
 
     bool getMethod(const char* start,const char* end){
         std::string msg(start,end);
-        std::cout<<"HTTPRequest::getMethod() method = "<<msg<<std::endl;
+        //std::cout<<"HTTPRequest::getMethod() method = "<<msg<<std::endl;
         if(msg=="GET"){
             method_=kGet;
         }else if(msg=="POST"){
@@ -50,6 +50,10 @@ public:
     }
     Method method(){
         return method_;
+    }
+
+    std::string getHeader(std::string header){
+        return headers_[header];
     }
 
 private:

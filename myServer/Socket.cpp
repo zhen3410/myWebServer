@@ -10,6 +10,8 @@
 #include<string.h>
 #include<iostream>
 
+#include<netinet/tcp.h>
+
 void setNonBlockAndCloseOnExec(int fd){
     int flags=fcntl(fd,F_GETFL,0);
     flags|=O_NONBLOCK;
@@ -21,6 +23,7 @@ void setNonBlockAndCloseOnExec(int fd){
     ret=fcntl(fd,F_SETFD,flags);
     assert(ret>=0);
 }
+
 
 Socket::Socket(int port)
     :closed_(false),
@@ -57,6 +60,16 @@ int Socket::accept(struct sockaddr_in& acAddr){
     	assert(connfd>=0);
     	setNonBlockAndCloseOnExec(connfd);
     	return connfd;
+}
+
+void Socket::setNoDelay(bool on){
+    int optval=on?1:0;
+    setsockopt(socketFd_,IPPROTO_TCP,TCP_NODELAY,&optval,sizeof optval);
+}
+
+void Socket::setReuseAddr(bool on){
+    int optval=on?1:0;
+    setsockopt(socketFd_,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval);
 }
 
 void Socket::close(){

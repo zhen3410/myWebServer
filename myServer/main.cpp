@@ -8,7 +8,7 @@
 #include<string.h>
 
 int main(){
-	std::cout<<"main() pid = "<<getpid()<<" , tid = "<<CurrentThread::tid()<<std::endl;
+	//std::cout<<"main() pid = "<<getpid()<<" , tid = "<<CurrentThread::tid()<<std::endl;
 	
 	EventLoop loop;
 	HTTPServer server(loop,80,"ZhangZhen");

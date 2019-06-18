@@ -30,11 +30,11 @@ void EventLoopThreadPool::start(){
 EventLoop* EventLoopThreadPool::getNextLoop(){
 	baseLoop_.assertInLoopThread();
     EventLoop* loop=&baseLoop_;
-    std::cout<<"EventLoopThreadPool::getNextLoop() begin select Loop , pool size = "<<loops_.size()<<" , next = "<<next_<<std::endl;
-    std::cout<<"Threads nums = "<<threads_.size()<<std::endl;
+    //std::cout<<"EventLoopThreadPool::getNextLoop() begin select Loop , pool size = "<<loops_.size()<<" , next = "<<next_<<std::endl;
+    //std::cout<<"Threads nums = "<<threads_.size()<<std::endl;
     if(threadNum_>0){
         loop=loops_[next_];
-    std::cout<<"EventLoopThreadPool::getNextLoop() select EventLoop name = "<<threads_[next_]->name()<<std::endl;
+    //std::cout<<"EventLoopThreadPool::getNextLoop() select EventLoop name = "<<threads_[next_]->name()<<std::endl;
     next_++;
         if(next_>=threadNum_)next_=0;
     }

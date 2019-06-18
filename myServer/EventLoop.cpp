@@ -42,7 +42,7 @@ EventLoop::EventLoop()
 	t_loopInThisThread=this;
 	wakeupChannel_->setReadCallBack(std::bind(&EventLoop::handleRead,this));
 	wakeupChannel_->enableReading();
-	std::cout<<"EventLoop::EventLoop() threadId = "<<threadId_<<" , wakeupFd = "<<wakeupFd_<<" construct succeed."<<std::endl;
+	//std::cout<<"EventLoop::EventLoop() threadId = "<<threadId_<<" , wakeupFd = "<<wakeupFd_<<" construct succeed."<<std::endl;
 }
 
 EventLoop::~EventLoop(){

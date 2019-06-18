@@ -5,6 +5,7 @@
 #include"Socket.h"
 #include"TimingWheel.h"
 #include"EventLoopThreadPool.h"
+#include"TcpConnection.h"
 
 #include<memory>
 #include<map>
@@ -13,7 +14,6 @@
 
 
 
-class TcpConnection;
 class Channel;
 class EventLoopThreadPool;
 

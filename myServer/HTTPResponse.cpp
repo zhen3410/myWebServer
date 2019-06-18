@@ -55,11 +55,14 @@ void HTTPResponse::processRequest(HTTPRequest* req){
     buf_="HTTP/1.1 200 OK\r\n";
     if(req->method()==HTTPRequest::Method::kGet||req->method()==HTTPRequest::Method::kHead){
         std::string filename=req->path();
-        std::cout<<"HTTPRequest::processRequest() filename = "<<filename<<std::endl;
+        #ifdef DEBUGS
+            std::cout<<"HTTPRequest::processRequest() filename = "<<filename<<std::endl;
+        #endif
         if(filename=="/"){
-            std::cout<<"HTTPResponse::processRequest request root "<<std::endl;
+            //std::cout<<"HTTPResponse::processRequest request root "<<std::endl;
+            // fixed me : add Content_length;
             buf_+="Server: ZhangZhen\r\n";
-            buf_+="Content-Type: text/plain\r\n\r\nhello world";
+            buf_+="Content-Type: text/plain\r\n\r\nhello world\n";
             return;
         }
         buf_+="Server: ZhangZhen\r\n";
@@ -71,7 +74,9 @@ void HTTPResponse::processRequest(HTTPRequest* req){
         }else{
             fileType=filename.substr(dot_pos+1);
             if(mime_.find(fileType)==mime_.end()){
+            #ifdef DEBUGS
                 std::cout<<"HTTPRequest::processRequest() file type not support "<<std::endl;
+            #endif
                 httpError("404 Not Found");
                 return;
             }
@@ -81,7 +86,9 @@ void HTTPResponse::processRequest(HTTPRequest* req){
         filename="."+filename;
         struct stat st;
         if(stat(filename.c_str(),&st)<0){
+        #ifdef DEBUGS
             std::cout<<"HTTPRequest::processRequest() file not exist , error = "<<strerror(errno)<<std::endl;
+        #endif
             httpError("404 Not Found");
             return;
         }
@@ -95,7 +102,9 @@ void HTTPResponse::processRequest(HTTPRequest* req){
         // todo 读取文件
         int fd=open(filename.c_str(),O_RDONLY,0);
         if(fd<0){
+        #ifdef DEBUGS
             std::cout<<"HTTPRequest::processRequest() file open failed"<<std::endl;
+        #endif
             httpError("404 Not Found");
             return;
         }

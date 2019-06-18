@@ -31,10 +31,14 @@ void EPoller::add_event(std::shared_ptr<Channel> channel){
     event.events=channel->events();
     int ret=epoll_ctl(epollFd_,EPOLL_CTL_ADD,fd,&event);
     if(ret<0){
-	std::cout<<"add_event error = "<<strerror(errno)<<std::endl;
+	//std::cout<<"add_event error = "<<strerror(errno)<<std::endl;
 	exit(0);
     }
-    fd2channel_[fd]=channel;
+    {
+        MutexLockGuard lock(mutex_);
+        fd2channel_[fd]=channel;
+
+    }
 }
 
 void EPoller::del_event(std::shared_ptr<Channel> channel){
@@ -45,7 +49,10 @@ void EPoller::del_event(std::shared_ptr<Channel> channel){
     event.events=channel->events();
     int ret=epoll_ctl(epollFd_,EPOLL_CTL_DEL,fd,&event);
     assert(ret>=0);
-    fd2channel_.erase(fd);
+    {
+        MutexLockGuard lock(mutex_);
+        fd2channel_.erase(fd);
+    }
 }
 
 void EPoller::mod_event(std::shared_ptr<Channel> channel){

@@ -5,6 +5,8 @@
 #include<memory>
 #include<map>
 
+#include"base/MutexLock.h"
+
 struct epoll_event;
 
 class Channel;
@@ -30,6 +32,8 @@ private:
     int epollFd_;
     std::vector<epoll_event> events_;
     std::map<int,std::shared_ptr<Channel>> fd2channel_;
+
+    MutexLock mutex_;
 };
 
 #endif
