@@ -28,28 +28,36 @@ TcpServer::~TcpServer(){
 void TcpServer::start(){
     socket_.bindAndListening();
     socket_.setReuseAddr(true);
+    socket_.setReusePort(true);
     timingWheel_.start();
     threadPool_->start();
     acceptChannel_->enableReading();
+    acceptChannel_->setET();
+    acceptChannel_->addChannel();
     //std::cout<<"TcpServer()::start() ["<<name_<<"] started"<<std::endl;
 }
 
 void TcpServer::newConnection(){
+    loop_.assertInLoopThread();
 	struct sockaddr_in peerAddr;
 	memset(&peerAddr,0,sizeof peerAddr);
-	int connfd=socket_.accept(peerAddr);
-    std::string newTcpConnectionName=name_+std::to_string(ConnectionId_++);
-	//std::cout<<"newConnection() accept a new Connection ["<<newTcpConnectionName<<"] from "
-	//	<<inet_ntoa(peerAddr.sin_addr)<<":"<<ntohs(peerAddr.sin_port)<<std::endl;
-    EventLoop* ioLoop=threadPool_->getNextLoop();
-    TcpConnectionPtr newConn(std::make_shared<TcpConnection>(*ioLoop,connfd,peerAddr,newTcpConnectionName));
-    newConn->setTCPNoDelay(true);
-    conn_[newTcpConnectionName]=newConn;
-    timingWheel_.addConnection(newConn);
-    newConn->setCloseCallBack(std::bind(&TcpServer::ConnectionCloseCallBack,this,std::placeholders::_1));
-    newConn->setMessageCallBack(std::bind(&TcpServer::ConnMessageCallBack,this,std::placeholders::_1));
-    newConn->setConnectionCallBack(std::bind(&TcpServer::connectionCallBack_,this,std::placeholders::_1));
-    newConn->connectionEstablished();
+    int connfd;
+    // 采用边缘触发，因此当socket可读时不断accept，直到不能accept
+	while((connfd=socket_.accept(peerAddr))>=0){
+        std::string newTcpConnectionName=name_+std::to_string(ConnectionId_++);
+	    //std::cout<<"newConnection() accept a new Connection ["<<newTcpConnectionName<<"] from "
+    	//	<<inet_ntoa(peerAddr.sin_addr)<<":"<<ntohs(peerAddr.sin_port)
+        //    <<" , conn fd = "<<connfd<<std::endl;
+        EventLoop* ioLoop=threadPool_->getNextLoop();
+        TcpConnectionPtr newConn(std::make_shared<TcpConnection>(*ioLoop,connfd,peerAddr,newTcpConnectionName));
+        newConn->setTCPNoDelay(true);
+        conn_[newTcpConnectionName]=newConn;
+        timingWheel_.addConnection(newConn);
+        newConn->setCloseCallBack(std::bind(&TcpServer::ConnectionCloseCallBack,this,std::placeholders::_1));
+        newConn->setMessageCallBack(std::bind(&TcpServer::ConnMessageCallBack,this,std::placeholders::_1));
+        newConn->setConnectionCallBack(connectionCallBack_);
+        ioLoop->runInLoop(std::bind(&TcpConnection::connectionEstablished,newConn));
+    }
 }
 
 void TcpServer::ConnectionCloseCallBack(const std::string& name){
@@ -57,6 +65,7 @@ void TcpServer::ConnectionCloseCallBack(const std::string& name){
 }
 
 void TcpServer::ConnectionCloseCallBackInLoop(const std::string& name){
+    loop_.assertInLoopThread();
     auto conn=conn_[name];
     conn_.erase(name);
     //std::cout<<"TcpServer::ConnectionCloseCallaBack() conn_ num = "<<conn_.size()<<" , eraseConn use count = "<<conn.use_count()<<std::endl;

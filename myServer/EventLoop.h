@@ -47,6 +47,10 @@ public:
 		poller_->mod_event(channel);
 	}
 
+	pid_t getThreadId()const{
+		return threadId_;
+	}
+
 private:
 	void handleRead();
 	void wakeUp();

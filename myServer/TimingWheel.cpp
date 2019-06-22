@@ -23,9 +23,8 @@ TimingWheel::TimingWheel(EventLoop& loop)
     timingWheel_(kDestroySeconds),
     mutex_()
 {
+    //std::cout<<"TimingWheel::constructor fd = "<<fd_<<std::endl;
     clearConnChannel_->setReadCallBack(std::bind(&TimingWheel::onTimer,this));
-    clearConnChannel_->enableReading();
-    clearConnChannel_->setET();
 }
 
 TimingWheel::~TimingWheel(){
@@ -35,9 +34,12 @@ TimingWheel::~TimingWheel(){
 void TimingWheel::start(){
     struct itimerspec sec;
     bzero(&sec,sizeof sec);
-    sec.it_value.tv_sec=1;
+    sec.it_value.tv_sec=60;
     //sec.it_interval.tv_sec=1;
-    timerfd_settime(fd_,NULL,&sec,NULL);
+    timerfd_settime(fd_,NULL,&sec,NULL);    
+    clearConnChannel_->enableReading();
+    clearConnChannel_->setET();
+    clearConnChannel_->addChannel();
 }
 
 void TimingWheel::addConnection(const TcpConnectionPtr& conn){
@@ -58,7 +60,7 @@ void TimingWheel::onTimer(){
     }
     struct itimerspec sec;
     bzero(&sec,sizeof sec);
-    sec.it_value.tv_sec=1;
+    sec.it_value.tv_sec=60;
     timerfd_settime(fd_,NULL,&sec,NULL);
 }
 

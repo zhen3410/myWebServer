@@ -22,28 +22,40 @@ public:
 	void enableReading(){
 		events_|=kReadEvent;
 		//setET();
-		update();
+		//update();
 	}
 	void enableWriting(){
 		events_|=kWriteEvent;
 		//setET();
-		update();
+		//update();
 	}
 	void disableReading(){
 		events_&=~kReadEvent;
-		update();
+		//update();
 	}
 	void disableWriting(){
 		events_&=~kWriteEvent;
-		update();
+		//update();
 	}
 	void disableAll(){
 		events_=kNoneEvent;
-		update();
+		//update();
 	}
 
 	void setET(){
 		events_|=kEdgeTrigger;
+	}
+
+	void addChannel(){
+		loop_.addChannel(shared_from_this());
+	}
+
+	void updateChannel(){
+		loop_.updateChannel(shared_from_this());
+	}
+
+	void delChannel(){
+		loop_.removeChannel(shared_from_this());
 	}
 
 	void setRevents(int revent){
@@ -68,9 +80,6 @@ public:
 	int events()const{return events_;}
 
 private:
-	void update(){
-		loop_.updateChannel(shared_from_this());
-	}
 
 	static const int kNoneEvent;
 	static const int kReadEvent;

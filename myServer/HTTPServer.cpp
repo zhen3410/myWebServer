@@ -39,6 +39,6 @@ void HTTPServer::onMessage(const TcpConnectionPtr& conn){
     conn->send(response->getResponse());
     std::string close=request->getHeader("Connection");
     if(close=="close"){
-        conn->shutdown();
+        conn->ConnectionClosed();
     }
 }

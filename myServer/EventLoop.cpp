@@ -42,6 +42,7 @@ EventLoop::EventLoop()
 	t_loopInThisThread=this;
 	wakeupChannel_->setReadCallBack(std::bind(&EventLoop::handleRead,this));
 	wakeupChannel_->enableReading();
+	wakeupChannel_->addChannel();
 	//std::cout<<"EventLoop::EventLoop() threadId = "<<threadId_<<" , wakeupFd = "<<wakeupFd_<<" construct succeed."<<std::endl;
 }
 
@@ -58,7 +59,7 @@ void EventLoop::loop(){
 
 	while(!quit_){
 		poller_->poll(activeChannel_);
-		for(int i=0;i<activeChannel_.size();i++){
+		for(size_t i=0;i<activeChannel_.size();i++){
 			activeChannel_[i]->handleEvent();
 		}
 		doPendingFunctors();

@@ -37,6 +37,7 @@ public:
         closeCallBack_=cb;
     }
 
+    void ConnectionClosed();
     void connectionDestroy();
 
     void send(const std::string&);

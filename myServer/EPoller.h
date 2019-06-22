@@ -23,9 +23,9 @@ public:
 
     void poll(std::vector<std::shared_ptr<Channel>>& avtiveChannel);
 
-    void add_event(std::shared_ptr<Channel>);
-    void del_event(std::shared_ptr<Channel>);
-    void mod_event(std::shared_ptr<Channel>);
+    void add_event(const std::shared_ptr<Channel>&);
+    void del_event(const std::shared_ptr<Channel>&);
+    void mod_event(const std::shared_ptr<Channel>&);
 
 private:
     EventLoop& loop_;

@@ -32,6 +32,7 @@ Socket::Socket(int port)
 {
     assert(socketFd_>=0);
     setNonBlockAndCloseOnExec(socketFd_);
+    //std::cout<<"Socket::consructor socket fd = "<<socketFd_<<std::endl;
 }
 
 Socket::~Socket(){
@@ -54,12 +55,11 @@ void Socket::bindAndListening(){
 int Socket::accept(struct sockaddr_in& acAddr){
 	int len=sizeof acAddr;
 	int connfd=::accept(socketFd_,(struct sockaddr*)(&acAddr),(socklen_t*)(&len));
-    	if(connfd<0){
-		std::cout<<"accept error = "<<strerror(errno)<<std::endl;
-    	}
-    	assert(connfd>=0);
-    	setNonBlockAndCloseOnExec(connfd);
-    	return connfd;
+    if(connfd<0){
+        return connfd;
+    }
+    setNonBlockAndCloseOnExec(connfd);
+    return connfd;
 }
 
 void Socket::setNoDelay(bool on){
@@ -70,6 +70,11 @@ void Socket::setNoDelay(bool on){
 void Socket::setReuseAddr(bool on){
     int optval=on?1:0;
     setsockopt(socketFd_,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof optval);
+}
+
+void Socket::setReusePort(bool on){
+    int optval=on?1:0;
+    setsockopt(socketFd_,SOL_SOCKET,SO_REUSEPORT,&optval,sizeof optval);
 }
 
 void Socket::close(){

@@ -19,6 +19,7 @@ public:
 
     void setNoDelay(bool on);
     void setReuseAddr(bool on);
+    void setReusePort(bool on);
 
     int fd()const{return socketFd_;}
 

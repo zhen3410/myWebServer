@@ -84,6 +84,7 @@ TcpConnection::TcpConnection(EventLoop& loop,int fd, const struct sockaddr_in& p
 }
 
 TcpConnection::~TcpConnection(){
+    //std::cout<<"TcpConnection::deConstructor TcpConnection ["<<name_<<"] closed , fd = "<<fd_<<" closed."<<std::endl;
 	::close(fd_);
 }
 
@@ -91,7 +92,7 @@ void TcpConnection::readHandle(){
     //char buf[4092];
     int n=readn(fd_,inputBuffer_);
     if(n>0){
-	    // std::cout<<"recv message : "<<inputBuffer_<<std::endl;
+	    //std::cout<<"recv message : "<<inputBuffer_<<std::endl;
         // 执行消息回调函数
         messageCallBack_(shared_from_this());
     }else if(n==0){
@@ -108,6 +109,7 @@ void TcpConnection::writeHandle(){
     if(n>0){
         if(outputBuffer_.size()>0){
             channelPtr_->enableWriting();
+            channelPtr_->updateChannel();
         }else if(outputBuffer_.size()==0&&halfClose_)  //数据已发送完毕且设置了半关闭位，则关闭连接
             closeHandle();
     }else if(n==0){
@@ -119,8 +121,8 @@ void TcpConnection::writeHandle(){
 
 void TcpConnection::errorHandle(){
     if(disConnected_)return;
-
-    disConnected_=true;
+    //std::cout<<"TcpConnection::errorHandle() TcpConnection["<<name_<<"] error occured!"<<std::endl;
+    closeHandle();
 }
 
 void TcpConnection::closeHandle(){
@@ -136,14 +138,22 @@ void TcpConnection::closeHandle(){
         return;
     }
     channelPtr_->disableAll();
+    channelPtr_->delChannel();
     closeCallBack_(name_);
     disConnected_=true;
 }
 
+void TcpConnection::ConnectionClosed(){
+    loop_.runInLoop(std::bind(&TcpConnection::closeHandle,this));
+}
+
 void TcpConnection::connectionDestroy(){
     loop_.assertInLoopThread();
-    channelPtr_->disableAll();
-    loop_.removeChannel(channelPtr_);
+    if(!disConnected_){
+        channelPtr_->disableAll();
+        channelPtr_->delChannel();
+    }
+    disConnected_=true;
 }
 
 void TcpConnection::send(const std::string& msg){
@@ -155,12 +165,14 @@ void TcpConnection::send(const std::string& msg){
 }
 
 void TcpConnection::sendInLoop(const std::string& msg){
+    loop_.assertInLoopThread();
     outputBuffer_+=msg;
     //std::cout<<"TcpConnection()::sendInLoop() send = "<<outputBuffer_<<std::endl;
     writeHandle();
 }
 
 void TcpConnection::closeTimeout(){
+    loop_.assertInLoopThread();
     closeHandle();
     //std::cout<<"TcpConnection::closeTimeout() connection ["<<name_<<"] time out"<<std::endl;
 }
@@ -172,7 +184,20 @@ void TcpConnection::setTCPNoDelay(bool on){
 
 void TcpConnection::connectionEstablished(){
     loop_.assertInLoopThread();
-    channelPtr_->disableReading();
     channelPtr_->setET();
+    channelPtr_->enableReading();
+    channelPtr_->addChannel();
     connectionCallBack_(shared_from_this());
+    //std::cout<<"TcpConnection::connectionEstablished() connection ["<<name_<<"] established"<<std::endl;
+}
+
+void TcpConnection::shutdown(){
+    loop_.runInLoop(std::bind(&TcpConnection::shutdownInLoop,this));
+}
+
+void TcpConnection::shutdownInLoop(){
+    loop_.assertInLoopThread();
+    if(::shutdown(fd_,SHUT_WR)<0){
+        std::cout<<"TcpConnection::shutdownInLoop() shutdown error"<<std::endl;
+    }
 }

@@ -15,7 +15,7 @@ set(CXX_FLAGS
 	)
 
 
-set(CMAKE_CXX_COMPILER "g++")
+set(CMAKE_CXX_COMPILER /usr/bin/c++)
 set(CMAKE_CXX_FLAGS_DEBUG "-O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
@@ -25,4 +25,4 @@ string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
 string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
 
-add_subdirectory(muduo)
+add_subdirectory(myServer)
