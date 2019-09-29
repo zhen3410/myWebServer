@@ -37,7 +37,7 @@ private:
             :weakConn_(weakConn)
         {
 		//std::cout<<"Entry constructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
-	}
+	    }
 
         ~Entry(){
 		//std::cout<<"Entry deconstructor weakConn_.use_count = "<<weakConn_.use_count()<<std::endl;
@@ -63,7 +63,7 @@ private:
 
     TimingWheelQueue timingWheel_;
     MutexLock mutex_;
-    // 这里不能使用TcpConnection 作为键值，否则会导致引用计数增加，无法正确删除连接
+    // 这里不能使用shared_ptr<Entry> 作为键值，否则会导致引用计数增加，无法正确删除连接
     std::map<std::string,WeakEntryPtr> conn2entry_={};
 
     static const int kDestroySeconds;

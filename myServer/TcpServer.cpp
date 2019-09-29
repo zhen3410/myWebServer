@@ -44,6 +44,13 @@ void TcpServer::newConnection(){
     int connfd;
     // 采用边缘触发，因此当socket可读时不断accept，直到不能accept
 	while((connfd=socket_.accept(peerAddr))>=0){
+
+        // 限制服务器最大并发连接数
+        if(connfd>maxConn_){
+            close(connfd);
+            continue;
+        }
+
         std::string newTcpConnectionName=name_+std::to_string(ConnectionId_++);
 	    //std::cout<<"newConnection() accept a new Connection ["<<newTcpConnectionName<<"] from "
     	//	<<inet_ntoa(peerAddr.sin_addr)<<":"<<ntohs(peerAddr.sin_port)

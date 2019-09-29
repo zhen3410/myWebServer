@@ -1,7 +1,7 @@
 #ifndef SERVER_BASE_LOGFILE_H
 #define SERVER_BASE_LOGFILE_H
 
-#include"Mutex.h"
+#include"MutexLock.h"
 #include"FileUtil.h"
 
 #include<string>
@@ -39,7 +39,7 @@ private:
 
 	int count_;
 
-	std::unique_ptr<Mutex> mutex_;
+	std::unique_ptr<MutexLock> mutex_;
 	time_t startOfPeriod_;
 	time_t lastRoll_;
 	time_t lastFlush_;

@@ -66,6 +66,8 @@ private:
 
     std::map<std::string,TcpConnectionPtr> conn_;
     std::unique_ptr<EventLoopThreadPool> threadPool_;
+
+    const static int maxConn_=1020;
 };
 
 

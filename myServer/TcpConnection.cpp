@@ -24,7 +24,7 @@ ssize_t readn(int fd,std::string& buffer){
                 continue;
             else if(errno==EAGAIN){
                 return tot;
-	    }
+	        }
             else return -1;
         }else if(nread==0){
             return tot;

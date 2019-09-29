@@ -4,8 +4,6 @@
 #include<string>
 #include<unistd.h>
 
-namespace server{
-
 class AppendFile{
 
 public:
@@ -28,9 +26,5 @@ private:
     off_t writtenBytes_;
 
 };
-
-
-}
-
 
 #endif

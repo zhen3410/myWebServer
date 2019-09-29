@@ -24,7 +24,7 @@ int main(){
 	
 	EventLoop loop;
 	HTTPServer server(loop,80,"ZhangZhen");
-	server.setThreadNum(4);
+	server.setThreadNum(3);
 	server.start();
 
 	loop.loop();

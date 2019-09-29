@@ -7,8 +7,6 @@
 #include<unistd.h>
 #include<string.h>
 
-using namespace server;
-
 AppendFile::AppendFile(std::string name)
     :fp_(fopen(name.c_str(),"ae")),
     writtenBytes_(0)

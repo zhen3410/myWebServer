@@ -25,7 +25,7 @@ AsyncLogging::AsyncLogging(const std::string& basename,off_t rollSize,int flushI
 }
 
 void AsyncLogging::append(const char* logline,int len){
-    MutexGuard lock(mutex_);
+    MutexLockGuard lock(mutex_);
     if(currentBuffer_->avail()>len){
         currentBuffer_->append(logline,len);
     }else{
@@ -52,7 +52,7 @@ void AsyncLogging::threadFunc(){
     bufferToWrite.reserve(16);
     while(running_){
         {
-            MutexGuard lock(mutex_);
+            MutexLockGuard lock(mutex_);
             if(buffers_.empty()){
                 cond_.waitForSeconds(flushInterval_);
             }

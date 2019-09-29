@@ -53,7 +53,7 @@ private:
 	Thread thread_;
 	CountDownLatch latch_;
 	std::atomic<bool> running_;
-	Mutex mutex_;
+	MutexLock mutex_;
 	Condition cond_;
 
 	BufferPtr currentBuffer_;

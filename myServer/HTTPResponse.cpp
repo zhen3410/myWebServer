@@ -61,8 +61,9 @@ void HTTPResponse::processRequest(HTTPRequest* req){
         if(filename=="/"){
             //std::cout<<"HTTPResponse::processRequest request root "<<std::endl;
             // fixed me : add Content_length;
-            buf_+="Server: ZhangZhen\r\n";
-            buf_+="Content-Type: text/plain\r\n\r\nhello world\n";
+            buf_+="Content-Length: "+std::to_string(11)+"\r\n";
+            buf_+="Content-Type: text/plain\r\n\r\n";
+            buf_+="hello world";
             return;
         }
         buf_+="Server: ZhangZhen\r\n";

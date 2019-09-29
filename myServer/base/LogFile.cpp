@@ -16,7 +16,7 @@ LogFile::LogFile(const std::string& basename,
 	flushInterval_(flushInterval),
 	checkEveryN_(checkEveryN),
 	count_(0),
-	mutex_(threadSafe?new Mutex:NULL),
+	mutex_(threadSafe?new MutexLock:NULL),
 	startOfPeriod_(0),
 	lastRoll_(0),
 	lastFlush_(0)
@@ -27,7 +27,7 @@ LogFile::LogFile(const std::string& basename,
 
 void LogFile::append(const char* logline,int len){
 	if(mutex_){
-		MutexGuard lock(*mutex_);
+		MutexLockGuard lock(*mutex_);
 		append_unlocked(logline,len);
 	}else{
 		append_unlocked(logline,len);
@@ -36,7 +36,7 @@ void LogFile::append(const char* logline,int len){
 
 void LogFile::flush(){
 	if(mutex_){
-		MutexGuard lock(*mutex_);
+		MutexLockGuard lock(*mutex_);
 		file_->flush();
 	}else{
 		file_->flush();
